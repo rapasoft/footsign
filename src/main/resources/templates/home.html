@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello world!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<!--@thymesVar id="stuff" type="List<String>"-->
+<ul th:each="thing : ${stuff}">
+    <li th:text="${thing}"></li>
+</ul>
+</body>
+</html>
