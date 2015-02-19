@@ -1,10 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Hello world!</title>
+    <title>FootSign</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<h1>FootSign</h1>
 <!--@thymesVar id="stuff" type="List<String>"-->
 <ul th:each="thing : ${stuff}">
     <li th:text="${thing}"></li>

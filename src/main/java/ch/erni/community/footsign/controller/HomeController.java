@@ -1,6 +1,8 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
+import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class HomeController {
 	@Autowired
 	GraphDatabase graphDatabase;
 
+	@Autowired
+	MatchRepository matchRepository;
+
 	@RequestMapping("/")
 	public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
 		List<String> stuffDone = doStuff();
@@ -41,6 +46,15 @@ public class HomeController {
 		User greg = new User("Greg");
 		User roy = new User("Roy");
 		User craig = new User("Craig");
+		User john = new User("John");
+
+		Match match = new Match();
+
+		match.addPlayersToTeam1(greg);
+		match.addPlayersToTeam1(roy);
+		match.addPlayersToTeam2(craig);
+		match.addPlayersToTeam2(john);
+
 
 		stuff.add("Before linking up with Neo4j...");
 		for (User user : new User[]{greg, roy, craig}) {
@@ -63,6 +77,8 @@ public class HomeController {
 			// We already know that roy plays with greg
 			userRepository.save(roy);
 
+
+			matchRepository.save(match);
 			// We already know craig plays with roy and greg
 
 			stuff.add("Lookup each user by name...");
@@ -73,6 +89,15 @@ public class HomeController {
 			stuff.add("Looking up who plays with Greg...");
 			for (User user : userRepository.findByTeammatesName("Greg")) {
 				stuff.add(user.name + " plays with Greg.");
+			}
+
+			stuff.add("First match plays in TEAM 1:");
+			for(User player : match.getTeam1()) {
+				stuff.add(player.name);
+			}
+			stuff.add("In TEAM 2:");
+			for(User player : match.getTeam2()) {
+				stuff.add(player.name);
 			}
 
 			tx.success();
