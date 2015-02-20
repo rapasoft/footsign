@@ -5,3 +5,4 @@ ERNI Community application for tracking scores of foosball matches. Internal pro
 	- Roman Badura (BAN)
 	- David Vesely (VEDA)
 	- Pavol Rajzak (RAP)
+	- Peter Cervienka (CEPE)
