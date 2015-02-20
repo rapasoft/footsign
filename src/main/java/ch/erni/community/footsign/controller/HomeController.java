@@ -32,8 +32,8 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
-		List<String> stuffDone = doStuff();
-		model.addAttribute("stuff", stuffDone);
+//		List<String> stuffDone = doStuff();
+//		model.addAttribute("stuff", stuffDone);
 		return "home";
 	}
 
