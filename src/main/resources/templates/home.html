@@ -8,19 +8,79 @@
     <link rel="shortcut icon" th:href="@{/img/icon-xsmall.jpg}"/>
     <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/selectize.bootstrap3.css}"/>
     <!--<link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}"/>-->
     <!--<link rel="stylesheet" th:href="@{/css/bootstrap.united.min.css}"/>-->
 
-    <script src="../public/js/jquery-2.1.3.min.js" th:src="@{/js/jquery-2.1.3.min.js}" ></script>
-    <script src="../public/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" ></script>
+    <script th:src="@{/js/jquery-2.1.3.min.js}" ></script>
+    <script th:src="@{/js/bootstrap.min.js}" ></script>
+    <script th:src="@{/js/selectize.js}" ></script>
+    <script th:src="@{/js/application.js}" ></script>
 </head>
 <body>
 
-<div class="container-fluid">
+<div class="container">
 
     <div id="the-header" th:include="fragments/header :: header"></div>
 
     
+    <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default active">2 vs 2</button>
+            <button type="button" class="btn btn-default">1 vs 1</button>
+        </div>
+    </div>
+    <div class="row">   <!-- components for selecting users: comboboxes -->
+        
+        <div class="col-md-4">
+            <select id="selectLeft1">
+                <option value="">Select player</option>
+                <option value="cepe">Peter Červienka</option>
+                <option value="veda">David Veselý</option>
+                <option value="rapa">Pavol Rajzák</option>
+                <option value="bara">Roman Badura</option>
+            </select>
+            <select id="selectLeft2">
+                <option value="">Select player</option>
+                <option value="cepe">Peter Červienka</option>
+                <option value="veda">David Veselý</option>
+                <option value="rapa">Pavol Rajzák</option>
+                <option value="bara">Roman Badura</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <!-- empty place -->
+        </div>
+        <div class="col-md-4">
+            <select id="selectRight1">
+                <option value="">Select player</option>
+                <option value="cepe">Peter Červienka</option>
+                <option value="veda">David Veselý</option>
+                <option value="rapa">Pavol Rajzák</option>
+                <option value="bara">Roman Badura</option>
+            </select>
+
+            <select id="selectRight2">
+                <option value="">Select player</option>
+                <option value="cepe">Peter Červienka</option>
+                <option value="veda">David Veselý</option>
+                <option value="rapa">Pavol Rajzák</option>
+                <option value="bara">Roman Badura</option>
+            </select>
+        </div>
+        
+
+        <script>
+            initSelect("#selectLeft1");
+            initSelect("#selectLeft2");
+            initSelect("#selectRight1");
+            initSelect("#selectRight2");
+        </script>
+    </div>
+    <div class="row">
+
+    </div>
     
     <!--&lt;!&ndash;@thymesVar id="stuff" type="List<String>"&ndash;&gt;
         <ul th:each="thing : ${stuff}">
