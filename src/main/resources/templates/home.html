@@ -3,18 +3,26 @@
 <head>
     <title>FootSign</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="../public/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" href="../public/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}"/>
+    <link rel="shortcut icon" th:href="@{/img/icon-xsmall.jpg}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!--<link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}"/>-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.united.min.css}"/>
 
     <script src="../public/js/jquery-2.1.3.min.js" th:src="@{/js/jquery-2.1.3.min.js}" ></script>
     <script src="../public/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" ></script>
 </head>
 <body>
 <h1>FootSign</h1>
+
+<div id="the-header" th:include="fragments/header :: header"></div>
+
 <!--@thymesVar id="stuff" type="List<String>"-->
 <ul th:each="thing : ${stuff}">
     <li th:text="${thing}"></li>
 </ul>
+
+
+<div id="the-footer" th:include="fragments/footer :: footer"></div>
 
 </body>
 </html>
