@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author rap
  */
-@Controller(value = "secured")
-public class SecuredPageController {
+@Controller(value = "login")
+public class LoginController {
 
-	@RequestMapping("/secured")
+	@RequestMapping("/login")
 	public String index() {
-		return "secured";
+		return "login";
 	}
 
 }

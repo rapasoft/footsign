@@ -14,6 +14,10 @@
 		<version>1.2.1.RELEASE</version>
 	</parent>
 
+	<properties>
+		<thymeleaf.cache>false</thymeleaf.cache>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -74,6 +78,13 @@
 				<configuration>
 					<addResources>false</addResources>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<version>1.2.0.RELEASE</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -97,6 +108,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 
