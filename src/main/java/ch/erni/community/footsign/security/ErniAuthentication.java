@@ -46,8 +46,8 @@ public class ErniAuthentication implements Authentication {
 	}
 
 	@Override
-	public void setAuthenticated(boolean b) throws IllegalArgumentException {
-		this.authenticated = b;
+	public void setAuthenticated(boolean authenticated) throws IllegalArgumentException {
+		this.authenticated = authenticated;
 	}
 
 	@Override
@@ -55,7 +55,4 @@ public class ErniAuthentication implements Authentication {
 		return userDetails.getFirstName() + " " + userDetails.getSecondName();
 	}
 
-	public UserDetails getUserDetails() {
-		return userDetails;
-	}
 }

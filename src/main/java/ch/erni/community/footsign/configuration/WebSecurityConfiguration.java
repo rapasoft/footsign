@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.configuration;
 
 import ch.erni.community.footsign.security.ErniLdapAuthenticationProvider;
+import ch.erni.community.footsign.security.UserAfterLoginHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private ErniLdapAuthenticationProvider erniLdapAuthenticationProvider;
 
+	@Autowired
+	private UserAfterLoginHandler successHandler;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -31,6 +35,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				.formLogin()
 				.loginPage("/login")
+				.successHandler(successHandler)
+				.defaultSuccessUrl("/")
 
 				.and()
 				.logout()

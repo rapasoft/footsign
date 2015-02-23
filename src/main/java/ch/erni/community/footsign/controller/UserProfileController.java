@@ -15,6 +15,7 @@ public class UserProfileController {
 	@RequestMapping("/user_profile")
 	public String index(Model model, Authentication authentication) {
 		UserDetails principal = (UserDetails) authentication.getPrincipal();
+
 		model.addAttribute("name", principal.getFirstName() + " " + principal.getSecondName());
 		model.addAttribute("title", principal.getTitle());
 		model.addAttribute("department", principal.getDepartment());
