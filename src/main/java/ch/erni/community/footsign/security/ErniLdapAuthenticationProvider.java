@@ -20,11 +20,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class ErniLdapAuthenticationProvider implements AuthenticationProvider {
 
+	LdapService ldap;
+
+	Connection connection;
+
+	void createLdapConnection() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
+		connection = Connection.forCredentials(new DefaultCredentials().getCredentials());
+		ldap = new LdapServiceImpl(connection);
+	}
+
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		try {
-			Connection connection = Connection.forCredentials(new DefaultCredentials().getCredentials());
-			LdapService ldap = new LdapServiceImpl(connection);
+			createLdapConnection();
 
 			AuthenticationResult authenticationResult = ldap.authenticate(authentication.getName(), authentication.getCredentials().toString());
 

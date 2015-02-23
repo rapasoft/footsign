@@ -11,13 +11,13 @@ import java.util.Collection;
  */
 public class ErniAuthentication implements Authentication {
 
-	private UserDetails userDetails;
+	private final UserDetails userDetails;
 
 	private boolean authenticated;
 
 	public ErniAuthentication(UserDetails userDetails, boolean authenticated) {
 		this.userDetails = userDetails;
-		this.authenticated = authenticated;
+		setAuthenticated(authenticated);
 	}
 
 	@Override

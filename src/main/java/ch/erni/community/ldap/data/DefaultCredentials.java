@@ -14,22 +14,31 @@ public class DefaultCredentials {
 
 	public static final String LDAP_PASSWORD = "ldap.password";
 
+	public static final String SECURITY_PROPERTIES = "/security.properties";
+
+	String getSecurityProperties() {
+		return SECURITY_PROPERTIES;
+	}
+
 	public Credentials getCredentials() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
 		Properties properties = new Properties();
 
+		String user;
+		String password;
+
 		try {
-			properties.load(this.getClass().getResourceAsStream("/security.properties"));
-			String user = (String) properties.get(LDAP_USER);
-			String password = (String) properties.get(LDAP_PASSWORD);
-
-			if (user == null || password == null) {
-				throw new CredentialsNotFoundException("Properties `" + LDAP_USER + "` and `" + LDAP_PASSWORD + "` must be set in order to connect to ActiveDirectory. Please create security.properties file.");
-			}
-
-			return new Credentials(user, password);
+			properties.load(this.getClass().getResourceAsStream(getSecurityProperties()));
+			user = (String) properties.get(LDAP_USER);
+			password = (String) properties.get(LDAP_PASSWORD);
 		} catch (Exception e) {
 			throw new CredentialsFileNotFoundException("In order to connect you must create a `security.properties` file with `" + LDAP_USER + "` and `" + LDAP_PASSWORD + "` properties defined.");
 		}
+
+		if (user == null || password == null) {
+			throw new CredentialsNotFoundException("Properties `" + LDAP_USER + "` and `" + LDAP_PASSWORD + "` must be set in order to connect to ActiveDirectory. Please create security.properties file.");
+		}
+
+		return new Credentials(user, password);
 	}
 
 }
