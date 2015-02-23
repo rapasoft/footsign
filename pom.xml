@@ -14,8 +14,6 @@
 		<version>1.2.1.RELEASE</version>
 	</parent>
 
-	<packaging>${packaging}</packaging>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -25,7 +23,7 @@
 		<profile>
 			<id>dev</id>
 			<properties>
-				<packaging>war</packaging>
+				<project.packaging>war</project.packaging>
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
 			</properties>
@@ -33,7 +31,7 @@
 		<profile>
 			<id>prod</id>
 			<properties>
-				<packaging>jar</packaging>
+				<project.packaging>jar</project.packaging>
 				<start-class>ch.erni.community.footsign.Application</start-class>
 				<thymeleaf.cache>true</thymeleaf.cache>
 			</properties>

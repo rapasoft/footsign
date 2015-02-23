@@ -52,6 +52,6 @@ public class ErniAuthentication implements Authentication {
 
 	@Override
 	public String getName() {
-		return userDetails.getDN();
+		return userDetails.getFirstName() + " " + userDetails.getSecondName();
 	}
 }
