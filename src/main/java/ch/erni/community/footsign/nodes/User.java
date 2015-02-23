@@ -15,35 +15,50 @@ import java.util.Set;
 @NodeEntity
 public class User {
 
-	@GraphId
-	Long id;
-
-	public String name;
-
-	public User() {
-	}
-
-	public User(String name) {
-		this.name = name;
-	}
-
 	@RelatedTo(type = "TEAMMATE", direction = Direction.BOTH)
 	public
 	@Fetch
 	Set<User> teammates = new HashSet<User>();
 
+	@GraphId
+	Long id;
+
+	/**
+	 * Domain shortcut, e.g. rap, ban, etc.
+	 */
+	private String domainShortName;
+
+	private String fullName;
+
+	public User() {
+	}
+
 	public void playsWith(User person) {
 		teammates.add(person);
 	}
 
-	public String toString() {
-		String results = name + "'s teammates include\n";
-		if (teammates != null) {
-			for (User person : teammates) {
-				results += "\t- " + person.name + "\n";
-			}
-		}
-		return results;
+	public Set<User> getTeammates() {
+		return teammates;
+	}
+
+	public void setTeammates(Set<User> teammates) {
+		this.teammates = teammates;
+	}
+
+	public String getDomainShortName() {
+		return domainShortName;
+	}
+
+	public void setDomainShortName(String domainShortName) {
+		this.domainShortName = domainShortName;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

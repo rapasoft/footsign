@@ -17,34 +17,19 @@ public class Connection {
 
 	private static final Logger logger = Logger.getLogger(Connection.class.getName());
 
-	/**
-	 * The encryption method (0 - no encryption, 1 - SSL, 2 - StartTLS)
-	 */
 	private final ErniLdapConstants.Encryption encryption;
 
-	/**
-	 * The host address of the LDAP server
-	 */
 	private final String host;
 
-	/**
-	 * The port number of the LDAP server
-	 */
 	private final int port;
 
-	/**
-	 * The DN to use to bind to the server.
-	 */
 	private final String bindDN;
 
-	/**
-	 * The password to use to bind to the server.
-	 */
-	private final char[] bindPW;
+	private final String bindPW;
 
 	private LDAPConnection conn;
 
-	private Connection(ErniLdapConstants.Encryption encryption, String host, int port, String bindDN, char[] bindPW) {
+	private Connection(ErniLdapConstants.Encryption encryption, String host, int port, String bindDN, String bindPW) {
 		this.encryption = encryption;
 		this.host = host;
 		this.port = port;
@@ -53,11 +38,11 @@ public class Connection {
 	}
 
 	public static Connection forCredentials(Credentials credentials) {
-		return new Connection(ErniLdapConstants.Encryption.NO_ENCRYPTION, ErniLdapConstants.HOST, ErniLdapConstants.PORT, credentials.getUser(), credentials.getPassword().toCharArray());
+		return new Connection(ErniLdapConstants.Encryption.NO_ENCRYPTION, ErniLdapConstants.HOST, ErniLdapConstants.PORT, credentials.getUser(), credentials.getPassword());
 	}
 
-	public static Connection forCredentials(String username, String password) {
-		return new Connection(ErniLdapConstants.Encryption.NO_ENCRYPTION, ErniLdapConstants.HOST, ErniLdapConstants.PORT, username, password.toCharArray());
+	public static Connection forUsernamePassword(String username, String password) {
+		return new Connection(ErniLdapConstants.Encryption.NO_ENCRYPTION, ErniLdapConstants.HOST, ErniLdapConstants.PORT, username, password);
 	}
 
 	private boolean usesSSL() {
@@ -68,8 +53,52 @@ public class Connection {
 		return encryption == ErniLdapConstants.Encryption.START_TLS;
 	}
 
-	// TODO @rap: Refactor this since it was CTRL+C -> CTRL+V-ed and it is ugly (but it works)
-	LDAPConnection ldapConnection() throws LDAPException {
+	public LDAPConnection ldapConnection() throws LDAPException {
+		final SocketFactory socketFactory = createSocketFactory();
+		final LDAPConnectionOptions options = createLdapConnectionOptions();
+
+		conn = new LDAPConnection(socketFactory, options, host, port);
+
+		if (usesStartTLS()) {
+			enableStartTLSSupport();
+		}
+
+		bind();
+
+		return conn;
+	}
+
+	private void bind() throws LDAPException {
+		if ((bindDN != null) && (bindPW != null)) {
+			try {
+				conn.bind(bindDN, bindPW);
+			} catch (LDAPException le) {
+				logger.severe("getConnection" + le);
+				conn.close();
+				throw le;
+			}
+		}
+	}
+
+	private void enableStartTLSSupport() throws LDAPException {
+		final SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
+		try {
+			final ExtendedResult r = conn.processExtendedOperation(new StartTLSExtendedRequest(sslUtil.createSSLContext()));
+			if (r.getResultCode() != ResultCode.SUCCESS) {
+				throw new LDAPException(r);
+			}
+		} catch (LDAPException le) {
+			logger.severe("getConnection" + le);
+			conn.close();
+			throw le;
+		} catch (Exception e) {
+			logger.severe("getConnection" + e);
+			conn.close();
+			throw new LDAPException(ResultCode.CONNECT_ERROR, "Cannot initialize StartTLS", e);
+		}
+	}
+
+	private SocketFactory createSocketFactory() throws LDAPException {
 		SocketFactory socketFactory = null;
 		if (usesSSL()) {
 			final SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
@@ -80,44 +109,16 @@ public class Connection {
 				throw new LDAPException(ResultCode.LOCAL_ERROR, "Cannot initialize SSL", e);
 			}
 		}
+		return socketFactory;
+	}
 
+	private LDAPConnectionOptions createLdapConnectionOptions() {
 		final LDAPConnectionOptions options = new LDAPConnectionOptions();
 		options.setAutoReconnect(true);
 		options.setConnectTimeoutMillis(30000);
 		options.setFollowReferrals(false);
 		options.setMaxMessageSize(0);
-
-		conn = new LDAPConnection(socketFactory, options, host, port);
-
-		if (usesStartTLS()) {
-			final SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
-			try {
-				final ExtendedResult r = conn.processExtendedOperation(new StartTLSExtendedRequest(sslUtil.createSSLContext()));
-				if (r.getResultCode() != ResultCode.SUCCESS) {
-					throw new LDAPException(r);
-				}
-			} catch (LDAPException le) {
-				logger.severe("getConnection" + le);
-				conn.close();
-				throw le;
-			} catch (Exception e) {
-				logger.severe("getConnection" + e);
-				conn.close();
-				throw new LDAPException(ResultCode.CONNECT_ERROR, "Cannot initialize StartTLS", e);
-			}
-		}
-
-		if ((bindDN != null) && (bindPW != null)) {
-			try {
-				conn.bind(bindDN, new String(bindPW));
-			} catch (LDAPException le) {
-				logger.severe("getConnection" + le);
-				conn.close();
-				throw le;
-			}
-		}
-
-		return conn;
+		return options;
 	}
 
 	public void close() {

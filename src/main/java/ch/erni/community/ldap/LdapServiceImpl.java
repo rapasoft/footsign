@@ -73,7 +73,7 @@ public class LdapServiceImpl implements LdapService {
 	public AuthenticationResult authenticate(String domainUserName, String password) throws UserNotFoundException {
 		UserDetails userDetails = findByDomainUserName(domainUserName);
 
-		Connection connection = Connection.forCredentials(userDetails.getDN(), password);
+		Connection connection = Connection.forUsernamePassword(userDetails.getDN(), password);
 
 		try {
 			boolean result = connection.ldapConnection().isConnected();
