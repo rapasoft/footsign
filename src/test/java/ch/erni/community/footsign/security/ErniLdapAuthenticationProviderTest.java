@@ -36,7 +36,7 @@ public class ErniLdapAuthenticationProviderTest {
 				Optional.of("Test"), Optional.of("Test"));
 
 		when(ldapServiceMock.authenticate("username", "password")).thenReturn(new AuthenticationResult(userDetailsMock, true));
-		when(ldapServiceMock.authenticate("malicious", "blablabla")).thenThrow(UserNotFoundException.class);
+		when(ldapServiceMock.authenticate("malicious", "blablabla")).thenThrow(new UserNotFoundException("UnF"));
 
 		erniLdapAuthenticationProvider.ldap = ldapServiceMock;
 	}
@@ -52,10 +52,20 @@ public class ErniLdapAuthenticationProviderTest {
 		assertTrue(successfulAuthentication.isAuthenticated());
 
 		assertEquals("firstName secondName", successfulAuthentication.getName());
-		assertEquals(userDetailsMock, successfulAuthentication.getPrincipal());
+
 		assertEquals(null, successfulAuthentication.getCredentials());
 		assertEquals(null, successfulAuthentication.getDetails());
 		assertEquals(null, successfulAuthentication.getAuthorities());
+
+		UserDetails principal = (UserDetails) successfulAuthentication.getPrincipal();
+
+		assertEquals(userDetailsMock.getTitle(), principal.getTitle());
+		assertEquals(userDetailsMock.getEmail(), principal.getEmail());
+		assertEquals(userDetailsMock.getFirstName(), principal.getFirstName());
+		assertEquals(userDetailsMock.getSecondName(), principal.getSecondName());
+		assertEquals(userDetailsMock.getDepartment(), principal.getDepartment());
+		assertEquals(userDetailsMock.getDN(), principal.getDN());
+		assertEquals(userDetailsMock.getDomainUserName(), principal.getDomainUserName());
 	}
 
 	@Test(expected = BadCredentialsException.class)

@@ -50,6 +50,7 @@ public class SuccesfulLoginIntegrationTest {
 		when(userDetails.getDomainUserName()).thenReturn("test");
 		when(userDetails.getFirstName()).thenReturn("First");
 		when(userDetails.getSecondName()).thenReturn("Second");
+
 		when(authentication.getPrincipal()).thenReturn(userDetails);
 	}
 

@@ -68,4 +68,5 @@ public class UserDetails {
 	public String getDN() {
 		return "CN=" + getSecondName() + " " + getFirstName() + "," + ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN;
 	}
+
 }
