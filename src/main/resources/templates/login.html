@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:include="layout :: page">
+<head>
+    <title>FootSign / Login</title>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:fragment="content">
+        <div style="width: 400px; margin: 0 auto;">
+            <form class="form-signin" th:action="@{/login}" method="post">
+                <h2 class="form-signin-heading">Sign in</h2>
+                <h5>Please use your ERNI domain name/password</h5>
+
+                <div th:if="${param.error}" class="alert alert-danger">
+                    Invalid username. Or is it invalid password? You tell me!
+                </div>
+                <label for="username" class="sr-only">Email address</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="Email address" required="required" autofocus="autofocus"/>
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="required"/>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

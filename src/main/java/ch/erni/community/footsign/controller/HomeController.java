@@ -32,10 +32,9 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
-		List<String> stuffDone = doStuff();
-		model.addAttribute("stuff", stuffDone);        
+//		List<String> stuffDone = doStuff();
+//		model.addAttribute("stuff", stuffDone);
 		model.addAttribute("gameType", 2);
-
 		return "home";
 	}
 

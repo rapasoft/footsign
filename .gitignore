@@ -130,3 +130,6 @@ $RECYCLE.BIN/
 
 ### Neo4J ###
 *neo4j.db
+
+### Do not commit the security.properties file !!! ###
+src/main/resources/security.properties
