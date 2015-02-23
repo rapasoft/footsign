@@ -14,9 +14,31 @@
 		<version>1.2.1.RELEASE</version>
 	</parent>
 
+	<packaging>${packaging}</packaging>
+
 	<properties>
-		<thymeleaf.cache>false</thymeleaf.cache>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<packaging>war</packaging>
+				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
+				<thymeleaf.cache>false</thymeleaf.cache>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<packaging>jar</packaging>
+				<start-class>ch.erni.community.footsign.Application</start-class>
+				<thymeleaf.cache>true</thymeleaf.cache>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -71,6 +93,8 @@
 	</dependencies>
 
 	<build>
+		<finalName>footsign</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
