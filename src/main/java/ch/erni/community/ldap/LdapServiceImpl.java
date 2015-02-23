@@ -95,9 +95,9 @@ public class LdapServiceImpl implements LdapService {
 				Optional<String> firstName = Optional.ofNullable(searchResultEntry.getAttributeValue("givenName").trim());
 				Optional<String> secondName = Optional.ofNullable(searchResultEntry.getAttributeValue("sn").trim());
 				Optional<String> domainUserName = Optional.ofNullable(searchResultEntry.getAttributeValue("sAMAccountName").trim());
-				Optional<String> email = Optional.ofNullable(searchResultEntry.getAttributeValue("mail").trim());
-				Optional<String> title = Optional.ofNullable(searchResultEntry.getAttributeValue("title").trim());
-				Optional<String> department = Optional.ofNullable(searchResultEntry.getAttributeValue("department").trim());
+				Optional<String> email = Optional.ofNullable(searchResultEntry.getAttributeValue("mail") !=  null ? searchResultEntry.getAttributeValue("mail").trim() : "" );
+				Optional<String> title = Optional.ofNullable(searchResultEntry.getAttributeValue("title") != null ? searchResultEntry.getAttributeValue("title").trim() : "" );
+				Optional<String> department = Optional.ofNullable(searchResultEntry.getAttributeValue("department") != null ? searchResultEntry.getAttributeValue("department").trim() : "" );
 
 				userDetailsList.add(new UserDetails(firstName, secondName, domainUserName, email, title, department));
 			}
