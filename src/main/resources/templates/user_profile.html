@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:include="layout :: page">
+<head>
+    <title>FootSign / Home</title>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:fragment="content">
+        <div class="row">
+            <div class="col-md-2">Name:</div>
+            <div class="col-md-8"><span th:text="${name}"/></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">Title:</div>
+            <div class="col-md-8"><span th:text="${title}"/></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">ESK Unit:</div>
+            <div class="col-md-8"><span th:text="${department}"/></div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

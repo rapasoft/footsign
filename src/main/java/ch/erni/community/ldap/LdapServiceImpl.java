@@ -29,6 +29,8 @@ public class LdapServiceImpl implements LdapService {
 			searchResult = connection.ldapConnection().search(readOnlySearchRequest);
 		} catch (LDAPException e) {
 			throw new RuntimeException(e.getDiagnosticMessage());
+		} finally {
+			connection.close();
 		}
 
 		return extractUserDetails(searchResult);
@@ -79,6 +81,8 @@ public class LdapServiceImpl implements LdapService {
 			return new AuthenticationResult(userDetails, result);
 		} catch (LDAPException e) {
 			throw new UserNotFoundException(e.getDiagnosticMessage());
+		} finally {
+			connection.close();
 		}
 	}
 

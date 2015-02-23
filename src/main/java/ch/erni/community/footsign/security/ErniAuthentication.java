@@ -54,4 +54,8 @@ public class ErniAuthentication implements Authentication {
 	public String getName() {
 		return userDetails.getFirstName() + " " + userDetails.getSecondName();
 	}
+
+	public UserDetails getUserDetails() {
+		return userDetails;
+	}
 }
