@@ -27,8 +27,8 @@
     
     <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default active">2 vs 2</button>
-            <button type="button" class="btn btn-default">1 vs 1</button>
+            <button type="button" class="btn btn-default" th:classappend="${gameType == 2} ? 'active' : ''">2 vs 2</button>
+            <button type="button" class="btn btn-default" th:classappend="${gameType == 1} ? 'active' : ''">1 vs 1</button>
         </div>
     </div>
     <div class="row">   <!-- components for selecting users: comboboxes -->
