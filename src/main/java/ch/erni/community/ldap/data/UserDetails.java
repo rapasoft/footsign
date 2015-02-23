@@ -30,27 +30,27 @@ public class UserDetails {
 	}
 
 	public String getFirstName() {
-		return firstName.map(Function.identity()).orElse("N/A");
+		return firstName.map(Function.identity()).orElse("N/A").trim();
 	}
 
 	public String getSecondName() {
-		return secondName.map(Function.identity()).orElse("N/A");
+		return secondName.map(Function.identity()).orElse("N/A").trim();
 	}
 
 	public String getDomainUserName() {
-		return domainUserName.map(Function.identity()).orElse("N/A");
+		return domainUserName.map(Function.identity()).orElse("N/A").trim();
 	}
 
 	public String getEmail() {
-		return email.map(Function.identity()).orElse("N/A");
+		return email.map(Function.identity()).orElse("N/A").trim();
 	}
 
 	public String getTitle() {
-		return title.map(Function.identity()).orElse("N/A");
+		return title.map(Function.identity()).orElse("N/A").trim();
 	}
 
 	public String getDepartment() {
-		return department.map(Function.identity()).orElse("N/A");
+		return department.map(Function.identity()).orElse("N/A").trim();
 	}
 
 	@Override

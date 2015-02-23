@@ -92,12 +92,12 @@ public class LdapServiceImpl implements LdapService {
 		for (SearchResultEntry searchResultEntry : searchResult.getSearchEntries()) {
 			String description = searchResultEntry.getAttributeValue("description");
 			if (description != null && description.equals("ESK")) {
-				Optional<String> firstName = Optional.ofNullable(searchResultEntry.getAttributeValue("givenName").trim());
-				Optional<String> secondName = Optional.ofNullable(searchResultEntry.getAttributeValue("sn").trim());
-				Optional<String> domainUserName = Optional.ofNullable(searchResultEntry.getAttributeValue("sAMAccountName").trim());
-				Optional<String> email = Optional.ofNullable(searchResultEntry.getAttributeValue("mail") !=  null ? searchResultEntry.getAttributeValue("mail").trim() : "" );
-				Optional<String> title = Optional.ofNullable(searchResultEntry.getAttributeValue("title") != null ? searchResultEntry.getAttributeValue("title").trim() : "" );
-				Optional<String> department = Optional.ofNullable(searchResultEntry.getAttributeValue("department") != null ? searchResultEntry.getAttributeValue("department").trim() : "" );
+				Optional<String> firstName = Optional.ofNullable(searchResultEntry.getAttributeValue("givenName"));
+				Optional<String> secondName = Optional.ofNullable(searchResultEntry.getAttributeValue("sn"));
+				Optional<String> domainUserName = Optional.ofNullable(searchResultEntry.getAttributeValue("sAMAccountName"));
+				Optional<String> email = Optional.ofNullable(searchResultEntry.getAttributeValue("mail"));
+				Optional<String> title = Optional.ofNullable(searchResultEntry.getAttributeValue("title"));
+				Optional<String> department = Optional.ofNullable(searchResultEntry.getAttributeValue("department"));
 
 				userDetailsList.add(new UserDetails(firstName, secondName, domainUserName, email, title, department));
 			}
