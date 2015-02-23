@@ -4,6 +4,18 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.ldap.Connection;
+import ch.erni.community.ldap.LdapService;
+import ch.erni.community.ldap.LdapServiceImpl;
+import ch.erni.community.ldap.data.DefaultCredentials;
+import ch.erni.community.ldap.data.UserDetails;
+import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
+import ch.erni.community.ldap.exception.CredentialsNotFoundException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.ir.debug.JSONWriter;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.GraphDatabase;
@@ -11,8 +23,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import scala.util.parsing.json.JSON;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,8 +49,36 @@ public class HomeController {
 	public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
 //		List<String> stuffDone = doStuff();
 //		model.addAttribute("stuff", stuffDone);
-		model.addAttribute("gameType", 2);
+		model.addAttribute("gameType", 1);
 		return "home";
+	}
+	
+	@RequestMapping("/user_list")
+	public @ResponseBody String getUserList() {
+
+		Connection connection = null;
+		try {
+			connection = Connection.forCredentials(new DefaultCredentials().getCredentials());
+			LdapService ldapService = new LdapServiceImpl(connection);
+			
+			List<UserDetails> list = ldapService.fetchEskEmployees();
+
+			String json = "";
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				json = mapper.writeValueAsString(list);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+
+			return json;
+
+		} catch (CredentialsNotFoundException | CredentialsFileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return "";
+		
 	}
 
 	/**

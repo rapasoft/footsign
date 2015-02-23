@@ -1,0 +1,49 @@
+
+.selectize-control.user-control .selectize-dropdown > div {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.selectize-control.user-control .selectize-dropdown .domain-name {
+    font-size: 11px;
+    opacity: 0.8;
+}
+.selectize-control.user-control .selectize-dropdown .full-name {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.selectize-control.user-control .selectize-dropdown .user {
+    display: block;
+}
+.selectize-control.user-control .selectize-dropdown .department {
+    font-size: 12px;
+    display: block;
+    color: #a0a0a0;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.selectize-control.user-control .selectize-dropdown .icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 16px 16px;
+    margin: 0 3px 0 0;
+}
+
+.selectize-control.user-control .selectize-input .icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 16px 16px;
+    margin: 0 3px 0 0;
+}
+
+.selectize-control.user-control .selectize-input .full-name {
+    font-weight: bold;
+    margin-right: 5px;
+}

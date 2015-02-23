@@ -5,67 +5,38 @@
 </head>
 <body>
 
-<div class="container">
-
-    <div th:fragment="content">
-        <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default active">2 vs 2</button>
-                <button type="button" class="btn btn-default">1 vs 1</button>
-            </div>
-        </div>
-        <div class="row">   <!-- components for selecting users: comboboxes -->
-
-            <div class="col-md-4">
-                <select id="selectLeft1">
-                    <option value="">Select player</option>
-                    <option value="cepe">Peter Červienka</option>
-                    <option value="veda">David Veselý</option>
-                    <option value="rapa">Pavol Rajzák</option>
-                    <option value="bara">Roman Badura</option>
-                </select>
-                <select id="selectLeft2">
-                    <option value="">Select player</option>
-                    <option value="cepe">Peter Červienka</option>
-                    <option value="veda">David Veselý</option>
-                    <option value="rapa">Pavol Rajzák</option>
-                    <option value="bara">Roman Badura</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <!-- empty place -->
-            </div>
-            <div class="col-md-4">
-                <select id="selectRight1">
-                    <option value="">Select player</option>
-                    <option value="cepe">Peter Červienka</option>
-                    <option value="veda">David Veselý</option>
-                    <option value="rapa">Pavol Rajzák</option>
-                    <option value="bara">Roman Badura</option>
-                </select>
-
-                <select id="selectRight2">
-                    <option value="">Select player</option>
-                    <option value="cepe">Peter Červienka</option>
-                    <option value="veda">David Veselý</option>
-                    <option value="rapa">Pavol Rajzák</option>
-                    <option value="bara">Roman Badura</option>
-                </select>
-            </div>
-
-
-            <script>
-                initSelect("#selectLeft1");
-                initSelect("#selectLeft2");
-                initSelect("#selectRight1");
-                initSelect("#selectRight2");
-            </script>
-        </div>
-        <div class="row">
-
+<div th:fragment="content">
+    <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" th:classappend="${gameType == 2} ? 'active'">2 vs 2</button>
+            <button type="button" class="btn btn-default" th:classappend="${gameType == 1} ? 'active'">1 vs 1</button>
         </div>
     </div>
+    <div class="row">   <!-- components for selecting users: comboboxes -->
 
+        <div class="col-md-4">
+            <select id="selectLeft1" class="user-control"></select>
+            <select id="selectLeft2" class="user-control"></select>
+        </div>
+        <div class="col-md-4">
+            <!-- empty place -->
+        </div>
+        <div class="col-md-4">
+            <select id="selectRight1" class="user-control"></select>
+            <select id="selectRight2" class="user-control"></select>
+        </div>
+
+
+        <script>
+            initSelect("#selectLeft1");
+            initSelect("#selectLeft2");
+            initSelect("#selectRight1");
+            initSelect("#selectRight2");
+        </script>
+    </div>
+    <div class="row">
+
+    </div>
 </div>
 
 </body>
