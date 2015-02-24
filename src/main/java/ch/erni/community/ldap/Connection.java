@@ -27,22 +27,29 @@ public class Connection {
 
 	private final String bindPW;
 
-	private LDAPConnection conn;
+	private LDAPConnection ldapConnection;
 
-	private Connection(ErniLdapConstants.Encryption encryption, String host, int port, String bindDN, String bindPW) {
+	private Connection(ErniLdapConstants.Encryption encryption, String host, int port, String bindDN, String bindPW) throws LDAPException {
 		this.encryption = encryption;
 		this.host = host;
 		this.port = port;
 		this.bindDN = bindDN;
 		this.bindPW = bindPW;
+
+		final SocketFactory socketFactory = createSocketFactory();
+		final LDAPConnectionOptions options = createLdapConnectionOptions();
+
+		ldapConnection = new LDAPConnection(socketFactory, options, host, port);
+
+		if (usesStartTLS()) {
+			enableStartTLSSupport();
+		}
+
+		bind();
 	}
 
-	public static Connection forCredentials(Credentials credentials) {
+	public static Connection forCredentials(Credentials credentials) throws LDAPException {
 		return new Connection(ErniLdapConstants.Encryption.NO_ENCRYPTION, ErniLdapConstants.HOST, ErniLdapConstants.PORT, credentials.getUser(), credentials.getPassword());
-	}
-
-	public static Connection forUsernamePassword(String username, String password) {
-		return new Connection(ErniLdapConstants.Encryption.NO_ENCRYPTION, ErniLdapConstants.HOST, ErniLdapConstants.PORT, username, password);
 	}
 
 	private boolean usesSSL() {
@@ -53,28 +60,17 @@ public class Connection {
 		return encryption == ErniLdapConstants.Encryption.START_TLS;
 	}
 
-	public LDAPConnection ldapConnection() throws LDAPException {
-		final SocketFactory socketFactory = createSocketFactory();
-		final LDAPConnectionOptions options = createLdapConnectionOptions();
-
-		conn = new LDAPConnection(socketFactory, options, host, port);
-
-		if (usesStartTLS()) {
-			enableStartTLSSupport();
-		}
-
-		bind();
-
-		return conn;
+	public LDAPConnection getLdapConnection() {
+		return ldapConnection;
 	}
 
 	private void bind() throws LDAPException {
 		if ((bindDN != null) && (bindPW != null)) {
 			try {
-				conn.bind(bindDN, bindPW);
+				ldapConnection.bind(bindDN, bindPW);
 			} catch (LDAPException le) {
 				logger.severe("getConnection" + le);
-				conn.close();
+				ldapConnection.close();
 				throw le;
 			}
 		}
@@ -83,17 +79,17 @@ public class Connection {
 	private void enableStartTLSSupport() throws LDAPException {
 		final SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
 		try {
-			final ExtendedResult r = conn.processExtendedOperation(new StartTLSExtendedRequest(sslUtil.createSSLContext()));
+			final ExtendedResult r = ldapConnection.processExtendedOperation(new StartTLSExtendedRequest(sslUtil.createSSLContext()));
 			if (r.getResultCode() != ResultCode.SUCCESS) {
 				throw new LDAPException(r);
 			}
 		} catch (LDAPException le) {
 			logger.severe("getConnection" + le);
-			conn.close();
+			ldapConnection.close();
 			throw le;
 		} catch (Exception e) {
 			logger.severe("getConnection" + e);
-			conn.close();
+			ldapConnection.close();
 			throw new LDAPException(ResultCode.CONNECT_ERROR, "Cannot initialize StartTLS", e);
 		}
 	}
@@ -122,8 +118,8 @@ public class Connection {
 	}
 
 	public void close() {
-		if (conn != null) {
-			conn.close();
+		if (ldapConnection != null) {
+			ldapConnection.close();
 		}
 	}
 

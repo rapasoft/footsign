@@ -2,13 +2,9 @@ package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
-import ch.erni.community.ldap.Connection;
 import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.LdapServiceImpl;
-import ch.erni.community.ldap.data.DefaultCredentials;
 import ch.erni.community.ldap.data.UserDetails;
-import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
-import ch.erni.community.ldap.exception.CredentialsNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,31 +39,23 @@ public class HomeController {
 	}
 
 	@RequestMapping("/user_list")
-	public @ResponseBody
+	public
+	@ResponseBody
 	String getUserList() {
 
-		Connection connection = null;
+		LdapService ldapService = new LdapServiceImpl();
+
+		List<UserDetails> list = ldapService.fetchEskEmployees();
+
+		String json = "";
+		ObjectMapper mapper = new ObjectMapper();
 		try {
-			connection = Connection.forCredentials(new DefaultCredentials().getCredentials());
-			LdapService ldapService = new LdapServiceImpl(connection);
-
-			List<UserDetails> list = ldapService.fetchEskEmployees();
-
-			String json = "";
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				json = mapper.writeValueAsString(list);
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-
-			return json;
-
-		} catch (CredentialsNotFoundException | CredentialsFileNotFoundException e) {
+			json = mapper.writeValueAsString(list);
+		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 
-		return "";
+		return json;
 
 	}
 
