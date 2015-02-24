@@ -104,16 +104,26 @@ function showNextRound() {
 }
 
 function validateRoundInput() {
-    
+    var value = parseInt($(this).val());
+    if (isNaN(value) || value < 0 || value > 8) {
+        $(this).parent().addClass("has-error");
+    } else {
+        $(this).parent().removeClass("has-error");
+    }
     
 }
 
+function saveGame() {
+    
+    
+}
 
 // initialize components and binding events
 $(document).ready(function () {
     var btn1 = $(".game-type-1");
     var btn2 = $(".game-type-2");
     var btn3 = $("#addNextRoundBtn");
+    var btn4 = $("#addNextRoundBtn");
 
     if (btn1) {
         btn1.on("click", {gameType: 1}, changeGameType);
@@ -126,12 +136,10 @@ $(document).ready(function () {
         btn3.on("click", showNextRound);
     }
     
-    $(".roundResultInput").change(function () {
-        var value = parseInt($(this).val());
-        if (isNaN(value) || value < 0 || value > 8) {
-            $(this).parent().addClass("has-error");
-        } else {
-            $(this).parent().removeClass("has-error");
-        }
-    })
+    if (btn4) {
+        btn4.on("click", saveGame)
+        
+    }
+    
+    $(".roundResultInput").change(validateRoundInput)
 });

@@ -36,6 +36,14 @@ public class Match {
     @Fetch
     Set<Game> games = new HashSet<Game>();
 
+    public Date getDateOfMatch() {
+        return dateOfMatch;
+    }
+
+    public void setDateOfMatch(Date dateOfMatch) {
+        this.dateOfMatch = dateOfMatch;
+    }
+
     public void addPlayersToTeam1(User player) {
         team1.add(player);
     }
