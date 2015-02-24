@@ -1,10 +1,8 @@
 package ch.erni.community.footsign.security;
 
-import ch.erni.community.ldap.Connection;
 import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.LdapServiceImpl;
 import ch.erni.community.ldap.data.AuthenticationResult;
-import ch.erni.community.ldap.data.DefaultCredentials;
 import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
 import ch.erni.community.ldap.exception.CredentialsNotFoundException;
 import ch.erni.community.ldap.exception.UserNotFoundException;
@@ -22,11 +20,8 @@ public class ErniLdapAuthenticationProvider implements AuthenticationProvider {
 
 	LdapService ldap;
 
-	Connection connection;
-
 	void createLdapConnection() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
-		connection = Connection.forCredentials(new DefaultCredentials().getCredentials());
-		ldap = new LdapServiceImpl(connection);
+		ldap = new LdapServiceImpl();
 	}
 
 	@Override

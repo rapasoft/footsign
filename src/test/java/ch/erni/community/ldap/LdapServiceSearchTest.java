@@ -1,41 +1,29 @@
 package ch.erni.community.ldap;
 
-import ch.erni.community.ldap.data.DefaultCredentials;
 import ch.erni.community.ldap.data.UserDetails;
 import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
 import ch.erni.community.ldap.exception.CredentialsNotFoundException;
 import ch.erni.community.ldap.exception.UserNotFoundException;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.spy;
 
-public class LdapTest {
+public class LdapServiceSearchTest {
 
-	private static Connection connection;
+	private LdapServiceImpl ldapService;
 
-	@BeforeClass
-	public static void init() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
-		connection = Connection.forCredentials(new DefaultCredentials().getCredentials());
-	}
-
-	@AfterClass
-	public static void destroy() {
-		connection.close();
-	}
-
-	@Test
-	public void testConnectionCreated() throws Exception {
-		assertNotNull(connection);
+	@Before
+	public void before() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
+		ldapService = spy(new LdapServiceImpl());
 	}
 
 	@Test
 	public void testFindEskEmployees() throws Exception {
-		LdapService ldapService = new LdapServiceImpl(connection);
 		List<UserDetails> userDetailsList = ldapService.fetchEskEmployees();
 
 		assertNotNull(userDetailsList);
@@ -46,7 +34,6 @@ public class LdapTest {
 
 	@Test
 	public void testSuccessfulSearchByDomainUserName() throws UserNotFoundException {
-		LdapService ldapService = new LdapServiceImpl(connection);
 		UserDetails userDetails = ldapService.findByDomainUserName("rap");
 
 		check(userDetails);
@@ -54,13 +41,11 @@ public class LdapTest {
 
 	@Test(expected = UserNotFoundException.class)
 	public void testUnsuccessfulSearchByDomainUserName() throws UserNotFoundException {
-		LdapService ldapService = new LdapServiceImpl(connection);
 		ldapService.findByDomainUserName("jfk");
 	}
 
 	@Test
 	public void testSearchByEmail() throws UserNotFoundException {
-		LdapService ldapService = new LdapServiceImpl(connection);
 		UserDetails userDetails = ldapService.findByEmail("pavol.rajzak@erni.sk");
 
 		check(userDetails);
@@ -68,7 +53,6 @@ public class LdapTest {
 
 	@Test
 	public void testSearchByName() throws UserNotFoundException {
-		LdapService ldapService = new LdapServiceImpl(connection);
 		UserDetails userDetails = ldapService.findByName("Pavol", "Rajzák");
 
 		check(userDetails);

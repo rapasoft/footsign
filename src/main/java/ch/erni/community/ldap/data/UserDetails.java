@@ -55,14 +55,7 @@ public class UserDetails {
 
 	@Override
 	public String toString() {
-		return "UserDetails{" +
-				"firstName='" + firstName + '\'' +
-				", secondName='" + secondName + '\'' +
-				", domainUserName='" + domainUserName + '\'' +
-				", email='" + email + '\'' +
-				", title='" + title + '\'' +
-				", department='" + department + '\'' +
-				'}';
+		return firstName + " " + secondName + " (" + department + ")";
 	}
 
 	public String getDN() {

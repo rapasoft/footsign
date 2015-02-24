@@ -1,8 +1,8 @@
 package ch.erni.community.ldap;
 
-import ch.erni.community.ldap.data.AuthenticationResult;
-import ch.erni.community.ldap.data.ErniLdapConstants;
-import ch.erni.community.ldap.data.UserDetails;
+import ch.erni.community.ldap.data.*;
+import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
+import ch.erni.community.ldap.exception.CredentialsNotFoundException;
 import ch.erni.community.ldap.exception.UserNotFoundException;
 import com.unboundid.ldap.sdk.*;
 
@@ -15,18 +15,20 @@ import java.util.Optional;
  */
 public class LdapServiceImpl implements LdapService {
 
-	private Connection connection;
-
-	public LdapServiceImpl(Connection connection) {
-		this.connection = connection;
-	}
-
 	public List<UserDetails> fetchEskEmployees() {
 		ReadOnlySearchRequest readOnlySearchRequest;
 		SearchResult searchResult;
+		Connection connection;
+
+		try {
+			connection = createConnection(new DefaultCredentials().getCredentials());
+		} catch (CredentialsNotFoundException | CredentialsFileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+
 		try {
 			readOnlySearchRequest = new SearchRequest(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN, SearchScope.SUB, ErniLdapConstants.FILTER);
-			searchResult = connection.ldapConnection().search(readOnlySearchRequest);
+			searchResult = connection.getLdapConnection().search(readOnlySearchRequest);
 		} catch (LDAPException e) {
 			throw new RuntimeException(e.getDiagnosticMessage());
 		} finally {
@@ -34,6 +36,14 @@ public class LdapServiceImpl implements LdapService {
 		}
 
 		return extractUserDetails(searchResult);
+	}
+
+	Connection createConnection(Credentials credentials) {
+		try {
+			return Connection.forCredentials(credentials);
+		} catch (LDAPException e) {
+			throw new RuntimeException(e.getDiagnosticMessage());
+		}
 	}
 
 	@Override
@@ -73,14 +83,12 @@ public class LdapServiceImpl implements LdapService {
 	public AuthenticationResult authenticate(String domainUserName, String password) throws UserNotFoundException {
 		UserDetails userDetails = findByDomainUserName(domainUserName);
 
-		Connection connection = Connection.forUsernamePassword(userDetails.getDN(), password);
+		Connection connection = createConnection(new Credentials(userDetails.getDN(), password));
 
 		try {
-			boolean result = connection.ldapConnection().isConnected();
+			boolean result = connection.getLdapConnection().isConnected();
 
 			return new AuthenticationResult(userDetails, result);
-		} catch (LDAPException e) {
-			throw new UserNotFoundException(e.getDiagnosticMessage());
 		} finally {
 			connection.close();
 		}
