@@ -17,7 +17,7 @@ import java.util.Set;
 public class Match {
 
     @GraphId
-    Long id;
+    Long matchId;
 
     Date dateOfMatch;
 
@@ -30,6 +30,11 @@ public class Match {
     private
     @Fetch
     Set<User> team2 = new HashSet<User>();
+
+    @RelatedTo(type = "GAMES", direction = Direction.OUTGOING)
+    private
+    @Fetch
+    Set<Game> games = new HashSet<Game>();
 
     public void addPlayersToTeam1(User player) {
         team1.add(player);
@@ -45,5 +50,9 @@ public class Match {
 
     public Set<User> getTeam2() {
         return team2;
+    }
+
+    public void addGame(Game game){
+        games.add(game);
     }
 }
