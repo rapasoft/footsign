@@ -5,7 +5,7 @@ import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * @author rap
  */
 @Component
-public class UserAfterLoginHandler implements AuthenticationSuccessHandler {
+public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 	@Autowired
 	UserRepository userRepository;
@@ -37,6 +37,9 @@ public class UserAfterLoginHandler implements AuthenticationSuccessHandler {
 		user.setFullName(userDetails.getFirstName() + " " + userDetails.getSecondName());
 
 		userRepository.save(user);
+
+		resp.sendRedirect(req.getContextPath());
 	}
+
 
 }
