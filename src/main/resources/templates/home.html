@@ -6,37 +6,58 @@
 <body>
 
 <div th:fragment="content">
-    <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" th:classappend="${gameType == 2} ? 'active'">2 vs 2</button>
-            <button type="button" class="btn btn-default" th:classappend="${gameType == 1} ? 'active'">1 vs 1</button>
-        </div>
-    </div>
-    <div class="row">   <!-- components for selecting users: comboboxes -->
-
-        <div class="col-md-4">
-            <select id="selectLeft1" class="user-control"></select>
-            <select id="selectLeft2" class="user-control"></select>
-        </div>
-        <div class="col-md-4">
-            <!-- empty place -->
-        </div>
-        <div class="col-md-4">
-            <select id="selectRight1" class="user-control"></select>
-            <select id="selectRight2" class="user-control"></select>
+    
+    <form>
+    
+        <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default active game-type-2">2 vs 2</button>
+                <button type="button" class="btn btn-default game-type-1">1 vs 1</button>
+            </div>
         </div>
 
+        <div class="row">   <!-- components for selecting users: comboboxes -->
 
-        <script>
-            initSelect("#selectLeft1");
-            initSelect("#selectLeft2");
-            initSelect("#selectRight1");
-            initSelect("#selectRight2");
-        </script>
-    </div>
-    <div class="row">
+            <div class="col-md-4">
+                <select id="selectLeft1" class="user-control"></select>
+                <select id="selectLeft2" class="user-control second-player"></select>
+            </div>
+            <div class="col-md-4">
+                <!-- empty place -->
+            </div>
+            <div class="col-md-4">
+                <select id="selectRight1" class="user-control"></select>
+                <select id="selectRight2" class="user-control second-player"></select>
+            </div>
 
-    </div>
+            <script>
+                initSelect("#selectLeft1");
+                initSelect("#selectLeft2");
+                initSelect("#selectRight1");
+                initSelect("#selectRight2");
+            </script>
+        </div>
+
+        <div class="row">
+            <div th:each="i : ${#numbers.sequence(1, 3)}" th:id="'resultBlock' + ${i}"  class="roundResultBlock" th:classappend="${i != 1} ? 'hidden'">
+
+                <div class="col-xs-2 col-xs-offset-4 form-group">
+                    <input type="number" th:id="'result' + ${i} + 'Team1'" class="form-control roundResultInput" min="0" max="8" value="0" />
+                </div>
+
+                <div class="col-xs-2 form-group">
+                    <input type="number" th:id="'result' + ${i} + 'Team2'" class="form-control roundResultInput" min="0" max="8" value="0" />
+                </div>
+            </div>
+
+        </div>
+        <div class="row text-center form-control-static">
+            <button id="addNextRoundBtn" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Next</button>
+            <button id="saveGameBtn" type="button" class="btn btn-default btn-sm hidden"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+        </div>
+
+        
+    </form>
 </div>
 
 </body>

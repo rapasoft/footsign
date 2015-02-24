@@ -1,6 +1,9 @@
 /**
  * Created by cepe on 20.02.2015.
  */
+
+
+// initialize comboboxes with players
 function initSelect(name) {
     if (name) {
 
@@ -54,4 +57,81 @@ function initSelect(name) {
             }
         });
     }
-};
+}
+
+function changeGameType(event) {
+    if( event && event.data.gameType) {
+        
+        var type = event.data.gameType;
+        
+        if (!isNaN(type) && ( type == 1 || type == 2 )) {
+
+            if (type == 1) {
+                // hide and unselect selected option
+                $(".second-player").addClass("hidden").find("option").attr("selected", false);
+                $(".game-type-1").addClass("active");
+                $(".game-type-2").removeClass("active");
+            } else {
+                // show and select first option
+                $(".second-player").removeClass("hidden").find("option").attr("selected", "selected");
+                $(".game-type-2").addClass("active");
+                $(".game-type-1").removeClass("active");
+            }
+
+        }
+
+    }
+    
+}
+
+function showNextRound() {
+    if( $("#resultBlock2").hasClass("hidden") ) {
+        $("#resultBlock2").removeClass("hidden");
+
+        $("#resultBlock1 > div").addClass("has-success");
+        $("#resultBlock1 input").attr("readonly", true);
+        return;
+    }
+    if( $("#resultBlock3").hasClass("hidden") ) {
+        $("#resultBlock3").removeClass("hidden");
+
+        $("#resultBlock2 > div").addClass("has-success");
+        $("#resultBlock2 input").attr("readonly", true);
+        
+        $("#addNextRoundBtn").addClass("hidden");
+        $("#saveGameBtn").removeClass("hidden")
+    }
+}
+
+function validateRoundInput() {
+    
+    
+}
+
+
+// initialize components and binding events
+$(document).ready(function () {
+    var btn1 = $(".game-type-1");
+    var btn2 = $(".game-type-2");
+    var btn3 = $("#addNextRoundBtn");
+
+    if (btn1) {
+        btn1.on("click", {gameType: 1}, changeGameType);
+    }
+    if (btn2) {
+        btn2.on("click", {gameType: 2}, changeGameType);
+    }
+    
+    if(btn3) {
+        btn3.on("click", showNextRound);
+    }
+    
+    $(".roundResultInput").change(function () {
+        var value = parseInt($(this).val());
+        if (isNaN(value) || value < 0 || value > 8) {
+            $(this).parent().addClass("has-error");
+        } else {
+            $(this).parent().removeClass("has-error");
+        }
+    })
+});
