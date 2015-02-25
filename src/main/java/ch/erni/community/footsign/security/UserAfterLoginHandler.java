@@ -39,9 +39,10 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 					userDetails.getEmail(), userDetails.getDepartment(), path.toString());
 
 			userRepository.save(user);
-			userDetails.setPhoto(path.toString());
+
 		}
 
+		userDetails.setPhoto(user.getPhotoPath());
 		resp.sendRedirect(req.getContextPath());
 	}
 
