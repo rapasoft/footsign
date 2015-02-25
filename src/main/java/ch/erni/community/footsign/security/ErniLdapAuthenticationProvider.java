@@ -31,7 +31,7 @@ public class ErniLdapAuthenticationProvider implements AuthenticationProvider {
 
 			AuthenticationResult authenticationResult = ldap.authenticate(authentication.getName(), authentication.getCredentials().toString());
 
-			return new ErniAuthentication(authenticationResult.getUserDetails(), authenticationResult.isAuthenticated());
+			return new ErniAuthentication(authenticationResult.getUserDetails(), authentication.getCredentials().toString(), authenticationResult.isAuthenticated());
 		} catch (CredentialsNotFoundException e) {
 			throw new BadCredentialsException("Could not find credentials information! " + e.getMessage());
 		} catch (UserNotFoundException e) {

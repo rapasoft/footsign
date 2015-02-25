@@ -13,11 +13,14 @@ public class ErniAuthentication implements Authentication {
 
 	private final UserDetails userDetails;
 
+	private String credentials;
+
 	private boolean authenticated;
 
-	public ErniAuthentication(UserDetails userDetails, boolean authenticated) {
+	public ErniAuthentication(UserDetails userDetails, String credentials, boolean authenticated) {
 		this.userDetails = userDetails;
 		setAuthenticated(authenticated);
+		this.credentials = credentials;
 	}
 
 	@Override
@@ -26,8 +29,8 @@ public class ErniAuthentication implements Authentication {
 	}
 
 	@Override
-	public Object getCredentials() {
-		return null;
+	public String getCredentials() {
+		return credentials;
 	}
 
 	@Override
@@ -50,6 +53,9 @@ public class ErniAuthentication implements Authentication {
 		this.authenticated = authenticated;
 	}
 
+	public void clearCredentials(){
+		this.credentials = null;
+	}
 	@Override
 	public String getName() {
 		return userDetails.getFirstName() + " " + userDetails.getSecondName();

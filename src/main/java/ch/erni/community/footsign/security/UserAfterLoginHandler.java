@@ -2,6 +2,7 @@ package ch.erni.community.footsign.security;
 
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.util.FileDownloader;
 import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * @author rap
@@ -30,13 +32,15 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 
 		// Create new user after first successful login
 		if (user == null) {
-			user = new User();
+			String password = auth.getCredentials().toString();
+
+			Path path = FileDownloader.downloadPhoto(userDetails, password);
+			user = new User(userDetails.getDomainUserName(), userDetails.getFirstName() + " " + userDetails.getSecondName(),
+					userDetails.getEmail(), userDetails.getDepartment(), path.toString());
+
+			userRepository.save(user);
+			userDetails.setPhoto(path.toString());
 		}
-
-		user.setDomainShortName(userDetails.getDomainUserName());
-		user.setFullName(userDetails.getFirstName() + " " + userDetails.getSecondName());
-
-		userRepository.save(user);
 
 		resp.sendRedirect(req.getContextPath());
 	}

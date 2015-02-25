@@ -31,7 +31,8 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
-                        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span sec:authentication="name"/>, Logout</a></li>
+                        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><i class="glyphicon glyphicon-user"></i>
+							<span sec:authentication="name"/>, Logout</a></li>
                     </ul>
                 </div>
             </div>

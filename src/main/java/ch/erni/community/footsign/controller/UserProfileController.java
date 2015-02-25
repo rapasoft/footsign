@@ -16,9 +16,11 @@ public class UserProfileController {
 	public String index(Model model, Authentication authentication) {
 		UserDetails principal = (UserDetails) authentication.getPrincipal();
 
-		model.addAttribute("name", principal.getFirstName() + " " + principal.getSecondName());
-		model.addAttribute("title", principal.getTitle());
+		model.addAttribute("domain_name", principal.getDomainUserName());
+		model.addAttribute("full_name", principal.getFirstName() + " " + principal.getSecondName());
+		model.addAttribute("email", principal.getEmail());
 		model.addAttribute("department", principal.getDepartment());
+		model.addAttribute("photo", principal.getPhoto());
 
 		return "user_profile";
 	}

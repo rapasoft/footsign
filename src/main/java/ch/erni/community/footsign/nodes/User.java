@@ -15,11 +15,6 @@ import java.util.Set;
 @NodeEntity
 public class User {
 
-	@RelatedTo(type = "TEAMMATE", direction = Direction.BOTH)
-	public
-	@Fetch
-	Set<User> teammates = new HashSet<User>();
-
 	@GraphId
 	Long id;
 
@@ -30,7 +25,26 @@ public class User {
 
 	private String fullName;
 
+	private String email;
+
+	private String department;
+
+	private String photoPath;
+
+	@RelatedTo(type = "TEAMMATE", direction = Direction.BOTH)
+	public
+	@Fetch
+	Set<User> teammates = new HashSet<>();
+
 	public User() {
+	}
+
+	public User(String domainShortName, String fullName, String email, String department, String photoPath){
+		this.domainShortName = domainShortName;
+		this.fullName = fullName;
+		this.email = email;
+		this.department = department;
+		this.photoPath = photoPath;
 	}
 
 	public void playsWith(User person) {
@@ -61,4 +75,27 @@ public class User {
 		this.fullName = fullName;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getPhotoPath() {
+		return photoPath;
+	}
+
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
 }

@@ -23,4 +23,5 @@ public class DataConfiguration extends Neo4jConfiguration {
 		return new GraphDatabaseFactory().newEmbeddedDatabase("accessingdataneo4j.db");
 	}
 
+
 }

@@ -20,6 +20,9 @@ public class UserDetails {
 
 	private final Optional<String> department;
 
+	private String photo = "resources/img/profile_photos/default_profile_photo.png";
+
+
 	public UserDetails(Optional<String> firstName, Optional<String> secondName, Optional<String> domainUserName, Optional<String> email, Optional<String> title, Optional<String> department) {
 		this.firstName = firstName;
 		this.secondName = secondName;
@@ -52,6 +55,15 @@ public class UserDetails {
 	public String getDepartment() {
 		return department.map(Function.identity()).orElse("N/A").trim();
 	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo){
+		this.photo = photo;
+	}
+
 
 	@Override
 	public String toString() {
