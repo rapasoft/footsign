@@ -24,6 +24,9 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	FileDownloader fileDownloader;
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException, ServletException {
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
@@ -34,13 +37,16 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 		if (user == null) {
 			String password = auth.getCredentials().toString();
 
-			Path path = FileDownloader.downloadPhoto(userDetails, password);
+			Path path = fileDownloader.downloadPhoto(userDetails, password);
 			user = new User(userDetails.getDomainUserName(), userDetails.getFirstName() + " " + userDetails.getSecondName(),
 					userDetails.getEmail(), userDetails.getDepartment(), path.toString());
-
-			userRepository.save(user);
-
+		} else {
+			user.setDepartment(userDetails.getDepartment());
+			user.setEmail(userDetails.getEmail());
+			user.setFullName(userDetails.getFirstName() + " " + userDetails.getSecondName());
 		}
+
+		userRepository.save(user);
 
 		userDetails.setPhoto(user.getPhotoPath());
 		resp.sendRedirect(req.getContextPath());

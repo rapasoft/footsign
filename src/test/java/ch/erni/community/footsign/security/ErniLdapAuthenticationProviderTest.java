@@ -53,7 +53,7 @@ public class ErniLdapAuthenticationProviderTest {
 
 		assertEquals("firstName secondName", successfulAuthentication.getName());
 
-		assertEquals(null, successfulAuthentication.getCredentials());
+		assertEquals("password", successfulAuthentication.getCredentials());
 		assertEquals(null, successfulAuthentication.getDetails());
 		assertEquals(null, successfulAuthentication.getAuthorities());
 

@@ -15,6 +15,11 @@ import java.util.Set;
 @NodeEntity
 public class User {
 
+	@RelatedTo(type = "TEAMMATE", direction = Direction.BOTH)
+	public
+	@Fetch
+	Set<User> teammates = new HashSet<>();
+
 	@GraphId
 	Long id;
 
@@ -30,11 +35,6 @@ public class User {
 	private String department;
 
 	private String photoPath;
-
-	@RelatedTo(type = "TEAMMATE", direction = Direction.BOTH)
-	public
-	@Fetch
-	Set<User> teammates = new HashSet<>();
 
 	public User() {
 	}
@@ -97,5 +97,9 @@ public class User {
 
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }
