@@ -38,7 +38,7 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 		userRepository.save(user);
 
 		userDetails.setPhoto(user.getPhotoPath());
-		resp.sendRedirect(req.getContextPath());
+		resp.sendRedirect(req.getContextPath() + "/home");
 	}
 
 	private User saveOrUpdateDetails(Authentication auth, UserDetails userDetails, User user) {
