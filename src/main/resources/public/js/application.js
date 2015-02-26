@@ -4,14 +4,14 @@
 
 
 // initialize comboboxes with players
-function initSelect(name) {
+function initSelect(rootUrl, name) {
     if (name) {
 
         $(name).selectize({
             labelField: 'secondName',
             valueField: 'domainUserName',
             searchField: ['domainUserName', 'secondName', 'firstName'],
-            remoteUrl: '/user_list',
+			remoteUrl: rootUrl + "/user_list",
             preload: true,
             load: function (query, callback) {
                 $.ajax({
@@ -33,7 +33,7 @@ function initSelect(name) {
                                     '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' +
                                 '</div>'+
                                 '<div class="col-md-2">' +
-                                    '<img class="icon" src="../img/avatar.png">' + '</img>' +
+						'<img class="icon" src="' + rootUrl + '/img/avatar.png">' + '</img>' +
                                 '</div>' +
                             '</div>';
                 },
@@ -49,7 +49,7 @@ function initSelect(name) {
                                     '</span>' +
                                 '</div>'+
                                 '<div class="col-md-2">' +
-                                    '<img class="icon" src="../img/avatar.png">' + '</img>' +
+						'<img class="icon" src="' + rootUrl + '/img/avatar.png">' + '</img>' +
                                 '</div>' + 
                             '</div>';
                 }
