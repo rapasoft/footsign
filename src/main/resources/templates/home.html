@@ -33,7 +33,7 @@
             <script th:inline="javascript">
                 /*<![CDATA[*/
 
-                var rootUrl = /*[[@{/}]]*/ '/';
+                var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
 
                 initSelect(rootUrl, "#selectLeft1");
                 initSelect(rootUrl, "#selectLeft2");
