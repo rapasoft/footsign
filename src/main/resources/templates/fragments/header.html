@@ -24,16 +24,30 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li>
-                        <li><a th:href="@{/user_profile}">My profile</a></li>
-                        <li><a href="#">Teams</a></li>
-                        <li><a href="#">Stats</a></li>
+                        <li id="homeMenuItem"><a th:href="@{/}">Dashboard <span class="sr-only">(current)</span></a></li>
+                        <li id="myProfileMenuItem"><a th:href="@{/user_profile}">My profile</a></li>
+                        <li id="teamsMenuItem"><a href="#">Teams</a></li>
+                        <li id="statsMenuItem"><a href="#">Stats</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><i class="glyphicon glyphicon-user"></i>
 							<span sec:authentication="name"/>, Logout</a></li>
                     </ul>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+
+                        var rootUrl = /*[[${#httpServletRequest.requestURI}]]*/ '/';
+
+                        console.log(rootUrl);
+
+                        var activeItemId = "homeMenuItem";
+
+                        if (rootUrl.match("user_profile")) activeItemId = "myProfileMenuItem";
+
+                        $('#' + activeItemId).addClass("active");
+                        /*]]>*/
+                    </script>
                 </div>
             </div>
         </nav>

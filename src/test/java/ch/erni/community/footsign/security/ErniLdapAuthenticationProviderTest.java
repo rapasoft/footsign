@@ -13,8 +13,7 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ErniLdapAuthenticationProviderTest {
@@ -53,7 +52,7 @@ public class ErniLdapAuthenticationProviderTest {
 
 		assertEquals("firstName secondName", successfulAuthentication.getName());
 
-		assertEquals(null, successfulAuthentication.getCredentials());
+		assertEquals("password", successfulAuthentication.getCredentials());
 		assertEquals(null, successfulAuthentication.getDetails());
 		assertEquals(null, successfulAuthentication.getAuthorities());
 
@@ -77,6 +76,13 @@ public class ErniLdapAuthenticationProviderTest {
 		erniLdapAuthenticationProvider.authenticate(authentication);
 	}
 
+	@Test
+	public void testConnectionCreation() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
+		ErniLdapAuthenticationProvider erniLdapAuthenticationProvider = new ErniLdapAuthenticationProvider();
+		erniLdapAuthenticationProvider.createLdapConnection();
+
+		assertNotNull(erniLdapAuthenticationProvider.ldap);
+	}
 
 	@Test
 	public void testSupportsAll() {

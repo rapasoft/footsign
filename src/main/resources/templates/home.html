@@ -38,11 +38,17 @@
                 <select id="selectRight2" th:field="*{team2[1]}" class="user-control second-player"></select>
             </div>
 
-            <script>
-                initSelect("#selectLeft1");
-                initSelect("#selectLeft2");
-                initSelect("#selectRight1");
-                initSelect("#selectRight2");
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+
+                var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
+
+                initSelect(rootUrl, "#selectLeft1");
+                initSelect(rootUrl, "#selectLeft2");
+                initSelect(rootUrl, "#selectRight1");
+                initSelect(rootUrl, "#selectRight2");
+
+                /*]]>*/
             </script>
         </div>
 

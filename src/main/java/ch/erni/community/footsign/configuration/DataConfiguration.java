@@ -19,9 +19,8 @@ public class DataConfiguration extends Neo4jConfiguration {
 	}
 
 	@Bean
-	GraphDatabaseService graphDatabaseService() {
+	static GraphDatabaseService graphDatabaseService() {
 		return new GraphDatabaseFactory().newEmbeddedDatabase("accessingdataneo4j.db");
 	}
-
 
 }
