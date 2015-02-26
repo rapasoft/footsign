@@ -1,5 +1,10 @@
 package ch.erni.community.footsign.nodes;
 
+import ch.erni.community.footsign.validator.ResultList;
+import ch.erni.community.footsign.validator.UserList;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +12,17 @@ import java.util.List;
  * Created by cepe on 24.02.2015.
  */
 public class ClientMatch {
-    private List<String> team1 = new ArrayList<>(2);
-    private List<String> team2 = new ArrayList<>(2);
 
-    private List<String> resultTeam1 = new ArrayList<>(4);
-    private List<String> resultTeam2 = new ArrayList<>(4);
+
+    @NotEmpty @Size(min = 1, max = 2) @UserList()
+    private List<String> team1 = new ArrayList<>();
+    @NotEmpty @Size(min = 1, max = 2) @UserList()
+    private List<String> team2 = new ArrayList<>();
+
+    @NotEmpty @Size(min = 2, max = 3) @ResultList()
+    private List<String> resultTeam1 = new ArrayList<>();
+    @NotEmpty @Size(min = 2, max = 3) @ResultList()
+    private List<String> resultTeam2 = new ArrayList<>();
 
     public List<String> getTeam1() {
         return team1;

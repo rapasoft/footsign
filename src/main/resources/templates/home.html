@@ -8,7 +8,15 @@
 <div th:fragment="content">
     
     <form th:action="@{/saveGame}" th:object="${clientMatch}" method="post">
-    
+
+
+        <ul>
+            <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+                <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+                <span th:text="${e.message}">The error message</span>
+            </li>
+        </ul>
+        
         <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-default active game-type-2">2 vs 2</button>

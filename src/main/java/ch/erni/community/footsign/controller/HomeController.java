@@ -12,11 +12,17 @@ import ch.erni.community.ldap.data.UserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.neo4j.core.GraphDatabase;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +68,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)
-	public String saveGame(@ModelAttribute ClientMatch clientMatch) {
+	public String saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
 		
 		if (clientMatch != null) {
 			List<String> team1 = clientMatch.getTeam1();
@@ -83,7 +89,7 @@ public class HomeController {
 			matchRepository.save(match);
 		}
 
-		return "redirect:dashboard";
+		return "home";
 	}
 
 	private void setPlayersToTeam(List<String> team, Match match, boolean isFirstTeam) {
