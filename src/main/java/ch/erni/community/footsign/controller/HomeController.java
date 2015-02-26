@@ -6,21 +6,19 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
-import ch.erni.community.ldap.LdapService;
-import ch.erni.community.ldap.LdapServiceImpl;
+import ch.erni.community.footsign.security.ErniLdapService;
 import ch.erni.community.ldap.data.UserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.neo4j.core.GraphDatabase;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -41,8 +39,16 @@ public class HomeController {
 	@Autowired
 	MatchRepository matchRepository;
 
+	@Autowired
+	private ErniLdapService erniLdapService;
+
 	@RequestMapping("/")
-	public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
+	public String index() {
+		return "index";
+	}
+
+	@RequestMapping("/home")
+	public String home(Model model) {
 
 		model.addAttribute("clientMatch", new ClientMatch());
 		return "home";
@@ -50,10 +56,7 @@ public class HomeController {
 
 	@RequestMapping("/user_list")
 	public @ResponseBody String getUserList() {
-
-		LdapService ldapService = new LdapServiceImpl();
-
-		List<UserDetails> list = ldapService.fetchEskEmployees();
+		List<UserDetails> list = erniLdapService.fetchEskEmployees();
 
 		String json = "";
 		ObjectMapper mapper = new ObjectMapper();
