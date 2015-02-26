@@ -30,8 +30,11 @@
                 <select id="selectLeft1" th:field="*{team1[0]}" class="user-control"></select>
                 <select id="selectLeft2" th:field="*{team1[1]}" class="user-control second-player"></select>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 text-center game-result">
                 <!-- empty place -->
+                <h1>
+                    <span class="team1Result">0</span> : <span class="team2Result">0</span>
+                </h1>
             </div>
             <div class="col-md-4">
                 <select id="selectRight1" th:field="*{team2[0]}" class="user-control"></select>
@@ -66,7 +69,7 @@
 
         </div>
         <div class="row text-center form-control-static">
-            <button id="addNextRoundBtn" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Next</button>
+            <button id="addNextRoundBtn" type="button" class="btn btn-default btn-sm disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Next</button>
             <button id="saveGameBtn" type="submit" class="btn btn-default btn-sm hidden"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
         </div>
 

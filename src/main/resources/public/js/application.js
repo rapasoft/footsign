@@ -84,7 +84,14 @@ function changeGameType(event) {
     
 }
 
+function switchGamesButtons() {
+    $("#addNextRoundBtn").addClass("hidden");
+    $("#saveGameBtn").removeClass("hidden");
+}
+
 function showNextRound() {
+    $("#addNextRoundBtn").addClass("disabled");
+    
     if( $("#resultBlock2").hasClass("hidden") ) {
         $("#resultBlock2").removeClass("hidden");
 
@@ -98,32 +105,87 @@ function showNextRound() {
         $("#resultBlock2 > div").addClass("has-success");
         $("#resultBlock2 input").attr("readonly", true);
         
-        $("#addNextRoundBtn").addClass("hidden");
-        $("#saveGameBtn").removeClass("hidden")
+        switchGamesButtons();
     }
+}
+
+
+function isGameInputValid(value) {
+    var val = parseInt(value);
+    return !(isNaN(val) || val < 0 || val > 8);
 }
 
 function validateRoundInput() {
-    var value = parseInt($(this).val());
-    if (isNaN(value) || value < 0 || value > 8) {
-        $(this).parent().addClass("has-error");
-    } else {
+    if ( isGameInputValid($(this).val()) ) {
         $(this).parent().removeClass("has-error");
+    } else {
+        $(this).parent().addClass("has-error");
     }
     
+    validAllGameInputs();
 }
 
-function saveGame() {
+function validAllGameInputs() {
+    var isValid = true;
+    $(".roundResultInput").each(function() {
+        if ($(this).is(":visible") && !isGameInputValid($(this).val())) {
+            isValid = false;
+            return;
+        }
+        
+    });
     
-    
+    if ( isValid ) {
+        $("#addNextRoundBtn").removeClass("disabled");
+    } else {
+        $("#addNextRoundBtn").addClass("disabled");
+    }
+    return isValid;
 }
+
+function isGameOver(score1, score2) {
+    if (score1 != undefined && score2 != undefined) {
+        var s1 = parseInt(score1);
+        var s2 = parseInt(score2);
+        
+        if (s1 == 2 || s2 == 2) {
+            switchGamesButtons();
+        }
+    }
+}
+
+function checkMatchState() {
+    var games = $(".roundResultBlock:not(.hidden)");
+    var score1 = 0, score2 = 0;
+    $(games).each(function( index ) {
+        console.log(this)
+        var inputs = $(this).find("input");
+        if (inputs.length == 2) {
+            var val1 = parseInt($(inputs[0]).val());
+            var val2 = parseInt($(inputs[1]).val());
+            
+            if (val1 > val2) {
+                score1++;
+            } else if (val2 > val1) {
+                score2++
+            }
+        }
+        
+    });
+    
+    $(".team1Result").html(score1);
+    $(".team2Result").html(score2);
+
+    isGameOver(score1, score2);
+}
+
+
 
 // initialize components and binding events
 $(document).ready(function () {
     var btn1 = $(".game-type-1");
     var btn2 = $(".game-type-2");
     var btn3 = $("#addNextRoundBtn");
-    var btn4 = $("#addNextRoundBtn");
 
     if (btn1) {
         btn1.on("click", {gameType: 1}, changeGameType);
@@ -135,11 +197,8 @@ $(document).ready(function () {
     if(btn3) {
         btn3.on("click", showNextRound);
     }
-    
-    if (btn4) {
-        btn4.on("click", saveGame)
-        
-    }
+
     
     $(".roundResultInput").change(validateRoundInput)
+    $(".roundResultInput").blur(checkMatchState)
 });
