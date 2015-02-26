@@ -66,8 +66,8 @@
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-kernel</artifactId>
-			<version>2.1.7</version>
 			<type>test-jar</type>
+			<version>2.1.5</version>
 			<scope>test</scope>
 		</dependency>
 

@@ -1,7 +1,7 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.TestDataConfiguration;
 import ch.erni.community.footsign.security.ErniAuthentication;
+import ch.erni.community.footsign.test.config.TestDataConfiguration;
 import ch.erni.community.ldap.data.UserDetails;
 import org.junit.Before;
 import org.junit.Test;

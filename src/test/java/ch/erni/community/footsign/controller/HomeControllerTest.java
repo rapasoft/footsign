@@ -1,6 +1,6 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.TestDataConfiguration;
+import ch.erni.community.footsign.test.config.TestDataConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

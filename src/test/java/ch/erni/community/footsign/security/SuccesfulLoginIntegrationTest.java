@@ -1,8 +1,8 @@
 package ch.erni.community.footsign.security;
 
-import ch.erni.community.TestDataConfiguration;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.test.config.TestDataConfiguration;
 import ch.erni.community.footsign.util.FileDownloader;
 import ch.erni.community.ldap.data.UserDetails;
 import org.junit.AfterClass;
