@@ -33,7 +33,15 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 
 		User user = userRepository.findByDomainShortName(userDetails.getDomainUserName());
 
-		// Create new user after first successful login
+		user = saveOrUpdateDetails(auth, userDetails, user);
+
+		userRepository.save(user);
+
+		userDetails.setPhoto(user.getPhotoPath());
+		resp.sendRedirect(req.getContextPath());
+	}
+
+	private User saveOrUpdateDetails(Authentication auth, UserDetails userDetails, User user) {
 		if (user == null) {
 			String password = auth.getCredentials().toString();
 
@@ -45,11 +53,7 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 			user.setEmail(userDetails.getEmail());
 			user.setFullName(userDetails.getFirstName() + " " + userDetails.getSecondName());
 		}
-
-		userRepository.save(user);
-
-		userDetails.setPhoto(user.getPhotoPath());
-		resp.sendRedirect(req.getContextPath());
+		return user;
 	}
 
 

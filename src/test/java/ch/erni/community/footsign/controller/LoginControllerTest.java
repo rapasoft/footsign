@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestDataConfiguration.class)
 @WebAppConfiguration
-public class HomeControllerTest {
+public class LoginControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;
@@ -35,7 +35,7 @@ public class HomeControllerTest {
 	@Test
 	public void testHome() throws Exception {
 		this.mockMvc
-				.perform(get("/"))
+				.perform(get("/login"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.TEXT_HTML + ";charset=UTF-8"));
 	}
