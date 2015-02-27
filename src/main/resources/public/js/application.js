@@ -198,7 +198,6 @@ $(document).ready(function () {
         btn3.on("click", showNextRound);
     }
 
-    
-    $(".roundResultInput").change(validateRoundInput)
-    $(".roundResultInput").blur(checkMatchState)
+
+    $(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
 });
