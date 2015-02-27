@@ -27,39 +27,6 @@ public class TestDataGeneratorTest {
 	}
 
 	@Test
-	public void testGenerateUnfinishedGame() {
-		Game game = new Game();
-
-		game.setTeam2Result(1);
-		game.setTeam2Result(0);
-
-		assertFalse(game.team1Wins());
-		assertFalse(game.team2Wins());
-	}
-
-	@Test
-	public void testGenerateGameWithWinner1() {
-		Game game = new Game();
-
-		game.setTeam1Result(8);
-		game.setTeam2Result(0);
-
-		assertTrue(game.team1Wins());
-		assertFalse(game.team2Wins());
-	}
-
-	@Test
-	public void testGenerateGameWithWinner2() {
-		Game game = new Game();
-
-		game.setTeam1Result(0);
-		game.setTeam2Result(8);
-
-		assertFalse(game.team1Wins());
-		assertTrue(game.team2Wins());
-	}
-
-	@Test
 	public void testGenerateMatches() throws Exception {
 		List<Match> matchList = testDataGenerator.generateMatches(5);
 

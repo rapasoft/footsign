@@ -102,7 +102,7 @@ public class TestDataGenerator {
 		}
 	}
 
-	Game generateGame() {
+	public Game generateGame() {
 		Game game = new Game();
 		int result1 = (int) (Math.random() * 9);
 		int result2 = result1;
