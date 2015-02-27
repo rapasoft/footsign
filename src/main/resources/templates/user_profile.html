@@ -1,51 +1,52 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:include="layout :: page">
 <head>
-	<title>FootSign / Home</title>
+    <title>FootSign / Home</title>
 </head>
 <body>
 
 <div class="container">
-	<div th:fragment="content">
-		<div class="well well-sm">
-			<div class="row">
-				<div class="col-sm-6 col-md-2">
-					<img th:src="${photo}" alt="" class="img-rounded img-responsive"/>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<h2 th:text="${domain_name}"/>
-					<h4 th:text="${full_name}"/>
-					<p>
-						<span th:text="${email}"/><i class="glyphicon glyphicon-envelope"></i>
-						<br/>
-						<span th:text="${department}"/><i class="glyphicon glyphicon-flag"></i>
-					</p>
-					<!-- Split button -->
-					<div class="btn-group">
-						<button type="button" class="btn btn-primary btn-block">
-							Edit
-						</button>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-7">
-					<ul class="inline stats">
-						<li>
-							<span>1000</span>
-							Matches
-						</li>
-						<li>
-							<span>354</span>
-							Wins
-						</li>
-						<li>
-							<span>646</span>
-							Loses
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div th:fragment="content">
+        <div class="well well-sm">
+            <div class="row">
+                <div class="col-sm-6 col-md-2">
+                    <img th:src="${photo}" alt="" class="img-rounded img-responsive"/>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <h2 th:text="${domain_name}"/>
+                    <h4 th:text="${full_name}"/>
+
+                    <p>
+                        <i class="glyphicon glyphicon-envelope"></i> <span th:text="${email}"/>
+                        <br/>
+                        <i class="glyphicon glyphicon-flag"></i> <span th:text="${department}"/>
+                    </p>
+                    <!-- Split button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-block">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-7">
+                    <ul class="inline stats">
+                        <li>
+                            <span th:text="${numberOfMatches}"></span>
+                            Matches
+                        </li>
+                        <li>
+                            <span th:text="${won}"></span>
+                            Wins
+                        </li>
+                        <li>
+                            <span th:text="${lost}"></span>
+                            Loses
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

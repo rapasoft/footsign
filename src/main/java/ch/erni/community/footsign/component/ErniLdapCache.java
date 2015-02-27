@@ -1,4 +1,4 @@
-package ch.erni.community.footsign.security;
+package ch.erni.community.footsign.component;
 
 import ch.erni.community.ldap.LdapServiceImpl;
 import ch.erni.community.ldap.data.UserDetails;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Component
 @Scope("singleton")
-public class ErniLdapService {
+public class ErniLdapCache {
 
 	private List<UserDetails> userDetailsList;
 

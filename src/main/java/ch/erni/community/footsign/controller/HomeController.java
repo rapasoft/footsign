@@ -1,12 +1,12 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.component.ErniLdapCache;
 import ch.erni.community.footsign.nodes.ClientMatch;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
-import ch.erni.community.footsign.security.ErniLdapService;
 import ch.erni.community.ldap.data.UserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +41,7 @@ public class HomeController {
 	MatchRepository matchRepository;
 
 	@Autowired
-	private ErniLdapService erniLdapService;
+	private ErniLdapCache erniLdapCache;
 
 	@RequestMapping("/")
 	public String index() {
@@ -57,7 +57,7 @@ public class HomeController {
 
 	@RequestMapping("/user_list")
 	public @ResponseBody String getUserList() {
-		List<UserDetails> list = erniLdapService.fetchEskEmployees();
+		List<UserDetails> list = erniLdapCache.fetchEskEmployees();
 
 		String json = "";
 		ObjectMapper mapper = new ObjectMapper();

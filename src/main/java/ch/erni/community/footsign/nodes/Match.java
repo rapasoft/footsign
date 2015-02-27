@@ -16,51 +16,84 @@ import java.util.Set;
 @NodeEntity
 public class Match {
 
-    @GraphId
-    Long matchId;
+	// TODO @rap: make this configurable
+	public static final int NUMBER_OF_WINS_NEEDED = 2;
 
-    Date dateOfMatch;
+	@GraphId
+	Long matchId;
 
-    @RelatedTo(type = "TEAM1", direction = Direction.BOTH)
-    private
-    @Fetch
-    Set<User> team1 = new HashSet<User>();
+	Date dateOfMatch;
 
-    @RelatedTo(type = "TEAM2", direction = Direction.BOTH)
-    private
-    @Fetch
-    Set<User> team2 = new HashSet<User>();
+	@RelatedTo(type = "TEAM1", direction = Direction.BOTH)
+	private
+	@Fetch
+	Set<User> team1 = new HashSet<User>();
 
-    @RelatedTo(type = "GAMES", direction = Direction.OUTGOING)
-    private
-    @Fetch
-    Set<Game> games = new HashSet<Game>();
+	@RelatedTo(type = "TEAM2", direction = Direction.BOTH)
+	private
+	@Fetch
+	Set<User> team2 = new HashSet<User>();
 
-    public Date getDateOfMatch() {
-        return dateOfMatch;
-    }
+	@RelatedTo(type = "GAMES", direction = Direction.OUTGOING)
+	private
+	@Fetch
+	Set<Game> games = new HashSet<Game>();
 
-    public void setDateOfMatch(Date dateOfMatch) {
-        this.dateOfMatch = dateOfMatch;
-    }
+	public Date getDateOfMatch() {
+		return dateOfMatch;
+	}
 
-    public void addPlayersToTeam1(User player) {
-        team1.add(player);
-    }
+	public void setDateOfMatch(Date dateOfMatch) {
+		this.dateOfMatch = dateOfMatch;
+	}
 
-    public void addPlayersToTeam2(User player) {
-        team2.add(player);
-    }
+	public void addPlayersToTeam1(User player) {
+		team1.add(player);
+	}
 
-    public Set<User> getTeam1() {
-        return team1;
-    }
+	public void addPlayersToTeam2(User player) {
+		team2.add(player);
+	}
 
-    public Set<User> getTeam2() {
-        return team2;
-    }
+	public Set<User> getTeam1() {
+		return team1;
+	}
 
-    public void addGame(Game game){
-        games.add(game);
-    }
+	public Set<User> getTeam2() {
+		return team2;
+	}
+
+	public void addGame(Game game) {
+		games.add(game);
+	}
+
+	public Set<Game> getGames() {
+		return games;
+	}
+
+	public boolean team1Wins() {
+		return games.stream().filter(Game::team1Wins).count() == NUMBER_OF_WINS_NEEDED;
+	}
+
+	public boolean team2Wins() {
+		return games.stream().filter(Game::team2Wins).count() == NUMBER_OF_WINS_NEEDED;
+	}
+
+	public boolean isDraw() {
+		return !team1Wins() && !team2Wins();
+	}
+
+	public boolean teamWithUserWins(String userDomainShortName) {
+		return (
+				(team1Wins() && getTeam1()
+						.stream()
+						.filter(user -> user.getDomainShortName().equals(userDomainShortName))
+						.count() >= 1)
+						||
+						(team2Wins() && getTeam2()
+								.stream()
+								.filter(user -> user.getDomainShortName().equals(userDomainShortName))
+								.count() >= 1)
+		);
+	}
 }

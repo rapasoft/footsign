@@ -64,7 +64,6 @@ public class UserDetails {
 		this.photo = photo;
 	}
 
-
 	@Override
 	public String toString() {
 		return firstName + " " + secondName + " (" + department + ")";

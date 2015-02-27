@@ -28,6 +28,7 @@
                         <li id="myProfileMenuItem"><a th:href="@{/user_profile}">My profile</a></li>
                         <li id="teamsMenuItem"><a href="#">Teams</a></li>
                         <li id="statsMenuItem"><a href="#">Stats</a></li>
+                        <li id="generateUserDataItem"><a th:href="@{/generate}">GENERATE USER DATA!</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>

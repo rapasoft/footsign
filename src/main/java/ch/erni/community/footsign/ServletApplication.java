@@ -1,7 +1,7 @@
 package ch.erni.community.footsign;
 
+import ch.erni.community.footsign.configuration.DataConfiguration;
 import org.neo4j.kernel.impl.util.FileUtils;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -21,15 +21,13 @@ public class ServletApplication extends SpringBootServletInitializer {
 
 	private static Class<Application> applicationClass = Application.class;
 
-	public static void main(String[] args) throws IOException {
-		// Delete manually the whole database! For testing purposes...
-		FileUtils.deleteRecursively(new File("accessingdataneo4j.db"));
-
-		SpringApplication.run(applicationClass, args);
-	}
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		try {
+			FileUtils.deleteRecursively(new File(DataConfiguration.NEO4J_DB_PATH));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return application.sources(applicationClass);
 	}
 

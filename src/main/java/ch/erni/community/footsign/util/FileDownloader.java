@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.Normalizer;
 
 /**
  * User: ban
@@ -47,6 +48,11 @@ public class FileDownloader {
 	}
 
 	private String buildPhotoName(UserDetails userDetails) {
-		return userDetails.getSecondName() + "_" + userDetails.getFirstName() + PHOTO_SUFFIX;
+		return normalize(userDetails.getSecondName()) + "_" + normalize(userDetails.getFirstName()) + PHOTO_SUFFIX;
+	}
+
+	private String normalize(String input) {
+		input = Normalizer.normalize(input, Normalizer.Form.NFD);
+		return input.replaceAll("[^\\x00-\\x7F]", "");
 	}
 }
