@@ -11,17 +11,19 @@ import java.lang.annotation.Target;
  * Created by cepe on 26.02.2015.
  */
 
-@Constraint(validatedBy = ResultListValidator.class)
+@Constraint(validatedBy = ResultMapValidator.class)
 @Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ResultList {
-    String message() default "{ResultList}";
+public @interface ResultMap {
+    String message() default "{ResultMap}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    int min() default 0;
+    int minResult() default 0;
 
-    int max() default 8;
+    int maxResult() default 8;
+    
+    String keyPrefix() default "team";
 }

@@ -8,14 +8,15 @@ import java.lang.annotation.*;
  * Created by cepe on 25.02.2015.
  */
 
-@Constraint(validatedBy = UserListValidator.class)
+@Constraint(validatedBy = UserMapValidator.class)
 @Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UserList {
-    String message() default "{StringList}";
+public @interface UserMap {
+    String message() default "{StringMap}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
+    String keyPrefix() default "team";
 }

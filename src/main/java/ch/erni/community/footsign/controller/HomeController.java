@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -71,7 +72,14 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)
-	public String saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
+	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("home");
+			modelAndView.addObject("clientMatch", clientMatch);
+			return  modelAndView;
+		}
 		
 		if (clientMatch != null) {
 			List<String> team1 = clientMatch.getTeam1();
@@ -79,8 +87,6 @@ public class HomeController {
 
 			List<String> result1 = clientMatch.getResultTeam1();
 			List<String> result2 = clientMatch.getResultTeam2();
-
-			//TODO: here is missing some validation
 			
 			Match match = new Match();
 			match.setDateOfMatch(new Date());
@@ -92,7 +98,9 @@ public class HomeController {
 			matchRepository.save(match);
 		}
 
-		return "home";
+		ModelAndView model = new ModelAndView();
+		model.setViewName("home");
+		return model;
 	}
 
 	private void setPlayersToTeam(List<String> team, Match match, boolean isFirstTeam) {
@@ -111,10 +119,10 @@ public class HomeController {
 		if (match != null && result1 != null && result2 != null) {
 			
 			int min = Math.min(result1.size(), result2.size());
-				
+
 			for (int i = 0; i < min; i++) {
 				Game g = new Game();
-				
+
 				int r1 = Integer.parseInt(result1.get(i));
 				int r2 = Integer.parseInt(result2.get(i));
 				
