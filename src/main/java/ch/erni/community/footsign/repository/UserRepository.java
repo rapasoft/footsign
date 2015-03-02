@@ -13,5 +13,7 @@ public interface UserRepository extends CrudRepository<User, String> {
 	User findByDomainShortName(String name);
 
 	List<User> findAll();
+	
+	// List<User> findBestPlayers(int limit);
 
 }
