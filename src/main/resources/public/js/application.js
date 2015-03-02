@@ -94,6 +94,7 @@ function showNextRound() {
     
     if( $("#resultBlock2").hasClass("hidden") ) {
         $("#resultBlock2").removeClass("hidden");
+        $($("#resultBlock2 input:first-child")[0]).focus();
 
         $("#resultBlock1 > div").addClass("has-success");
         $("#resultBlock1 input").attr("readonly", true);
@@ -101,6 +102,7 @@ function showNextRound() {
     }
     if( $("#resultBlock3").hasClass("hidden") ) {
         $("#resultBlock3").removeClass("hidden");
+        $($("#resultBlock3 input:first-child")[0]).focus();
 
         $("#resultBlock2 > div").addClass("has-success");
         $("#resultBlock2 input").attr("readonly", true);
