@@ -157,37 +157,37 @@ function isGameOver(score1, score2) {
 }
 
 function checkMatchState() {
-    var games = $(".roundResultBlock:not(.hidden)");
-    var score1 = 0, score2 = 0;
-    $(games).each(function( index ) {
-        console.log(this)
-        var inputs = $(this).find("input");
-        if (inputs.length == 2) {
-            var val1 = parseInt($(inputs[0]).val());
-            var val2 = parseInt($(inputs[1]).val());
-            
-            if (val1 > val2) {
-                score1++;
-            } else if (val2 > val1) {
-                score2++
-            }
-        }
-        
-    });
-    
-    $(".team1Result").html(score1);
-    $(".team2Result").html(score2);
+	var games = $(".roundResultBlock:not(.hidden)");
+	var score1 = 0, score2 = 0;
+	$(games).each(function (index) {
+		console.log(this)
+		var inputs = $(this).find("input");
+		if (inputs.length == 2) {
+			var val1 = parseInt($(inputs[0]).val());
+			var val2 = parseInt($(inputs[1]).val());
 
-    isGameOver(score1, score2);
+			if (val1 > val2) {
+				score1++;
+			} else if (val2 > val1) {
+				score2++
+			}
+		}
+
+	});
+
+	$(".team1Result").html(score1);
+	$(".team2Result").html(score2);
+
+	isGameOver(score1, score2);
 }
 
 
 
 // initialize components and binding events
 $(document).ready(function () {
-    var btn1 = $(".game-type-1");
-    var btn2 = $(".game-type-2");
-    var btn3 = $("#addNextRoundBtn");
+    var btn1 				= $(".game-type-1");
+    var btn2			 	= $(".game-type-2");
+    var btn3 				= $("#addNextRoundBtn");
 
     if (btn1) {
         btn1.on("click", {gameType: 1}, changeGameType);
@@ -200,6 +200,53 @@ $(document).ready(function () {
         btn3.on("click", showNextRound);
     }
 
+	$(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
+	
+	initStarsRating();
 
-    $(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
 });
+
+function initStarsRating(){
+	$('#stars_rating').rating('refresh', {
+		starCaptions: function(val) {
+			if (val == 0) {
+				return 'Not rated yet';
+			} else if (val <= 2) {
+				return 'Beginner';
+			} else if (val <= 3) {
+				return 'Casual Player';
+			} else if (val <= 5) {
+				return 'Intermediate amateur';
+			} else if (val <= 7) {
+				return 'Advanced amateur';
+			} else if (val <= 9) {
+				return 'Professional player';
+			}
+			else {
+				return 'King :)';
+			}
+		},
+		starCaptionClasses: function(val) {
+			if (val == 0) {
+				return 'label label-default';
+			} else if (val <= 2) {
+				return 'label label-danger';
+			} else if (val <= 3) {
+				return 'label label-warning';
+			} else if (val <= 5) {
+				return 'label label-info';
+			} else if (val <= 7) {
+				return 'label label-primary';
+			} else if (val <= 9) {
+				return 'label label-success';
+			}
+			else {
+				return 'label label-success';
+			}
+		}
+	});
+
+	$('#stars_rating').on('rating.change', function(event, value, caption) {
+		document.getElementById("editForm").submit();
+	});
+}

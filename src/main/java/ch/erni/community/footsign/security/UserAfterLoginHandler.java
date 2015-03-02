@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * @author rap
@@ -30,7 +31,7 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException, ServletException {
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-
+		userRepository.deleteAll();
 		User user = userRepository.findByDomainShortName(userDetails.getDomainUserName());
 
 		user = saveOrUpdateDetails(auth, userDetails, user);
@@ -45,9 +46,9 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 		if (user == null) {
 			String password = auth.getCredentials().toString();
 
-//			Path path = fileDownloader.downloadPhoto(userDetails, password);
+			Path path = fileDownloader.downloadPhoto(userDetails, password);
 			user = new User(userDetails.getDomainUserName(), userDetails.getFirstName() + " " + userDetails.getSecondName(),
-					userDetails.getEmail(), userDetails.getDepartment(), new File("/").getPath());
+					userDetails.getEmail(), userDetails.getDepartment(), path.toString());
 		} else {
 			user.setDepartment(userDetails.getDepartment());
 			user.setEmail(userDetails.getEmail());

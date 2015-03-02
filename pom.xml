@@ -27,6 +27,7 @@
 				<project.packaging>war</project.packaging>
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
+				<photo.dir>avatars/</photo.dir>
 			</properties>
 		</profile>
 		<profile>
@@ -38,6 +39,7 @@
 				<project.packaging>jar</project.packaging>
 				<start-class>ch.erni.community.footsign.Application</start-class>
 				<thymeleaf.cache>true</thymeleaf.cache>
+				<photo.dir>/home/img/</photo.dir>
 			</properties>
 		</profile>
 	</profiles>
@@ -146,7 +148,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 

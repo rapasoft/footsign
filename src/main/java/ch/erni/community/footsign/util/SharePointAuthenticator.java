@@ -1,7 +1,5 @@
 package ch.erni.community.footsign.util;
 
-import ch.erni.community.ldap.data.UserDetails;
-
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 

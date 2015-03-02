@@ -27,6 +27,8 @@ public class User {
 
 	private String photoPath;
 
+	private Float rating;
+
 	public User() {
 	}
 
@@ -86,6 +88,14 @@ public class User {
 		this.id = id;
 	}
 
+	public Float getRating() {
+		return rating;
+	}
+
+	public void setRating(Float rating) {
+		this.rating = rating;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -98,6 +108,7 @@ public class User {
 		if (fullName != null ? !fullName.equals(user.fullName) : user.fullName != null) return false;
 		if (email != null ? !email.equals(user.email) : user.email != null) return false;
 		if (department != null ? !department.equals(user.department) : user.department != null) return false;
+		if (rating != null ? !rating.equals(user.rating) : user.rating != null) return false;
 		return !(photoPath != null ? !photoPath.equals(user.photoPath) : user.photoPath != null);
 
 	}
@@ -110,6 +121,7 @@ public class User {
 		result = 31 * result + (email != null ? email.hashCode() : 0);
 		result = 31 * result + (department != null ? department.hashCode() : 0);
 		result = 31 * result + (photoPath != null ? photoPath.hashCode() : 0);
+		result = 31 * result + (rating != null ? rating.hashCode() : 0);
 		return result;
 	}
 
