@@ -40,6 +40,15 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>dev-veda</id>
+			<properties>
+				<project.packaging>war</project.packaging>
+				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
+				<thymeleaf.cache>false</thymeleaf.cache>
+				<photo.dir>C:\Users\veda\Documents\JavaProject\footsign\avatars\</photo.dir>
+			</properties>
+		</profile>
+		<profile>
 			<id>prod</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>

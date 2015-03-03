@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.nodes.Match;
+import ch.erni.community.footsign.nodes.User;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,5 +14,8 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
 
 	@Query("match(user:User {domainShortName: {0}})--(m:Match) return m")
 	List<Match> findAllByUserDomainShortName(String domainShortName);
+
+	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN m")
+	List<User> findAllPlayedPlayers();
 
 }
