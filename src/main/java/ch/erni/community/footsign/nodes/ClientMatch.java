@@ -26,19 +26,12 @@ public class ClientMatch {
 
     public ClientMatch() {
         results = new HashMap<>();
-        ArrayList<String> resultList = new ArrayList<>();
-        resultList.add("0");
-        resultList.add("0");
-        resultList.add("0");
-        results.put("team1", resultList);
-        results.put("team2", resultList);
+        results.put(KEY_TEAM1, new ArrayList<String>(){{add("0"); add("0"); add("0");}});
+        results.put(KEY_TEAM2, new ArrayList<String>(){{add("0"); add("0"); add("0");}});
 
         teams = new HashMap<>();
-        ArrayList<String> userList = new ArrayList<>();
-        userList.add("");
-        userList.add("");
-        teams.put("team1", userList);
-        teams.put("team2", userList);
+        teams.put(KEY_TEAM1, new ArrayList<String>() {{add(""); add("");}});
+        teams.put(KEY_TEAM2, new ArrayList<String>() {{add(""); add("");}});
     }
 
     public Map<String, List<String>> getTeams() {
