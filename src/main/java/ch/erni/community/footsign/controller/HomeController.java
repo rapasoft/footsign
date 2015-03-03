@@ -7,6 +7,7 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.util.LdapUserHelper;
 import ch.erni.community.ldap.data.UserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,11 +16,13 @@ import org.springframework.data.neo4j.core.GraphDatabase;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.spring4.util.DetailedError;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -73,11 +76,11 @@ public class HomeController {
 	
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)
 	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("home");
+		modelAndView.addObject("clientMatch", clientMatch);
 		
 		if (bindingResult.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("home");
-			modelAndView.addObject("clientMatch", clientMatch);
 			return  modelAndView;
 		}
 		
@@ -87,6 +90,15 @@ public class HomeController {
 
 			List<String> result1 = clientMatch.getResultTeam1();
 			List<String> result2 = clientMatch.getResultTeam2();
+			
+			try {
+				saveUserToDB(team1);
+				saveUserToDB(team2);
+			} catch (Exception e) {
+				ObjectError error = new ObjectError("[global]", e.getMessage());
+				bindingResult.addError(error);
+				return  modelAndView;
+			}
 			
 			Match match = new Match();
 			match.setDateOfMatch(new Date());
@@ -98,9 +110,7 @@ public class HomeController {
 			matchRepository.save(match);
 		}
 
-		ModelAndView model = new ModelAndView();
-		model.setViewName("home");
-		return model;
+		return modelAndView;
 	}
 
 	private void setPlayersToTeam(List<String> team, Match match, boolean isFirstTeam) {
@@ -122,6 +132,9 @@ public class HomeController {
 
 			for (int i = 0; i < min; i++) {
 				Game g = new Game();
+				
+				if (result1.get(i).isEmpty() || result2.get(i).isEmpty())
+					continue;
 
 				int r1 = Integer.parseInt(result1.get(i));
 				int r2 = Integer.parseInt(result2.get(i));
@@ -136,4 +149,32 @@ public class HomeController {
 		
 	}
 
+	/**
+	 * Save User to DB, if doesn't exist yet.
+	 * 1. if user exist in DB, do nothing
+	 * 2. if doesn't, find LDAP object by domain name
+	 * 2.1 create instance of user and fill data from LDAP
+	 * 2.2 save new user to DB
+	 * @param users - list of Strings represent user domain names
+	 */
+	private void saveUserToDB(List<String> users) {
+		if (users == null) {
+			throw new IllegalArgumentException("User list cannot be null");
+		}
+		for (String name : users) {
+			User user = userRepository.findByDomainShortName(name);
+			if (user == null) {
+				UserDetails detail = erniLdapCache.getEskEmployee(name);
+				
+				if (detail == null) {
+					throw new NullPointerException("Domain name '"+name+"' was now found in LDAP");
+				}
+				
+				User newUser = LdapUserHelper.createUserFromLdapUser(detail);
+				userRepository.save(newUser);
+			}
+		}
+		
+		
+	}
 }

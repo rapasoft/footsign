@@ -31,7 +31,7 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException, ServletException {
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		userRepository.deleteAll();
+
 		User user = userRepository.findByDomainShortName(userDetails.getDomainUserName());
 
 		user = saveOrUpdateDetails(auth, userDetails, user);

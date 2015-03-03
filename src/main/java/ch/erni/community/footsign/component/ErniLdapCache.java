@@ -22,6 +22,19 @@ public class ErniLdapCache {
 		}
 		return userDetailsList;
 	}
+	
+	public UserDetails getEskEmployee(String domainName) {
+		if (domainName == null) return null;
+		
+		if (this.userDetailsList == null) return null;
+		
+		for (UserDetails detail : userDetailsList) {
+			if (detail.getDomainUserName().equals(domainName)) {
+				return detail;
+			}
+		}
+		return null;
+	}
 
 	void load() {
 		userDetailsList = new LdapServiceImpl().fetchEskEmployees();
