@@ -28,8 +28,21 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-xs-6 col-md-4">
-                
+            <div class="row">
+                <div class="col-sm-6 col-md-5">
+                    User most played matches:
+                    <h4 th:text="${user_name}"/>
+                    <h4 th:text="${user_domainShortName}"/>
+                    <h4 th:text="${number_of_matches}"/>
+
+                </div>
+                <div class="col-sm-6 col-md-5">
+                    User with most wins:
+                    <h4 th:text="${user_name_wins}"/>
+                    <h4 th:text="${user_domainShortName_wins}"/>
+                    <h4 th:text="${number_of_matches_wins}"/>
+
+                </div>
             </div>
         </div>
     </div>
