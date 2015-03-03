@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -52,7 +51,7 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 		} else {
 			user.setDepartment(userDetails.getDepartment());
 			user.setEmail(userDetails.getEmail());
-			user.setFullName(userDetails.getFirstName() + " " + userDetails.getSecondName());
+			user.setFullName(userDetails.getFullName());
 		}
 		return user;
 	}

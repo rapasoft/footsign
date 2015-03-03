@@ -15,12 +15,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
 
 	@Autowired
-	PropertyLoader propertyLoader;
+	FileDownloader fileDownloader;
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		try {
-			registry.addResourceHandler("/avatars/**").addResourceLocations("file:" + propertyLoader.getProperty("photo.dir"));
+			registry.addResourceHandler("/avatars/**")
+					.addResourceLocations("file:" + fileDownloader.buildAvatarsPath());
 		} catch (PropertyFileNotFound propertyFileNotFound) {
 			throw new RuntimeException(propertyFileNotFound);
 		}

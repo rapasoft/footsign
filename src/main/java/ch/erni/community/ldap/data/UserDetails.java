@@ -20,7 +20,7 @@ public class UserDetails {
 
 	private final Optional<String> department;
 
-	private String photo = "resources/img/profile_photos/default_profile_photo.png";
+	private String photo = "avatars/default_profile_photo.png";
 
 	public UserDetails(Optional<String> firstName, Optional<String> secondName, Optional<String> domainUserName, Optional<String> email, Optional<String> title, Optional<String> department) {
 		this.firstName = firstName;
