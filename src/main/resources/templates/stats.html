@@ -6,24 +6,32 @@
 </head>
 <body>
     <div th:fragment="content">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>Domain Name</th>
-                    <th>Name</th>
-                    <th>Departure</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${bestPlayers}">
-                    <td th:text="${item.domainShortName}">${item.domainShortName}</td>
-                    <td th:text="${item.fullname}"></td>
-                    <td th:text="${item.departure}">${item.departure}</td>
-                    <td th:text="${item.email}">${item.email}</td>
-                </tr>
-            </tbody>
-        </table>
+        
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Domain Name</th>
+                            <th>Name</th>
+                            <th>Departure</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${bestPlayers}">
+                            <td th:text="${item.domainShortName}">${item.domainShortName}</td>
+                            <td th:text="${item.fullname}"></td>
+                            <td th:text="${item.departure}">${item.departure}</td>
+                            <td th:text="${item.email}">${item.email}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                
+            </div>
+        </div>
     </div>
 </body>
 </html>
