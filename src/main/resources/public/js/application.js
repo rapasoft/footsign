@@ -33,7 +33,7 @@ function initSelect(rootUrl, name) {
                                     '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' +
                                 '</div>'+
                                 '<div class="col-md-2">' +
-						'<img class="icon" src="' + rootUrl + '/img/avatar.png">' + '</img>' +
+						'<img class="icon" src="' + rootUrl + '/' + item.photo + '">' + '</img>' +
                                 '</div>' +
                             '</div>';
                 },
@@ -49,7 +49,7 @@ function initSelect(rootUrl, name) {
                                     '</span>' +
                                 '</div>'+
                                 '<div class="col-md-2">' +
-						'<img class="icon" src="' + rootUrl + '/img/avatar.png">' + '</img>' +
+						'<img class="icon" src="' + rootUrl + '/' + item.photo + '">' + '</img>' +
                                 '</div>' + 
                             '</div>';
                 }

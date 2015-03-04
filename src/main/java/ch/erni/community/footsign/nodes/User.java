@@ -25,7 +25,7 @@ public class User {
 
 	private String department;
 
-	private String photoPath = "assets/default_profile_photo.png";
+	private String photoPath = "avatars/default_profile_photo.png";
 
 	private Float rating = 0.0f;
 
