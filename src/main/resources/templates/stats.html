@@ -7,7 +7,7 @@
 <body>
     <div th:fragment="content">
         
-        <div class="row">
+        <!--<div class="row">
             <div class="col-xs-12 col-md-8">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -28,23 +28,69 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
-                <div class="col-sm-6 col-md-5">
-                    User most played matches:
-                    <h4 th:text="${user_name}"/>
-                    <h4 th:text="${user_domainShortName}"/>
-                    <h4 th:text="${number_of_matches}"/>
+          </div>-->
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="col-xs-12 col-md-8">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Members of team 1</th>
+                            <th>Members of team 2</th>
+                            <th>Date and time </th>
+                            <th>Team wins</th>
 
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${last_matches}">
+                            <td th:text="${item.playersOfTeam1InString}">${item.playersOfTeam1InString}</td>
+                            <td th:text="${item.playersOfTeam2InString}">${item.playersOfTeam2InString}</td>
+                            <td th:text="${item.formatedDateOfMatch}">${item.formatedDateOfMatch}</td>
+                            <td th:text="${item.team1Wins()} ? 'Team 1' : 'Team 2'">${item.team1Wins}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-sm-6 col-md-5">
+
+                <div class="col-sm-6 col-md-4">
                     User with most wins:
                     <h4 th:text="${user_name_wins}"/>
-                    <h4 th:text="${user_domainShortName_wins}"/>
-                    <h4 th:text="${number_of_matches_wins}"/>
+                    <h2 th:text="${number_of_matches_wins}"/>
+
+
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    User with played matches:
+                    <h4 th:text="${user_name}"/>
+                    <h2 th:text="${number_of_matches}"/>
 
                 </div>
             </div>
+
+
         </div>
+
+        <!--<div class="row">
+            <div class="col-xs-12 col-md-8">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Team1 result</th>
+                        <th>Team2 result</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${win_gams}">
+                        <td th:text="${item.team1Result}">${item.team1Result}</td>
+                        <td th:text="${item.team2Result}">${item.team2Result}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>-->
+
     </div>
+
 </body>
 </html>

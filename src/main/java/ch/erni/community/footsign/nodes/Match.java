@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -96,4 +97,36 @@ public class Match {
 								.count() >= 1)
 		);
 	}
+
+	public String getFormatedDateOfMatch() {
+		Date date = new Date(dateOfMatch.getTime());
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy' 'HH:mm:ss:S");
+		return simpleDateFormat.format(date);
+	}
+
+	public String getPlayersOfTeam1InString(){
+		StringBuilder sb = new StringBuilder();
+		boolean lastUser = false;
+		for(User u : team1) {
+			sb.append(u.getFullName());
+			if(!lastUser) {
+				sb.append(",");
+				lastUser = true;
+			}
+		}
+		return sb.toString();
+	}
+	public String getPlayersOfTeam2InString(){
+		StringBuilder sb = new StringBuilder();
+		boolean lastUser = false;
+		for(User u : team2) {
+			sb.append(u.getFullName());
+			if(!lastUser) {
+				sb.append(",");
+				lastUser = true;
+			}
+		}
+		return sb.toString();
+	}
 }
+

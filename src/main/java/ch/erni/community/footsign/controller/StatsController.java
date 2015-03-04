@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
@@ -29,9 +30,11 @@ public class StatsController {
     @RequestMapping("/stats")
     public String index(Model model) {
 
-        List<User> bestPlayers = userRepository.findAll();
-
         List<User> allPlayers = matchRepository.findAllPlayedPlayers();
+
+        List<Match> mathes = matchRepository.findlastMatches();
+        model.addAttribute("last_matches", mathes);
+
 
         User userWmostPlayed = null;
         User userWmostWins = null;
@@ -49,15 +52,16 @@ public class StatsController {
             }
         }
         if (userWmostPlayed != null) {
-            model.addAttribute("user_name", userWmostPlayed.getFullName());
-            model.addAttribute("user_domainShortName", userWmostPlayed.getDomainShortName());
+            model.addAttribute("user_name", userWmostPlayed.getFullName()+ " , " + userWmostPlayed.getDomainShortName());
             model.addAttribute("number_of_matches", countMatches);
         }
         if(userWmostWins != null) {
-            model.addAttribute("user_name_wins", userWmostWins.getFullName());
-            model.addAttribute("user_domainShortName_wins", userWmostWins.getDomainShortName());
+            model.addAttribute("user_name_wins", userWmostWins.getFullName()+ " , "+userWmostWins.getDomainShortName());
             model.addAttribute("number_of_matches_wins", countWins);
         }
+
+        /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
+        model.addAttribute("win_gams", gamesWins);*/
 
         return "stats";
     }
