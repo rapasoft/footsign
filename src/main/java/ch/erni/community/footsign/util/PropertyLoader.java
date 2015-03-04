@@ -15,19 +15,25 @@ import java.util.Properties;
 @Component
 public class PropertyLoader {
 
-	public String getProperty(String key) throws PropertyFileNotFound{
-		InputStream input = getPropertyFileAsStream();
+	public static final String APPLICATION_PROPERTY_FILE = "application.properties";
+
+	public String getProperty(String key) throws PropertyFileNotFound {
+		return getProperty(key, APPLICATION_PROPERTY_FILE);
+	}
+
+	public String getProperty(String key, String fileName) throws PropertyFileNotFound {
+		InputStream input = getPropertyFileAsStream(fileName);
 		Properties prop = new Properties();
 		try {
 			prop.load(input);
-		} catch (IOException e) {
+		} catch (IOException | NullPointerException e) {
 			throw new PropertyFileNotFound("Property file can not be loaded. Please check whether proper file exist. " + e);
 		}
 		return prop.getProperty(key);
 	}
 
-	private InputStream getPropertyFileAsStream() {
-		return this.getClass().getClassLoader().getResourceAsStream("application.properties");
+	private InputStream getPropertyFileAsStream(String fileName) {
+		return this.getClass().getClassLoader().getResourceAsStream(fileName);
 	}
 
 

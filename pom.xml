@@ -18,6 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring-boot-version>1.2.1.RELEASE</spring-boot-version>
+		<project.dir>${basedir}/</project.dir>
 	</properties>
 
 	<profiles>
@@ -49,6 +50,15 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>ban</id>
+			<properties>
+				<project.packaging>war</project.packaging>
+				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
+				<thymeleaf.cache>false</thymeleaf.cache>
+				<photo.dir>avatars/</photo.dir>
+			</properties>
+		</profile>
+		<profile>
 			<id>prod</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -57,7 +67,7 @@
 				<project.packaging>jar</project.packaging>
 				<start-class>ch.erni.community.footsign.Application</start-class>
 				<thymeleaf.cache>true</thymeleaf.cache>
-				<photo.dir>/home/img/</photo.dir>
+				<photo.dir>avatars/</photo.dir>
 			</properties>
 		</profile>
 	</profiles>
