@@ -1,11 +1,20 @@
 package ch.erni.community.ldap;
 
+import ch.erni.community.footsign.exception.PropertyFileNotFound;
+import ch.erni.community.footsign.util.PhotoPathBuilder;
 import ch.erni.community.ldap.data.*;
 import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
 import ch.erni.community.ldap.exception.CredentialsNotFoundException;
 import ch.erni.community.ldap.exception.UserNotFoundException;
 import com.unboundid.ldap.sdk.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +22,15 @@ import java.util.Optional;
 /**
  * @author rap
  */
+@Component()
 public class LdapServiceImpl implements LdapService {
+
+	@Autowired
+	private PhotoPathBuilder photoPathBuilder;
+
+	public LdapServiceImpl(PhotoPathBuilder photoPathBuilder) {
+		this.photoPathBuilder = photoPathBuilder;
+	}
 
 	public List<UserDetails> fetchEskEmployees() {
 		ReadOnlySearchRequest readOnlySearchRequest;
@@ -107,11 +124,29 @@ public class LdapServiceImpl implements LdapService {
 				Optional<String> title = Optional.ofNullable(searchResultEntry.getAttributeValue("title"));
 				Optional<String> department = Optional.ofNullable(searchResultEntry.getAttributeValue("department"));
 
-				userDetailsList.add(new UserDetails(firstName, secondName, domainUserName, email, title, department));
+				
+				UserDetails detail = new UserDetails(firstName, secondName, domainUserName, email, title, department);
+				try {
+					setPhotoPathToUserDetail(detail);
+				} catch (PropertyFileNotFound propertyFileNotFound) {
+					propertyFileNotFound.printStackTrace();
+				}
+
+				userDetailsList.add(detail);
 			}
 		}
 
 		return userDetailsList;
+	}
+
+	private void setPhotoPathToUserDetail(UserDetails detail) throws PropertyFileNotFound {
+		if (this.photoPathBuilder != null && detail != null) {
+			Path target = new File(photoPathBuilder.buildAvatarsPath() + photoPathBuilder.buildPhotoName(detail)).toPath();
+			if (target.toFile().exists()) {
+				String photoPath = photoPathBuilder.buildRelativePath(detail);
+				detail.setPhoto(photoPath);
+			}
+		}
 	}
 
 }

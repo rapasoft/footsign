@@ -84,9 +84,18 @@ function changeGameType(event) {
     
 }
 
-function switchGamesButtons() {
-    $("#addNextRoundBtn").addClass("hidden");
-    $("#saveGameBtn").removeClass("hidden");
+function switchGamesButtons(isOver) {
+    
+    if (isOver == undefined) isOver = false;
+    
+    
+    if (isOver) {
+        $("#addNextRoundBtn").addClass("hidden");
+        $("#saveGameBtn").removeClass("hidden");
+    } else {
+        $("#saveGameBtn").addClass("hidden");
+        $("#addNextRoundBtn").removeClass("hidden");
+    }
 }
 
 function showNextRound() {
@@ -98,6 +107,8 @@ function showNextRound() {
 
         $("#resultBlock1 > div").addClass("has-success");
         $("#resultBlock1 input").attr("readonly", true);
+        
+        switchGamesButtons(false);
         return;
     }
     if( $("#resultBlock3").hasClass("hidden") ) {
@@ -107,18 +118,26 @@ function showNextRound() {
         $("#resultBlock2 > div").addClass("has-success");
         $("#resultBlock2 input").attr("readonly", true);
         
-        switchGamesButtons();
+        switchGamesButtons(true);
     }
 }
 
 
-function isGameInputValid(value) {
+function isGoalsInputValid(value) {
     var val = parseInt(value);
     return !(isNaN(val) || val < 0 || val > 8);
 }
 
+function isGameInputValid(value1, value2) {
+    var int1 = parseInt(value1);
+    var int2 = parseInt(value2);
+    
+    return !(isNaN(int1) || isNaN(int2) || int1 == int2);
+    
+}
+
 function validateRoundInput() {
-    if ( isGameInputValid($(this).val()) ) {
+    if ( isGoalsInputValid($(this).val()) ) {
         $(this).parent().removeClass("has-error");
     } else {
         $(this).parent().addClass("has-error");
@@ -130,11 +149,26 @@ function validateRoundInput() {
 function validAllGameInputs() {
     var isValid = true;
     $(".roundResultInput").each(function() {
-        if ($(this).is(":visible") && !isGameInputValid($(this).val())) {
+        if ($(this).is(":visible") && !isGoalsInputValid($(this).val())) {
             isValid = false;
             return;
         }
-        
+    });
+
+    var games = $(".roundResultBlock:not(.hidden)");
+    $(games).each(function (index) {
+        var inputs = $(this).find("input");
+        if (inputs.length == 2) {
+            
+            if (!isGameInputValid($(inputs[0]).val(), $(inputs[1]).val())) {
+                isValid = false;
+                $(inputs[0]).parent().addClass("has-error");
+                $(inputs[1]).parent().addClass("has-error");
+            } else {
+                $(inputs[0]).parent().removeClass("has-error");
+                $(inputs[1]).parent().removeClass("has-error");
+            }
+        }
     });
     
     if ( isValid ) {
@@ -151,7 +185,9 @@ function isGameOver(score1, score2) {
         var s2 = parseInt(score2);
         
         if (s1 == 2 || s2 == 2) {
-            switchGamesButtons();
+            switchGamesButtons(true);
+        } else {
+            switchGamesButtons(false);
         }
     }
 }
@@ -160,7 +196,6 @@ function checkMatchState() {
 	var games = $(".roundResultBlock:not(.hidden)");
 	var score1 = 0, score2 = 0;
 	$(games).each(function (index) {
-		console.log(this)
 		var inputs = $(this).find("input");
 		if (inputs.length == 2) {
 			var val1 = parseInt($(inputs[0]).val());
