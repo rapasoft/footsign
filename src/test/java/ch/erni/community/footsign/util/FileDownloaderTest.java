@@ -6,6 +6,7 @@ import ch.erni.community.ldap.data.UserDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,12 +26,14 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = TestDataConfiguration.class)
 public class FileDownloaderTest {
 
+	private PhotoPathBuilder photoPathBuilder;
 	private FileDownloader fileDownloader;
 	private UserDetails userDetailsMock;
 
 	@Before
 	public void setUp() {
 		fileDownloader = new FileDownloader();
+		photoPathBuilder = new PhotoPathBuilder();
 		userDetailsMock = new UserDetails(
 				Optional.of("firstName"), Optional.of("secondName"), Optional.of("dn"), Optional.of("firstName.secondName@erni.sk"),
 				Optional.of("Test"), Optional.of("Test"));
@@ -38,8 +41,8 @@ public class FileDownloaderTest {
 
 	@Test
 	public void targetDirDoesNotExist() throws PropertyFileNotFound {
-		fileDownloader.propertyLoader = mock(PropertyLoader.class);
-		when(fileDownloader.buildAvatarsPath()).thenReturn("testDir/");
+		photoPathBuilder.propertyLoader = mock(PropertyLoader.class);
+		when(photoPathBuilder.buildAvatarsPath()).thenReturn("testDir/");
 
 		Path path = fileDownloader.downloadPhoto(userDetailsMock, "password");
 

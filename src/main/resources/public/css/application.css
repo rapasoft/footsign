@@ -26,8 +26,8 @@
 }
 
 .selectize-control.user-control .selectize-dropdown .icon {
-    width: 20px;
-    height: 20px;
+    width: 45px;
+    height: 51px;
     display: inline-block;
     vertical-align: middle;
     background-size: 16px 16px;
@@ -36,7 +36,7 @@
 
 .selectize-control.user-control .selectize-input .icon {
     width: 20px;
-    height: 20px;
+    height: 25px;
     display: inline-block;
     vertical-align: middle;
     background-size: 16px 16px;

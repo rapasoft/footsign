@@ -1,5 +1,6 @@
 package ch.erni.community.ldap;
 
+import ch.erni.community.footsign.util.PhotoPathBuilder;
 import ch.erni.community.ldap.data.UserDetails;
 import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
 import ch.erni.community.ldap.exception.CredentialsNotFoundException;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 public class LdapServiceSearchTest {
@@ -19,7 +21,8 @@ public class LdapServiceSearchTest {
 
 	@Before
 	public void before() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
-		ldapService = spy(new LdapServiceImpl());
+		PhotoPathBuilder photoPathBuilder = mock(PhotoPathBuilder.class);
+		ldapService = spy(new LdapServiceImpl(photoPathBuilder));
 	}
 
 	@Test

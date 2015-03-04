@@ -1,11 +1,14 @@
 package ch.erni.community.footsign.security;
 
+import ch.erni.community.footsign.util.PhotoPathBuilder;
 import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.LdapServiceImpl;
 import ch.erni.community.ldap.data.AuthenticationResult;
 import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
 import ch.erni.community.ldap.exception.CredentialsNotFoundException;
 import ch.erni.community.ldap.exception.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -20,8 +23,11 @@ public class ErniLdapAuthenticationProvider implements AuthenticationProvider {
 
 	LdapService ldap;
 
+	@Autowired
+	PhotoPathBuilder photoPathBuilder;
+
 	void createLdapConnection() throws CredentialsNotFoundException, CredentialsFileNotFoundException {
-		ldap = new LdapServiceImpl();
+		ldap = new LdapServiceImpl(photoPathBuilder);
 	}
 
 	@Override
