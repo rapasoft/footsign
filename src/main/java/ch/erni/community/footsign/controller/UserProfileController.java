@@ -60,7 +60,8 @@ public class UserProfileController {
 		UserDetails principal = (UserDetails) authentication.getPrincipal();
 		User user = userRepository.findByDomainShortName(principal.getDomainUserName());
 		user.setRating(param.getRating());
-		//TODO: update user
+		
+		userRepository.save(user);
 
 		return index(model, authentication);
 	}
