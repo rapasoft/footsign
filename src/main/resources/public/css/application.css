@@ -1,4 +1,4 @@
-
+/* css styles for combo box with users */
 .selectize-control.user-control .selectize-dropdown > div {
     border-bottom: 1px solid rgba(0,0,0,0.05);
 }
@@ -46,4 +46,13 @@
 .selectize-control.user-control .selectize-input .full-name {
     font-weight: bold;
     margin-right: 5px;
+}
+
+/* css for statistic tables */
+#lastMatchesTable .winner {
+    color: green;
+}
+
+#lastMatchesTable .looser {
+    color: red;
 }

@@ -38,9 +38,6 @@ public class UserStatsController {
 
         List<User> allPlayers = matchRepository.findAllPlayedPlayers();
 
-        List<Match> mathes = matchRepository.findlastMatches();
-        model.addAttribute("last_matches", mathes);
-
 
         User userWmostPlayed = null;
         User userWmostWins = null;
