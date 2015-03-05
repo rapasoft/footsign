@@ -11,6 +11,8 @@ public class ErniLdapCacheTest {
 	public void testLoadOnlyOnce() {
 		ErniLdapCache erniLdapCache = spy(new ErniLdapCache());
 
+		doNothing().when(erniLdapCache).findPhotos();
+
 		assertNotNull(erniLdapCache.fetchEskEmployees());
 		verify(erniLdapCache, atLeastOnce()).load();
 

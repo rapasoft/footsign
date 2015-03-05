@@ -6,7 +6,6 @@ import ch.erni.community.ldap.data.UserDetails;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -41,6 +40,7 @@ public class FileDownloaderTest {
 
 	@Test
 	public void targetDirDoesNotExist() throws PropertyFileNotFound {
+		fileDownloader.photoPathBuilder = photoPathBuilder;
 		photoPathBuilder.propertyLoader = mock(PropertyLoader.class);
 		when(photoPathBuilder.buildAvatarsPath()).thenReturn("testDir/");
 

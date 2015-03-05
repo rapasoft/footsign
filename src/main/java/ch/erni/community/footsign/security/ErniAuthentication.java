@@ -1,6 +1,5 @@
 package ch.erni.community.footsign.security;
 
-import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -11,13 +10,13 @@ import java.util.Collection;
  */
 public class ErniAuthentication implements Authentication {
 
-	private final UserDetails userDetails;
+	private final ErniUserDetails userDetails;
 
 	private String credentials;
 
 	private boolean authenticated;
 
-	public ErniAuthentication(UserDetails userDetails, String credentials, boolean authenticated) {
+	public ErniAuthentication(ErniUserDetails userDetails, String credentials, boolean authenticated) {
 		this.userDetails = userDetails;
 		setAuthenticated(authenticated);
 		this.credentials = credentials;
@@ -53,9 +52,10 @@ public class ErniAuthentication implements Authentication {
 		this.authenticated = authenticated;
 	}
 
-	public void clearCredentials(){
+	public void clearCredentials() {
 		this.credentials = null;
 	}
+
 	@Override
 	public String getName() {
 		return userDetails.getFirstName() + " " + userDetails.getSecondName();

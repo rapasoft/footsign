@@ -4,7 +4,6 @@ import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
 import ch.erni.community.footsign.util.FileDownloader;
-import ch.erni.community.ldap.data.UserDetails;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -42,7 +42,7 @@ public class SuccesfulLoginIntegrationTest {
 
 	private Authentication authentication;
 
-	private UserDetails userDetails;
+	private ErniUserDetails userDetails;
 
 	@AfterClass
 	public static void afterClass() throws IOException {
@@ -57,17 +57,20 @@ public class SuccesfulLoginIntegrationTest {
 		FileDownloader fileDownloader = mock(FileDownloader.class);
 		when(fileDownloader.downloadPhoto(any(), anyString())).thenReturn(new File("/").toPath());
 
-		userAfterLoginHandler.fileDownloader = fileDownloader;
-
 		authentication = mock(ErniAuthentication.class);
-		userDetails = mock(UserDetails.class);
 
-		when(userDetails.getDomainUserName()).thenReturn("test");
-		when(userDetails.getFirstName()).thenReturn("Pavol");
-		when(userDetails.getSecondName()).thenReturn("Rajzak");
+		userDetails = userDetails();
 
 		when(authentication.getPrincipal()).thenReturn(userDetails);
 		when(authentication.getCredentials()).thenReturn("password");
+	}
+
+	private ErniUserDetails userDetails() {
+		ErniUserDetails erniUserDetails = spy(new ErniUserDetails(
+				Optional.of("Pavol"), Optional.of("Rajzak"), Optional.of("test"), Optional.of("pavo.rajzak@erni.sk"),
+				Optional.of("Test"), Optional.of("Test")));
+		erniUserDetails.setPhotoPath("/path");
+		return erniUserDetails;
 	}
 
 	@Test

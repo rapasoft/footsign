@@ -20,7 +20,11 @@ public class TestDataGeneratorTest {
 	@Before
 	public void before() {
 		testDataGenerator = new TestDataGenerator();
-		testDataGenerator.erniLdapCache = new ErniLdapCache();
+		ErniLdapCache erniLdapCache = spy(new ErniLdapCache());
+		doNothing().when(erniLdapCache).findPhotos();
+
+		testDataGenerator.erniLdapCache = erniLdapCache;
+
 		UserRepository userRepository = mock(UserRepository.class);
 		when(userRepository.findByDomainShortName(anyString())).thenReturn(null);
 		testDataGenerator.userRepository = userRepository;
