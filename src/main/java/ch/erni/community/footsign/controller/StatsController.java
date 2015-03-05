@@ -29,6 +29,12 @@ public class StatsController {
     
     @RequestMapping("/stats")
     public String index(Model model) {
+        return userStats(model);
+        
+    }
+    
+    @RequestMapping("/stats_user")
+    public String userStats(Model model) {
 
         List<User> allPlayers = matchRepository.findAllPlayedPlayers();
 
@@ -63,6 +69,16 @@ public class StatsController {
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
         model.addAttribute("win_gams", gamesWins);*/
 
-        return "stats";
+        return "stats_user";
+    }
+
+    @RequestMapping("/stats_team")
+    public String teamStats(Model model) {
+        return "stats_team";
+    }
+    
+    @RequestMapping("/stats_match")
+    public String teamMatch(Model model) {
+        return "stats_match";
     }
 }
