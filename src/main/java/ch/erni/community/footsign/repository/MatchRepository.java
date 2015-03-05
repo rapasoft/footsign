@@ -16,8 +16,9 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
 	@Query("match(user:User {domainShortName: {0}})--(m:Match) return m")
 	List<Match> findAllByUserDomainShortName(String domainShortName);
 
-	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN m")
+	@Query("MATCH (user:User)--(m: Match) RETURN user")
 	List<User> findAllPlayedPlayers();
+
 	@Query("match(user:User {domainShortName: {0}})--(m:Match)-[r:GAMES]->(g) return g")
 	List<Game> findAllGamesByUserDomainShortName(String domainShortName);
 
