@@ -33,7 +33,7 @@ function initSelect(rootUrl, name) {
                                     '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' +
                                 '</div>'+
                                 '<div class="col-md-2">' +
-						'<img class="icon" src="' + rootUrl + '/' + item.photo + '">' + '</img>' +
+						'<img class="icon" src="' + rootUrl + '/' + item.photoPath + '">' + '</img>' +
                                 '</div>' +
                             '</div>';
                 },
@@ -49,7 +49,7 @@ function initSelect(rootUrl, name) {
                                     '</span>' +
                                 '</div>'+
                                 '<div class="col-md-2">' +
-						'<img class="icon" src="' + rootUrl + '/' + item.photo + '">' + '</img>' +
+						'<img class="icon" src="' + rootUrl + '/' + item.photoPath + '">' + '</img>' +
                                 '</div>' + 
                             '</div>';
                 }
@@ -151,8 +151,8 @@ function validAllGameInputs() {
     $(".roundResultInput").each(function() {
         if ($(this).is(":visible") && !isGoalsInputValid($(this).val())) {
             isValid = false;
-            return;
-        }
+
+		}
     });
 
     var games = $(".roundResultBlock:not(.hidden)");

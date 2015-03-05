@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
  * Created by cepe on 02.03.2015.
  */
 
-@Controller(value = "stats")
-public class StatsController {
+@Controller(value = "userStatistics")
+public class UserStatsController {
     
     @Autowired
     private UserRepository userRepository;
@@ -29,6 +29,12 @@ public class StatsController {
     
     @RequestMapping("/stats")
     public String index(Model model) {
+        return userStats(model);
+        
+    }
+    
+    @RequestMapping("/stats_user")
+    public String userStats(Model model) {
 
         List<User> allPlayers = matchRepository.findAllPlayedPlayers();
 
@@ -63,6 +69,6 @@ public class StatsController {
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
         model.addAttribute("win_gams", gamesWins);*/
 
-        return "stats";
+        return "stats_user";
     }
 }

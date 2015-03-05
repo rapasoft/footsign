@@ -7,6 +7,7 @@ package ch.erni.community.footsign.util;
  */
 
 public final class PropertyConstatns {
+
 	public static final String MAVEN_PHOTO_DIR_PROPERTY = "photo.dir";
 	public static final String MAVEN_PROJECT_DIR_PROPERTY = "project.dir";
 
