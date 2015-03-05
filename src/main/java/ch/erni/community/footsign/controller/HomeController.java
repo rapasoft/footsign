@@ -7,8 +7,7 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
-import ch.erni.community.footsign.util.LdapUserHelper;
-import ch.erni.community.ldap.data.UserDetails;
+import ch.erni.community.footsign.security.ErniUserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.spring4.util.DetailedError;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -59,8 +57,10 @@ public class HomeController {
 	}
 
 	@RequestMapping("/user_list")
-	public @ResponseBody String getUserList() {
-		List<UserDetails> list = erniLdapCache.fetchEskEmployees();
+	public
+	@ResponseBody
+	String getUserList() {
+		List<ErniUserDetails> list = erniLdapCache.fetchEskEmployees();
 
 		String json = "";
 		ObjectMapper mapper = new ObjectMapper();
@@ -73,40 +73,40 @@ public class HomeController {
 		return json;
 
 	}
-	
+
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)
 	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("home");
 		modelAndView.addObject("clientMatch", clientMatch);
-		
+
 		if (bindingResult.hasErrors()) {
-			return  modelAndView;
+			return modelAndView;
 		}
-		
+
 		if (clientMatch != null) {
 			List<String> team1 = clientMatch.getTeam1();
 			List<String> team2 = clientMatch.getTeam2();
 
 			List<String> result1 = clientMatch.getResultTeam1();
 			List<String> result2 = clientMatch.getResultTeam2();
-			
+
 			try {
-				saveUserToDB(team1);
-				saveUserToDB(team2);
+				userRepository.saveUsersToDB(team1);
+				userRepository.saveUsersToDB(team2);
 			} catch (Exception e) {
 				ObjectError error = new ObjectError("[global]", e.getMessage());
 				bindingResult.addError(error);
-				return  modelAndView;
+				return modelAndView;
 			}
-			
+
 			Match match = new Match();
 			match.setDateOfMatch(new Date());
 
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
 			setGamesToMatch(result1, result2, match);
-			
+
 			matchRepository.save(match);
 		}
 
@@ -124,57 +124,29 @@ public class HomeController {
 			}
 		});
 	}
-	
+
 	private void setGamesToMatch(List<String> result1, List<String> result2, Match match) {
 		if (match != null && result1 != null && result2 != null) {
-			
+
 			int min = Math.min(result1.size(), result2.size());
 
 			for (int i = 0; i < min; i++) {
 				Game g = new Game();
-				
+
 				if (result1.get(i).isEmpty() || result2.get(i).isEmpty())
 					continue;
 
 				int r1 = Integer.parseInt(result1.get(i));
 				int r2 = Integer.parseInt(result2.get(i));
-				
+
 				g.setTeam1Result(r1);
 				g.setTeam2Result(r2);
-				
+
 				match.addGame(g);
 
 			}
 		}
-		
+
 	}
 
-	/**
-	 * Save User to DB, if doesn't exist yet.
-	 * 1. if user exist in DB, do nothing
-	 * 2. if doesn't, find LDAP object by domain name
-	 * 2.1 create instance of user and fill data from LDAP
-	 * 2.2 save new user to DB
-	 * @param users - list of Strings represent user domain names
-	 */
-	private void saveUserToDB(List<String> users) {
-		if (users == null) {
-			throw new IllegalArgumentException("User list cannot be null");
-		}
-		for (String name : users) {
-			User user = userRepository.findByDomainShortName(name);
-			if (user == null) {
-				UserDetails detail = erniLdapCache.getEskEmployee(name);
-				
-				if (detail == null) {
-					throw new NullPointerException("Domain name '"+name+"' was now found in LDAP");
-				}
-				
-				User newUser = LdapUserHelper.createUserFromLdapUser(detail);
-				userRepository.save(newUser);
-			}
-		}
-		
-		
-	}
 }

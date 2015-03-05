@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.security;
 
+import ch.erni.community.footsign.util.FileDownloader;
 import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.data.AuthenticationResult;
 import ch.erni.community.ldap.data.UserDetails;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
+import java.io.File;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -38,6 +40,9 @@ public class ErniLdapAuthenticationProviderTest {
 		when(ldapServiceMock.authenticate("malicious", "blablabla")).thenThrow(new UserNotFoundException("UnF"));
 
 		erniLdapAuthenticationProvider.ldap = ldapServiceMock;
+		FileDownloader fileDownloader = mock(FileDownloader.class);
+		when(fileDownloader.downloadPhoto(any(), anyString())).thenReturn(new File("/").toPath());
+		erniLdapAuthenticationProvider.fileDownloader = fileDownloader;
 	}
 
 	@Test

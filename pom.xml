@@ -37,7 +37,7 @@
 				<project.packaging>war</project.packaging>
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
-				<photo.dir>avatars/</photo.dir>
+				<photo.dir>${project.basedir}/avatars/</photo.dir>
 			</properties>
 		</profile>
 		<profile>
@@ -46,11 +46,20 @@
 				<project.packaging>war</project.packaging>
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
-				<photo.dir>C:\Users\veda\Documents\JavaProject\footsign\avatars\</photo.dir>
+				<photo.dir>avatars/</photo.dir>
 			</properties>
 		</profile>
 		<profile>
 			<id>ban</id>
+			<properties>
+				<project.packaging>war</project.packaging>
+				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
+				<thymeleaf.cache>false</thymeleaf.cache>
+				<photo.dir>avatars/</photo.dir>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-rap</id>
 			<properties>
 				<project.packaging>war</project.packaging>
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>

@@ -12,7 +12,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.text.Normalizer;
 
 /**
  * User: ban
@@ -22,9 +21,8 @@ import java.text.Normalizer;
 @Component
 public class FileDownloader {
 
-
 	@Autowired
-	private PhotoPathBuilder photoPathBuilder;
+	PhotoPathBuilder photoPathBuilder;
 	
 	public Path downloadPhoto(UserDetails userDetails, String password) {
 

@@ -1,6 +1,5 @@
 package ch.erni.community.ldap;
 
-import ch.erni.community.footsign.util.PhotoPathBuilder;
 import ch.erni.community.ldap.data.AuthenticationResult;
 import ch.erni.community.ldap.data.DefaultCredentials;
 import ch.erni.community.ldap.data.UserDetails;
@@ -21,9 +20,8 @@ public class LdapServiceAuthenticationTest {
 	@Test(expected = UserNotFoundException.class)
 	public void testFailedAuthenticationWithErniActiveDirectory() throws Exception {
 		Connection connection = spy(Connection.forCredentials(new DefaultCredentials().getCredentials()));
-		PhotoPathBuilder photoPathBuilder = mock(PhotoPathBuilder.class);
 
-		LdapServiceImpl ldapService = spy(new LdapServiceImpl(photoPathBuilder));
+		LdapServiceImpl ldapService = spy(new LdapServiceImpl());
 		when(ldapService.createConnection(new DefaultCredentials().getCredentials())).thenReturn(connection);
 
 		ldapService.authenticate("Eminem", "I'mSorryMama");

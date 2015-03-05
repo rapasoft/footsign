@@ -4,6 +4,7 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -32,7 +33,7 @@ public class UserProfileController {
 	@RequestMapping("/user_profile")
 	public String index(Model model, Authentication authentication) {
 
-		UserDetails principal = (UserDetails) authentication.getPrincipal();
+		ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
 
 		String domainUserName = principal.getDomainUserName();
 
@@ -40,7 +41,7 @@ public class UserProfileController {
 		model.addAttribute("full_name", principal.getFullName());
 		model.addAttribute("email", principal.getEmail());
 		model.addAttribute("department", principal.getDepartment());
-		model.addAttribute("photo", principal.getPhoto());
+		model.addAttribute("photo", principal.getPhotoPath());
 
 		List<Match> matchList = matchRepository.findAllByUserDomainShortName(domainUserName);
 		long countWon = countWon(matchList, domainUserName);
@@ -60,7 +61,7 @@ public class UserProfileController {
 		UserDetails principal = (UserDetails) authentication.getPrincipal();
 		User user = userRepository.findByDomainShortName(principal.getDomainUserName());
 		user.setRating(param.getRating());
-		
+
 		userRepository.save(user);
 
 		return index(model, authentication);

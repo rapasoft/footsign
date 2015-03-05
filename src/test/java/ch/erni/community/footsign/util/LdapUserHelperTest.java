@@ -22,13 +22,6 @@ public class LdapUserHelperTest {
     }
     
     @Test
-    public void testNull() {
-        
-        User u = LdapUserHelper.createUserFromLdapUser(null);
-        Assert.assertNull("User must be null", u);
-    }
-    
-    @Test
     public void testCopy() {
         UserDetails detail = new UserDetails(
                 Optional.of("Firstname"), 
@@ -38,10 +31,10 @@ public class LdapUserHelperTest {
                 null, 
                 Optional.of("Java team")
         );
-        
-        User copy = LdapUserHelper.createUserFromLdapUser(detail);
-        
-        Assert.assertNotNull("Copy must be not null", copy);
+
+		User copy = LdapUserHelper.createUserFromLdapUser(detail).get();
+
+		Assert.assertNotNull("Copy must be not null", copy);
         Assert.assertEquals("Full name must be equal", detail.getFullName(), copy.getFullName());
         Assert.assertTrue("Full name must contains first name", copy.getFullName().contains(detail.getFirstName()));
         Assert.assertEquals("Email must be equal", detail.getEmail(), copy.getEmail());

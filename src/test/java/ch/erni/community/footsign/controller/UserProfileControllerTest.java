@@ -1,8 +1,10 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniAuthentication;
+import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
-import ch.erni.community.ldap.data.UserDetails;
+import ch.erni.community.footsign.util.LdapUserHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,24 +31,31 @@ public class UserProfileControllerTest {
 	@Autowired
 	private WebApplicationContext context;
 
+	@Autowired
+	private UserRepository userRepository;
+
 	private MockMvc mockMvc;
 
 	private ErniAuthentication authentication;
 
 	@Before
 	public void before() {
-		UserDetails userDetails = mockUserDetails();
+		ErniUserDetails userDetails = mockUserDetails();
 
 		authentication = new ErniAuthentication(userDetails, "password", true);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
+		userRepository.save(LdapUserHelper.createUserFromLdapUser(mockUserDetails()).get());
+
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
-	private UserDetails mockUserDetails() {
-		return new UserDetails(
+	private ErniUserDetails mockUserDetails() {
+		ErniUserDetails erniUserDetails = new ErniUserDetails(
 				Optional.of("firstName"), Optional.of("secondName"), Optional.of("dn"), Optional.of("firstName.secondName@erni.sk"),
 				Optional.of("Test"), Optional.of("Test"));
+		erniUserDetails.setPhotoPath("/path");
+		return erniUserDetails;
 	}
 
 	@Test
