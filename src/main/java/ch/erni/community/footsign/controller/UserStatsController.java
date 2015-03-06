@@ -32,6 +32,7 @@ public class UserStatsController {
 		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
 		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
+		List<CustomPlayerDTO> mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 		int countWins = matchRepository.countWonMatches(userWmostWins);
@@ -43,6 +44,7 @@ public class UserStatsController {
 
 
 		model.addAttribute("best_players", bestPlayers);
+		model.addAttribute("most_played", mostPlayed);
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
 		model.addAttribute("win_gams", gamesWins);*/
 
