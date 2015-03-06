@@ -3,64 +3,14 @@
 <head lang="en">
     <meta charset="UTF-8" />
     <title>FootSign / Stats - Match</title>
-
-    <script th:inline="javascript">
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawChart);
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Work',     11],
-                ['Eat',      2],
-                ['Commute',  2],
-                ['Watch TV', 2],
-                ['Sleep',    7]
-            ]);
-
-            var options = {
-                title: 'My Daily Activities'
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-            chart.draw(data, options);
-        }
-    </script>
-    
 </head>
 <body>
 
 <div th:fragment="content">
 
-    <script th:inline="javascript">
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawChart);
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Work',     11],
-                ['Eat',      2],
-                ['Commute',  2],
-                ['Watch TV', 2],
-                ['Sleep',    7]
-            ]);
-
-            var options = {
-                title: 'My Daily Activities'
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-            chart.draw(data, options);
-        }
-    </script>
-
-
     <div class="row">
-        <div class="col-xs-8 col-md-8">
-            <table id="lastMatchesTable" class="table table-striped table-hover">
+        <div class="col-md-8">
+            <table id="lastMatchesTable" class="table table-striped table-hover result-table">
                 <thead>
                     <tr>
                         <th>Members of team 1</th>
@@ -79,10 +29,41 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-xs-4 col-md-4">
-            <div id="piechart"></div>
+        <div class="col-md-4">
+            <div id="winnersPiechart"></div>
+            <div id="loosersPiechart"></div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        
+        function getGraphData(url, title, componentId) {
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success:function(data) {
+                    var data = google.visualization.arrayToDataTable(data);
+                    var options = {
+                        title: title
+                    };
+                    var chart = new google.visualization.PieChart(document.getElementById(componentId));
+
+                    chart.draw(data, options);
+                }
+
+            });
+        }
+        
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart( ) {
+            
+            getGraphData("/footsign/winner_graph_data", "Winners", "winnersPiechart");
+            getGraphData("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
+        }
+    </script>
 </div>
 </body>
 </html>

@@ -49,10 +49,10 @@
 }
 
 /* css for statistic tables */
-#lastMatchesTable .winner {
+.result-table .winner {
     color: green;
 }
 
-#lastMatchesTable .looser {
+.result-table .looser {
     color: red;
 }
