@@ -1,6 +1,7 @@
-package ch.erni.community.footsign.util;
+package ch.erni.community.footsign.configuration;
 
 import ch.erni.community.footsign.exception.PropertyFileNotFound;
+import ch.erni.community.footsign.util.PhotoPathBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
