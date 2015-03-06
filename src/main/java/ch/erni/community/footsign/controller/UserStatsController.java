@@ -1,8 +1,10 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.repository.CustomPlayer;
 import ch.erni.community.footsign.repository.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
+import ch.erni.community.footsign.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,9 @@ public class UserStatsController {
 
 	@Autowired
 	private MatchRepository matchRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@RequestMapping("/stats")
 	public String index(Model model) {
@@ -32,6 +37,7 @@ public class UserStatsController {
 		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
 		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
+		List<CustomPlayerDTO> worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 		int countWins = matchRepository.countWonMatches(userWmostWins);

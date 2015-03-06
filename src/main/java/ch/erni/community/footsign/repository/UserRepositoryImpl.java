@@ -86,4 +86,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return users;
 	}
 
+	@Override
+	@Transactional
+	public List<CustomPlayerDTO> findPlayersWithWorstScorePlayersCustom() {
+		Iterable<CustomPlayer> worst =  userRepository.findPlayersWithWorstScore();
+		List<CustomPlayerDTO> worstPlayers = new ArrayList<>();
+		for (CustomPlayer user : worst) {
+			worstPlayers.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
+		}
+		return worstPlayers;
+	}
+
 }
