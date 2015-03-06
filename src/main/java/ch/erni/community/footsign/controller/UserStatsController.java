@@ -1,6 +1,6 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.footsign.nodes.Match;
+import ch.erni.community.footsign.repository.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,12 @@ public class UserStatsController {
 
 	}
 
+
 	@RequestMapping("/stats_user")
 	public String userStats(Model model) {
-
-		List<Match> matches = matchRepository.findlastMatches();
-		model.addAttribute("last_matches", matches);
-
 		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
+		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 		int countWins = matchRepository.countWonMatches(userWmostWins);
@@ -43,6 +41,8 @@ public class UserStatsController {
 		model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
 		model.addAttribute("number_of_matches_wins", countWins);
 
+
+		model.addAttribute("best_players", bestPlayers);
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
 		model.addAttribute("win_gams", gamesWins);*/
 
