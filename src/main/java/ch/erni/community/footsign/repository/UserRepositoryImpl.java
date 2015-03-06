@@ -1,6 +1,8 @@
 package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.component.ErniLdapCache;
+import ch.erni.community.footsign.dto.CustomPlayer;
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.util.FileDownloader;
@@ -84,6 +86,17 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			users.add(user);
 		}
 		return users;
+	}
+
+	@Override
+	@Transactional
+	public List<CustomPlayerDTO> findPlayersWithWorstScorePlayersCustom() {
+		Iterable<CustomPlayer> worst =  userRepository.findPlayersWithWorstScore();
+		List<CustomPlayerDTO> worstPlayers = new ArrayList<>();
+		for (CustomPlayer user : worst) {
+			worstPlayers.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
+		}
+		return worstPlayers;
 	}
 
 }

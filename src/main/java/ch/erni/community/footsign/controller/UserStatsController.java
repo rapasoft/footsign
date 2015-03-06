@@ -3,10 +3,12 @@ package ch.erni.community.footsign.controller;
 import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
+import ch.erni.community.footsign.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ public class UserStatsController {
 
 	@Autowired
 	private MatchRepository matchRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@RequestMapping("/stats")
 	public String index(Model model) {
@@ -33,6 +38,8 @@ public class UserStatsController {
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
 		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 		List<CustomPlayerDTO> mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
+		List<CustomPlayerDTO> worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
+
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 		int countWins = matchRepository.countWonMatches(userWmostWins);
@@ -44,10 +51,32 @@ public class UserStatsController {
 
 
 		model.addAttribute("best_players", bestPlayers);
+		model.addAttribute("worst_players", worstPlayers);
 		model.addAttribute("most_played", mostPlayed);
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
 		model.addAttribute("win_gams", gamesWins);*/
 
 		return "stats_user";
+	}
+	
+	@RequestMapping("top_players_graph_data")
+	public @ResponseBody String getDataForTopPlayersChart() {
+		
+		//TODO: @cepe: implement this function
+		return null;
+	}
+
+	@RequestMapping("worst_players_graph_data")
+	public @ResponseBody String getDataForWorstPlayersChart() {
+
+		//TODO: @cepe: implement this function
+		return null;
+	}
+
+	@RequestMapping("most_played_graph_data")
+	public @ResponseBody String getDataForMostPlayedChart() {
+
+		//TODO: @cepe: implement this function
+		return null;
 	}
 }

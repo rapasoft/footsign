@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.ldap.exception.UserNotFoundException;
@@ -16,5 +17,7 @@ public interface UserRepositoryCustom {
 	void saveUsersToDB(List<String> team) throws UserNotFoundException;
 
 	List<User> findAllUsers();
+
+	List<CustomPlayerDTO> findPlayersWithWorstScorePlayersCustom();
 
 }
