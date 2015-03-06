@@ -50,7 +50,7 @@ public class UserStatsController {
 
 
 		model.addAttribute("best_players", bestPlayers);
-		model.addAttribute("worst_played", worstPlayers);
+		model.addAttribute("worst_players", worstPlayers);
 		model.addAttribute("most_played", mostPlayed);
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
 		model.addAttribute("win_gams", gamesWins);*/
