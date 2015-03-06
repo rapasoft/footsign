@@ -1,5 +1,7 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
+
 import java.util.List;
 
 /**
@@ -8,4 +10,6 @@ import java.util.List;
 public interface MatchRepositoryCustom {
 
     List<CustomPlayerDTO> findPlayerBestTenPlayersCustom();
+
+    List<CustomPlayerDTO> findTenPlayersWithMostMatchesCustom();
 }

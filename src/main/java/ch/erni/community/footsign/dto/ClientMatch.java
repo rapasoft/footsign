@@ -1,4 +1,4 @@
-package ch.erni.community.footsign.nodes;
+package ch.erni.community.footsign.dto;
 
 import ch.erni.community.footsign.validator.ResultMap;
 import ch.erni.community.footsign.validator.UserMap;

@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.nodes.User;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.CrudRepository;

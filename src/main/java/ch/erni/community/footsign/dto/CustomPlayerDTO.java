@@ -1,4 +1,4 @@
-package ch.erni.community.footsign.repository;
+package ch.erni.community.footsign.dto;
 
 import ch.erni.community.footsign.nodes.User;
 

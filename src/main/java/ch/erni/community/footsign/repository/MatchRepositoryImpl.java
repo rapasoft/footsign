@@ -1,5 +1,7 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.dto.CustomPlayer;
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,5 +27,16 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
             bestPlayers.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
         }
         return bestPlayers;
+    }
+
+    @Transactional
+    @Override
+    public List<CustomPlayerDTO> findTenPlayersWithMostMatchesCustom() {
+        Iterable<CustomPlayer> mostPlayedUsers =  matchRepository.findTenPlayerWithMostMatches();
+        List<CustomPlayerDTO> mostPlayedUsersCustom = new ArrayList<>();
+        for (CustomPlayer user : mostPlayedUsers) {
+            mostPlayedUsersCustom.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
+        }
+        return mostPlayedUsersCustom;
     }
 }

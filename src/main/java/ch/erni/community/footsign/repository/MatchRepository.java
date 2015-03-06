@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -33,6 +34,9 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 
 	@Query("match (u:User)--(m:Match) with u,count(m) as matches return u order by matches desc limit 1")
 	User findPlayerWithMostPlayedMatches();
+
+	@Query("match (user:User)--(m:Match) with user,count(m) as matches return user , matches order by matches desc limit 10")
+	List<CustomPlayer> findTenPlayerWithMostMatches();
 
 	// TODO @rap: make generic for user
 	@Query("match (u:User)--(m:Match) with u, count(distinct(m)) as matches return matches order by matches desc limit 1")

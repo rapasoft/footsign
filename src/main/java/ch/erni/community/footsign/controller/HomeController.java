@@ -1,7 +1,7 @@
 package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.component.ErniLdapCache;
-import ch.erni.community.footsign.nodes.ClientMatch;
+import ch.erni.community.footsign.dto.ClientMatch;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;

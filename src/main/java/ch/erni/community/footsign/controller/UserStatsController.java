@@ -1,7 +1,6 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.footsign.repository.CustomPlayer;
-import ch.erni.community.footsign.repository.CustomPlayerDTO;
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
@@ -37,7 +36,9 @@ public class UserStatsController {
 		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
 		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
+		List<CustomPlayerDTO> mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		List<CustomPlayerDTO> worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
+
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 		int countWins = matchRepository.countWonMatches(userWmostWins);
@@ -49,6 +50,8 @@ public class UserStatsController {
 
 
 		model.addAttribute("best_players", bestPlayers);
+		model.addAttribute("worst_played", worstPlayers);
+		model.addAttribute("most_played", mostPlayed);
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
 		model.addAttribute("win_gams", gamesWins);*/
 
