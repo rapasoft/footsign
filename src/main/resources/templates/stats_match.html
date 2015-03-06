@@ -30,29 +30,38 @@
             </table>
         </div>
         <div class="col-xs-4 col-md-4">
-            <div id="piechart"></div>
+            <div id="winnersPiechart"></div>
+            <div id="loosersPiechart"></div>
         </div>
     </div>
 
     <script th:inline="javascript">
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawChart);
-        function drawChart( ) {
+        
+        function getGraphData(url, title, componentId) {
+
             $.ajax({
-                url: "/footsign/winner_graph_data",
+                url: url,
                 type: 'GET',
                 dataType: 'json',
                 success:function(data) {
                     var data = google.visualization.arrayToDataTable(data);
                     var options = {
-                        title: 'Winners'
+                        title: title
                     };
-                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    var chart = new google.visualization.PieChart(document.getElementById(componentId));
 
                     chart.draw(data, options);
                 }
 
             });
+        }
+        
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart( ) {
+            
+            getGraphData("/footsign/winner_graph_data", "Winners", "winnersPiechart");
+            getGraphData("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
         }
     </script>
 </div>
