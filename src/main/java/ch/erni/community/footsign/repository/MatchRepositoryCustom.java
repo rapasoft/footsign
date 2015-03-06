@@ -1,5 +1,7 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
+
 import java.util.List;
 
 /**

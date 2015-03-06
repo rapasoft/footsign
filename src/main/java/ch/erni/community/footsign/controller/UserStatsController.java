@@ -1,6 +1,6 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.footsign.repository.CustomPlayerDTO;
+import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
