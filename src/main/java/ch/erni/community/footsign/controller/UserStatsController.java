@@ -1,9 +1,8 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.footsign.nodes.Match;
+import ch.erni.community.footsign.repository.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
-import ch.erni.community.footsign.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +19,6 @@ public class UserStatsController {
 
 	@Autowired
 	private MatchRepository matchRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
 
 	@RequestMapping("/stats")
 	public String index(Model model) {
@@ -30,13 +26,12 @@ public class UserStatsController {
 
 	}
 
+
 	@RequestMapping("/stats_user")
 	public String userStats(Model model) {
-		
-		List<User> worst = userRepository.findPlayersWithWorstScore();
-
 		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
+		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 		int countWins = matchRepository.countWonMatches(userWmostWins);
@@ -46,6 +41,8 @@ public class UserStatsController {
 		model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
 		model.addAttribute("number_of_matches_wins", countWins);
 
+
+		model.addAttribute("best_players", bestPlayers);
         /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
 		model.addAttribute("win_gams", gamesWins);*/
 
