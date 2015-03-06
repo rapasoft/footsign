@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -56,5 +57,26 @@ public class UserStatsController {
 		model.addAttribute("win_gams", gamesWins);*/
 
 		return "stats_user";
+	}
+	
+	@RequestMapping("top_players_graph_data")
+	public @ResponseBody String getDataForTopPlayersChart() {
+		
+		//TODO: @cepe: implement this function
+		return null;
+	}
+
+	@RequestMapping("worst_players_graph_data")
+	public @ResponseBody String getDataForWorstPlayersChart() {
+
+		//TODO: @cepe: implement this function
+		return null;
+	}
+
+	@RequestMapping("most_played_graph_data")
+	public @ResponseBody String getDataForMostPlayedChart() {
+
+		//TODO: @cepe: implement this function
+		return null;
 	}
 }
