@@ -11,6 +11,7 @@ function getDataForPieGraph(url, title, componentId) {
         success:function(data) {
             var data = google.visualization.arrayToDataTable(data);
             var options = {
+                backgroundColor: 'transparent',
                 title: title
             };
             var chart = new google.visualization.PieChart(document.getElementById(componentId));
