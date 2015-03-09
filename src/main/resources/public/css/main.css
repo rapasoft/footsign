@@ -1,47 +1,82 @@
-body{
-	padding-top:25px !important;
+body {
+	padding-top: 25px !important;
 }
-.stats {
-	text-align:center;
-	text-shadow:1px 1px 0px #fff;
-	margin-top:25px;
+
+
+.profile-stats {
+	text-align: center;
+	text-shadow: 1px 1px 0px #fff;
+	margin-top: 25px;
 
 }
-.stats li{
-	width:125px;
-    display: inline-block;
-}
-.stats span{
-	font-family:Helvetica;
-	font-weight:bold;
-	text-shadow:1px 1px 0px #fff;
-	font-size:4em;
 
-	display:block;
-	line-height:1em;
+.profile-stats li {
+	padding: 20px;
+	display: inline-block;
+}
+
+.profile-stats span {
+	font-family: Helvetica;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px #fff;
+	font-size: 4em;
+
+	display: block;
+	line-height: 1em;
 }
 
 /* Large desktop */
 @media (min-width: 1200px) {
+	.profile-stats li {
+		padding: 10px;
+	}
+}
+
+@media (max-width: 1200px) {
+	.profile-stats li {
+		padding: 10px !important;
+	}
+
+	.profile-stats span {
+		font-size: 3em;
+	}
 }
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
+	.profile-stats span {
+		font-size: 3em;
+	}
+
 }
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
-	.profile img{
-		width:75px;
+	.profile img {
+		width: 75px;
 	}
-	.profile h2{
-		font-size:1.7em;
+
+	.profile h2 {
+		font-size: 1.7em;
 	}
-	.stats span{
+
+	.profile-stats span {
 		font-size: 2em;
+		text-align: center;
 	}
+	.profile-stats{
+		padding: 0px;
+		text-align: left;
+	}
+
+
 }
 
 /* Landscape phones and down */
 @media (max-width: 480px) {
+
+}
+
+@media (max-width: 768px) {
+
 }

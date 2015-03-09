@@ -9,10 +9,10 @@
 	<div th:fragment="content">
 		<div class="well well-sm">
 			<div class="row">
-				<div class="col-sm-6 col-md-2">
+				<div class="col-sm-2 col-md-2">
 					<img th:src="${photo}" alt="" class="img-rounded img-responsive"/>
 				</div>
-				<div class="col-sm-6 col-md-5">
+				<div class="col-sm-5 col-md-5">
 					<h2 th:text="${domain_name}"/>
 					<h4 th:text="${full_name}"/>
 
@@ -35,7 +35,7 @@
 					<!-- Split button -->
 				</div>
 				<div class="col-sm-5 col-md-5">
-					<ul class="inline stats">
+					<ul class="inline profile-stats">
 						<li>
 							<span th:text="${numberOfMatches}"></span>
 							Matches
