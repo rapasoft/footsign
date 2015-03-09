@@ -47,14 +47,20 @@ public class UserStatsController {
 		bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
+		int countMatches = 0, countWins =  0;
 
+		if (userWmostPlayed != null) {
+			countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
+			model.addAttribute("user_name", userWmostPlayed.getFullName() + " , " + userWmostPlayed.getDomainShortName());
+		}
+		
+		if (userWmostWins != null) {
+			countWins = matchRepository.countWonMatches(userWmostWins);
+			model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
+		}
 
-		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
-		int countWins = matchRepository.countWonMatches(userWmostWins);
-
-		model.addAttribute("user_name", userWmostPlayed.getFullName() + " , " + userWmostPlayed.getDomainShortName());
+		
 		model.addAttribute("number_of_matches", countMatches);
-		model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
 		model.addAttribute("number_of_matches_wins", countWins);
 
 
