@@ -6,6 +6,7 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.util.LdapUserHelper;
 import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -93,9 +94,9 @@ public class TestDataGenerator {
 		if (user != null) {
 			return user;
 		} else {
-			User userNew = new User(userDetails.getDomainUserName(), userDetails.getFirstName() + " " + userDetails.getSecondName(),
-					userDetails.getEmail(), userDetails.getDepartment(), new File("/").getPath());
-
+			
+			User userNew = LdapUserHelper.createUserFromLdapUser(userDetails).get();
+			
 			userRepository.save(userNew);
 
 			return userNew;
