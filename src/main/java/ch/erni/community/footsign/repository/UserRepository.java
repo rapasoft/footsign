@@ -17,10 +17,11 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 	@Query("match (u:User)<--(m:Match)-->(g:Game) \n" +
 			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result < 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result < 8)) \n" +
 			"with u,m,count(g) as countGames \n" +
-			"where countGames <= 1 \n" +
+			"where countGames >= 2 \n" +
 			"with u as user, count(distinct m) as matches \n" +
-			"order by matches desc \n" +
-			"return user, matches")
+			"return user, matches \n" +
+			"order by matches desc limit 10")
 	List<CustomPlayer> findPlayersWithWorstScore();
+
 
 }
