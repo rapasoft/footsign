@@ -8,7 +8,7 @@
     <div th:fragment="content">
         <div class="row">
             <h3> TOP 10 players</h3>
-            <div class="col-md-8">
+            <div class="col-md-6">
 
                 <table id="topPlayersTable" class="table table-striped table-hover">
                     <thead>
@@ -20,18 +20,18 @@
                     <tbody>
                     <tr th:each="item : ${best_players}">
                         <td th:text="${item.player}">${item.player}</td>
-                        <td th:text="${item.matches}">${item.matches}</td>
+                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div id="topPlayersPiechart"></div>
             </div>
         </div>
         <div class="row">
             <h3>"Not so good" 10 players</h3>
-            <div class="col-md-8">
+            <div class="col-md-6">
 
                 <table id="worstPlayersTable" class="table table-striped table-hover">
                     <thead>
@@ -43,18 +43,18 @@
                     <tbody>
                     <tr th:each="item : ${worst_players}">
                         <td th:text="${item.player}">${item.player}</td>
-                        <td th:text="${item.matches}">${item.matches}</td>
+                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div id="worstPlayersPiechart"></div>
             </div>
         </div>
         <div class="row">
             <h3> TOP 10 most played players</h3>
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <table id="lastMatchesTable" class="table table-striped table-hover">
                     <thead>
                     <tr>
@@ -65,11 +65,11 @@
                     <tbody>
                     <tr th:each="item : ${most_played}">
                         <td th:text="${item.player}">${item.player}</td>
-                        <td th:text="${item.matches}">${item.matches}</td>
+                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
                     </tr>
                     </tbody>
                 </table>
-            </div> <div class="col-md-4">
+            </div> <div class="col-md-6">
                 <div id="mostPlayedPiechart"></div>
             </div>
         </div>
@@ -78,33 +78,13 @@
 
         <script th:inline="javascript">
 
-            // TODO: @cepe: make this script something better.
-            function getGraphData(url, title, componentId) {
-
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'json',
-                    success:function(data) {
-                        var data = google.visualization.arrayToDataTable(data);
-                        var options = {
-                            title: title
-                        };
-                        var chart = new google.visualization.PieChart(document.getElementById(componentId));
-
-                        chart.draw(data, options);
-                    }
-
-                });
-            }
-
             google.load("visualization", "1", {packages:["corechart"]});
             google.setOnLoadCallback(drawChart);
             function drawChart( ) {
 
-                getGraphData("/footsign/top_players_graph_data", "Top 10", "topPlayersPiechart");
-                getGraphData("/footsign/worst_players_graph_data", "'Not so good' 10", "worstPlayersPiechart");
-                getGraphData("/footsign/most_played_graph_data", "Most played", "mostPlayedPiechart");
+                getDataForPieGraph("/footsign/top_players_graph_data", "Top 10", "topPlayersPiechart");
+                getDataForPieGraph("/footsign/worst_players_graph_data", "'Not so good' 10", "worstPlayersPiechart");
+                getDataForPieGraph("/footsign/most_played_graph_data", "Most played", "mostPlayedPiechart");
             }
         </script>
 

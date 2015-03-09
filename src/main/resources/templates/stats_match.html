@@ -37,32 +37,13 @@
     </div>
 
     <script th:inline="javascript">
-        
-        function getGraphData(url, title, componentId) {
 
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'json',
-                success:function(data) {
-                    var data = google.visualization.arrayToDataTable(data);
-                    var options = {
-                        title: title
-                    };
-                    var chart = new google.visualization.PieChart(document.getElementById(componentId));
-
-                    chart.draw(data, options);
-                }
-
-            });
-        }
-        
         google.load("visualization", "1", {packages:["corechart"]});
         google.setOnLoadCallback(drawChart);
         function drawChart( ) {
-            
-            getGraphData("/footsign/winner_graph_data", "Winners", "winnersPiechart");
-            getGraphData("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
+
+            getDataForPieGraph("/footsign/winner_graph_data", "Winners", "winnersPiechart");
+            getDataForPieGraph("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
         }
     </script>
 </div>
