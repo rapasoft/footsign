@@ -17,7 +17,7 @@
                         <th>Members of team 1</th>
                         <th>Members of team 2</th>
                         <th>Date and time </th>
-                        <th>Team wins</th>
+                        <th>Result</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,7 +25,7 @@
                         <td th:class="${item.team1Wins()} ? 'winner' : 'looser'"><div th:each="user : ${item.team1}" th:text="${user.fullName}"></div></td>
                         <td th:class="${item.team2Wins()} ? 'winner' : 'looser'"><div th:each="user : ${item.team2}" th:text="${user.fullName}"></div></td>
                         <td th:text="${item.formatedDateOfMatch}">${item.formatedDateOfMatch}</td>
-                        <td th:text="${item.team1Wins()} ? 'Team 1' : 'Team 2'">${item.team1Wins}</td>
+                        <td th:text="${item.matchResultToString()}">${item.matchResultToString()}</td>
                     </tr>
                 </tbody>
             </table>

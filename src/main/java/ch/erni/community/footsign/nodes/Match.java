@@ -84,6 +84,10 @@ public class Match {
 		return !team1Wins() && !team2Wins();
 	}
 
+	public String matchResultToString() {
+		return games.stream().filter(Game::team1Wins).count() + " : " + games.stream().filter(Game::team2Wins).count();
+	}
+	
 	public boolean teamWithUserWins(String userDomainShortName) {
 		return (
 				(team1Wins() && getTeam1()
