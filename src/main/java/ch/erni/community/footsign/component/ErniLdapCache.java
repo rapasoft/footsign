@@ -4,10 +4,12 @@ import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.util.PhotoPathBuilder;
+import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.LdapServiceImpl;
 import ch.erni.community.ldap.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,11 +23,15 @@ import java.util.stream.Collectors;
 @Scope("singleton")
 public class ErniLdapCache {
 
+	private static final long REFRESH_RATE = 60 * 60 * 1000; // in millis (every hour)
+
 	@Autowired
 	UserRepository userRepository;
 
 	@Autowired
 	PhotoPathBuilder photoPathBuilder;
+
+	private LdapService ldapService = new LdapServiceImpl();
 
 	private List<ErniUserDetails> userDetailsList;
 
@@ -44,9 +50,10 @@ public class ErniLdapCache {
 				.orElseThrow(new UserNotFoundException("Could not find username " + domainName));
 	}
 
+	@Scheduled(fixedRate = REFRESH_RATE)
 	// TODO @rap: Simplify!!!
 	void load() {
-		userDetailsList = new LdapServiceImpl()
+		userDetailsList = ldapService
 				.fetchEskEmployees()
 				.stream()
 				.map(ErniUserDetails::new).collect(Collectors.toList());
