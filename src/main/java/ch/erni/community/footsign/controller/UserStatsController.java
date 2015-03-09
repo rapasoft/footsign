@@ -4,6 +4,7 @@ import ch.erni.community.footsign.dto.CustomPlayerDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.util.GraphBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,13 @@ public class UserStatsController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private GraphBuilder graphBuilder;
+
+	private List<CustomPlayerDTO> bestPlayers;
+	private List<CustomPlayerDTO> mostPlayed;
+	private List<CustomPlayerDTO> worstPlayers;
 
 	@RequestMapping("/stats")
 	public String index(Model model) {
@@ -36,9 +44,9 @@ public class UserStatsController {
 	public String userStats(Model model) {
 		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
 		User userWmostWins = matchRepository.findPlayerWithMostWins();
-		List<CustomPlayerDTO> bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
-		List<CustomPlayerDTO> mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
-		List<CustomPlayerDTO> worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
+		bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
+		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
+		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
 
 
 		int countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
@@ -61,22 +69,16 @@ public class UserStatsController {
 	
 	@RequestMapping("top_players_graph_data")
 	public @ResponseBody String getDataForTopPlayersChart() {
-		
-		//TODO: @cepe: implement this function
-		return null;
+		return graphBuilder.dataForPieGraph("Player", "Top 10 players", bestPlayers);
 	}
 
 	@RequestMapping("worst_players_graph_data")
 	public @ResponseBody String getDataForWorstPlayersChart() {
-
-		//TODO: @cepe: implement this function
-		return null;
+		return graphBuilder.dataForPieGraph("Player", "Not so good 10 players", worstPlayers);
 	}
 
 	@RequestMapping("most_played_graph_data")
 	public @ResponseBody String getDataForMostPlayedChart() {
-
-		//TODO: @cepe: implement this function
-		return null;
+		return graphBuilder.dataForPieGraph("Player", "Most played players", mostPlayed);
 	}
 }

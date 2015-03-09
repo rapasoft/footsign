@@ -69,44 +69,46 @@
                     </tr>
                     </tbody>
                 </table>
+            </div> <div class="col-md-4">
+                <div id="mostPlayedPiechart"></div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div id="mostPlayedPiechart"></div>
-        </div>
+
+
+
+        <script th:inline="javascript">
+
+            // TODO: @cepe: make this script something better.
+            function getGraphData(url, title, componentId) {
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success:function(data) {
+                        var data = google.visualization.arrayToDataTable(data);
+                        var options = {
+                            title: title
+                        };
+                        var chart = new google.visualization.PieChart(document.getElementById(componentId));
+
+                        chart.draw(data, options);
+                    }
+
+                });
+            }
+
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart( ) {
+
+                getGraphData("/footsign/top_players_graph_data", "Top 10", "topPlayersPiechart");
+                getGraphData("/footsign/worst_players_graph_data", "'Not so good' 10", "worstPlayersPiechart");
+                getGraphData("/footsign/most_played_graph_data", "Most played", "mostPlayedPiechart");
+            }
+        </script>
+
     </div>
-
-    <script th:inline="javascript">
-
-        // TODO: @cepe: make this script something better.
-        function getGraphData(url, title, componentId) {
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'json',
-                success:function(data) {
-                    var data = google.visualization.arrayToDataTable(data);
-                    var options = {
-                        title: title
-                    };
-                    var chart = new google.visualization.PieChart(document.getElementById(componentId));
-
-                    chart.draw(data, options);
-                }
-
-            });
-        }
-
-        google.load("visualization", "1", {packages:["corechart"]});
-        google.setOnLoadCallback(drawChart);
-        function drawChart( ) {
-
-            getGraphData("/footsign/top_players_graph_data", "Top 10", "topPlayersPiechart");
-            getGraphData("/footsign/worst_players_graph_data", "'Not so good' 10", "worstPlayersPiechart");
-            getGraphData("/footsign/most_played_graph_data", "Most played", "mostPlayedPiechart");
-        }
-    </script>
 
 </body>
 </html>
