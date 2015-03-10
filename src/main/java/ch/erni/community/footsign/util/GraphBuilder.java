@@ -54,7 +54,7 @@ public class GraphBuilder {
 
             values.forEach(v -> {
                 ArrayNode arr = mapper.createArrayNode();
-                arr.add(v.getPlayer().getFullName());
+                arr.add(v.getPlayer().toString());
                 arr.add(v.getMatches());
                 parentArray.add(arr);
             });
