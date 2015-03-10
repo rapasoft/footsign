@@ -13,7 +13,8 @@ function getDataForPieChart(url, title, componentId) {
             var options = {
                 chartArea: {
                     width: '100%,',
-                    height: '90%'
+                    height: '89%',
+                    top: 15
                 },
                 legend: {
                     alignment: 'center'
