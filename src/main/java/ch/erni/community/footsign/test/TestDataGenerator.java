@@ -11,7 +11,6 @@ import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +31,7 @@ public class TestDataGenerator {
 	UserRepository userRepository;
 
 	@Autowired
-	private LdapUserHelper ldapUserHelper;
+	LdapUserHelper ldapUserHelper;
 
 	public void generateUserData() {
 		List<Match> matches = generateMatches(50);

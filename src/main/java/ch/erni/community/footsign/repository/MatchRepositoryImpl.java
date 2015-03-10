@@ -20,23 +20,34 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 
     @Transactional
     @Override
-    public List<CustomPlayerDTO> findPlayerBestTenPlayersCustom() {
-        Iterable<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
-        List<CustomPlayerDTO> bestPlayers = new ArrayList<>();
-        for (CustomPlayer user : best) {
-            bestPlayers.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
-        }
+	public List<CustomPlayerDTO<Long>> findPlayerBestTenPlayersCustom() {
+		Iterable<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
+		List<CustomPlayerDTO<Long>> bestPlayers = new ArrayList<>();
+		for (CustomPlayer user : best) {
+			bestPlayers.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
+		}
         return bestPlayers;
     }
 
     @Transactional
     @Override
-    public List<CustomPlayerDTO> findTenPlayersWithMostMatchesCustom() {
-        Iterable<CustomPlayer> mostPlayedUsers =  matchRepository.findTenPlayerWithMostMatches();
-        List<CustomPlayerDTO> mostPlayedUsersCustom = new ArrayList<>();
-        for (CustomPlayer user : mostPlayedUsers) {
-            mostPlayedUsersCustom.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
-        }
+	public List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom() {
+		Iterable<CustomPlayer> mostPlayedUsers =  matchRepository.findTenPlayerWithMostMatches();
+		List<CustomPlayerDTO<Long>> mostPlayedUsersCustom = new ArrayList<>();
+		for (CustomPlayer user : mostPlayedUsers) {
+			mostPlayedUsersCustom.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
+		}
         return mostPlayedUsersCustom;
     }
+
+	@Transactional
+	@Override
+	public List<CustomPlayerDTO<Double>> findPlayersWithHighestRatioCustom() {
+		Iterable<CustomPlayer> mostPlayedUsers = matchRepository.findTenPlayersWithHighestRatio();
+		List<CustomPlayerDTO<Double>> highestRatioCustom = new ArrayList<>();
+		for (CustomPlayer user : mostPlayedUsers) {
+			highestRatioCustom.add(new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue()));
+		}
+		return highestRatioCustom;
+	}
 }

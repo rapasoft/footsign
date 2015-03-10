@@ -4,10 +4,6 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.util.GraphBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -113,11 +109,11 @@ public class MatchStatsController {
     
     @RequestMapping("/winner_graph_data")
     private @ResponseBody String graphDataForWinners() {
-        return graphBuilder.dataForPieGraph("Player", "Number of victories", this.winners);
-    }
+		return graphBuilder.serializeDataForChart("Player", "Number of victories", this.winners);
+	}
     
     @RequestMapping("/looser_graph_data")
     private @ResponseBody String graphDataForLoosers() {
-        return graphBuilder.dataForPieGraph("Player", "Number of losses", this.loosers);
-    }
+		return graphBuilder.serializeDataForChart("Player", "Number of losses", this.loosers);
+	}
 }

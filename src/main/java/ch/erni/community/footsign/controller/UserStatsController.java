@@ -22,16 +22,20 @@ public class UserStatsController {
 
 	@Autowired
 	private MatchRepository matchRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private GraphBuilder graphBuilder;
 
-	private List<CustomPlayerDTO> bestPlayers;
-	private List<CustomPlayerDTO> mostPlayed;
-	private List<CustomPlayerDTO> worstPlayers;
+	private List<CustomPlayerDTO<Long>> bestPlayers;
+
+	private List<CustomPlayerDTO<Long>> mostPlayed;
+
+	private List<CustomPlayerDTO<Long>> worstPlayers;
+
+	private List<CustomPlayerDTO<Double>> playersWithHighestRatio;
 
 	@RequestMapping("/stats")
 	public String index(Model model) {
@@ -47,19 +51,20 @@ public class UserStatsController {
 		bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
-		int countMatches = 0, countWins =  0;
+		playersWithHighestRatio = matchRepository.findPlayersWithHighestRatioCustom();
+		int countMatches = 0, countWins = 0;
 
 		if (userWmostPlayed != null) {
 			countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 			model.addAttribute("user_name", userWmostPlayed.getFullName() + " , " + userWmostPlayed.getDomainShortName());
 		}
-		
+
 		if (userWmostWins != null) {
 			countWins = matchRepository.countWonMatches(userWmostWins);
 			model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
 		}
 
-		
+
 		model.addAttribute("number_of_matches", countMatches);
 		model.addAttribute("number_of_matches_wins", countWins);
 
@@ -67,24 +72,36 @@ public class UserStatsController {
 		model.addAttribute("best_players", bestPlayers);
 		model.addAttribute("worst_players", worstPlayers);
 		model.addAttribute("most_played", mostPlayed);
-        /*List<Game> gamesWins = matchRepository.findAllTeam1WinsGameByUserDomainShortName("veda");
-		model.addAttribute("win_gams", gamesWins);*/
+		model.addAttribute("highest_ratio", playersWithHighestRatio);
 
 		return "stats_user";
 	}
-	
+
 	@RequestMapping("top_players_graph_data")
-	public @ResponseBody String getDataForTopPlayersChart() {
-		return graphBuilder.dataForPieGraph("Player", "Top 10 players", bestPlayers);
+	public
+	@ResponseBody
+	String getDataForTopPlayersChart() {
+		return graphBuilder.serializeDataForChart("Player", "Top 10 players", bestPlayers);
 	}
 
 	@RequestMapping("worst_players_graph_data")
-	public @ResponseBody String getDataForWorstPlayersChart() {
-		return graphBuilder.dataForPieGraph("Player", "Not so good 10 players", worstPlayers);
+	public
+	@ResponseBody
+	String getDataForWorstPlayersChart() {
+		return graphBuilder.serializeDataForChart("Player", "Not so good 10 players", worstPlayers);
 	}
 
 	@RequestMapping("most_played_graph_data")
-	public @ResponseBody String getDataForMostPlayedChart() {
-		return graphBuilder.dataForPieGraph("Player", "Most played players", mostPlayed);
+	public
+	@ResponseBody
+	String getDataForMostPlayedChart() {
+		return graphBuilder.serializeDataForChart("Player", "Most played players", mostPlayed);
+	}
+
+	@RequestMapping("highest_ratio_graph_data")
+	public
+	@ResponseBody
+	String getDataForHighestRatioChart() {
+		return graphBuilder.serializeDataForChart("Player", "Ratio", playersWithHighestRatio);
 	}
 }

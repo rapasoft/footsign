@@ -51,8 +51,18 @@ public class UserProfileController {
 		model.addAttribute("won", countWon);
 		model.addAttribute("lost", countLost);
 		model.addAttribute("user", userRepository.findByDomainShortName(domainUserName));
+		model.addAttribute("wonLostRatio", countRatio(countWon, countLost));
 
 		return USER_PROFILE;
+	}
+
+	private double countRatio(long countWon, long countLost) {
+		if (countWon == 0) {
+			return 0;
+		} else if (countLost == 0) {
+			return 1;
+		}
+		return countWon / (double) countLost;
 	}
 
 	@RequestMapping(value = "/edit_user", method = RequestMethod.POST)

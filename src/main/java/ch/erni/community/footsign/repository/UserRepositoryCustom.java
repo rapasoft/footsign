@@ -18,6 +18,6 @@ public interface UserRepositoryCustom {
 
 	List<User> findAllUsers();
 
-	List<CustomPlayerDTO> findPlayersWithWorstScorePlayersCustom();
+	List<CustomPlayerDTO<Long>> findPlayersWithWorstScorePlayersCustom();
 
 }

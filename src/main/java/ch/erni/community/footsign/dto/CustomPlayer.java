@@ -1,7 +1,6 @@
 package ch.erni.community.footsign.dto;
 
 import ch.erni.community.footsign.nodes.User;
-import org.springframework.data.neo4j.annotation.MapResult;
 import org.springframework.data.neo4j.annotation.QueryResult;
 import org.springframework.data.neo4j.annotation.ResultColumn;
 
@@ -12,7 +11,9 @@ import org.springframework.data.neo4j.annotation.ResultColumn;
 public interface CustomPlayer {
 
     @ResultColumn("user")
-    public User getUser();
-    @ResultColumn("matches")
-    public int getMatches();
+	User getUser();
+
+	@ResultColumn("value")
+	Object getValue();
+
 }
