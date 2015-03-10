@@ -30,12 +30,14 @@ public class UserProfileController {
 	@Autowired
 	UserRepository userRepository;
 
+
 	@RequestMapping("/user_profile")
 	public String index(Model model, Authentication authentication) {
 
 		ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
 
 		String domainUserName = principal.getDomainUserName();
+		List<Match> lastMatches = matchRepository.findLastMatchesByDomainName(domainUserName);
 
 		model.addAttribute("domain_name", domainUserName);
 		model.addAttribute("full_name", principal.getFullName());
@@ -53,6 +55,7 @@ public class UserProfileController {
 		model.addAttribute("user", userRepository.findByDomainShortName(domainUserName));
 		model.addAttribute("wonLostRatio", countRatio(countWon, countLost));
 
+		model.addAttribute("last_matches", lastMatches);
 		return USER_PROFILE;
 	}
 

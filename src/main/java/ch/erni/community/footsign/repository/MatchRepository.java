@@ -32,6 +32,9 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN DISTINCT n ORDER BY n.dateOfMatch DESC LIMIT 10")
 	List<Match> findlastMatches();
 
+	@Query("MATCH (user:User {domainShortName: {0}})--(m:Match) RETURN DISTINCT m ORDER BY m.dateOfMatch DESC LIMIT 10")
+	List<Match> findLastMatchesByDomainName(String domainName);
+
 	@Query("match (u:User)--(m:Match) with u,count(m) as matches return u order by matches desc limit 1")
 	User findPlayerWithMostPlayedMatches();
 

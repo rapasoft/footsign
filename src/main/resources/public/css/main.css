@@ -2,7 +2,9 @@ body {
 	padding-top: 25px !important;
 }
 
-
+.user-profile-table{
+   padding:20px;
+}
 .profile-stats {
 	text-align: center;
 	text-shadow: 1px 1px 0px #fff;
@@ -68,15 +70,14 @@ body {
 		padding: 0px;
 		text-align: left;
 	}
+	.rating-xs{
+		font-size: 1.6em;
+	}
 
 
 }
 
 /* Landscape phones and down */
 @media (max-width: 480px) {
-
-}
-
-@media (max-width: 768px) {
 
 }
