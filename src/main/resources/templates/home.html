@@ -10,7 +10,11 @@
     
     <form th:action="@{/saveGame}" th:object="${clientMatch}" method="post">
 
-
+        <div class="alert alert-success" role="alert" th:if="${success}">
+            <strong><span>Success!</span></strong>
+            <span th:text="${success}">Success</span>
+        </div>
+        
         <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible" role="alert">
 
             <div th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">

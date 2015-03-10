@@ -113,6 +113,8 @@ public class HomeController {
 			setGamesToMatch(result1, result2, match);
 
 			matchRepository.save(match);
+			
+			modelAndView.addObject("success", "The match was sucessfully saved.");
 		}
 
 		return modelAndView;
