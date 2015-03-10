@@ -14,9 +14,9 @@ import java.util.Map;
 
 @Component
 public class GraphBuilder {
-    
-    public String dataForPieGraph(String categoryName, String categoryValue, Map<String, Integer> values) {
-        ObjectMapper mapper = new ObjectMapper();
+
+	public String serializeDataForChart(String categoryName, String categoryValue, Map<String, Integer> values) {
+		ObjectMapper mapper = new ObjectMapper();
         
         // create header
         ArrayNode parentArray = mapper.createArrayNode();
@@ -39,27 +39,28 @@ public class GraphBuilder {
         return parentArray.toString();
     }
 
-    public String dataForPieGraph(String categoryName, String categoryValue, List<CustomPlayerDTO> values) {
-        ObjectMapper mapper = new ObjectMapper();
+	public <VALUE extends Number> String serializeDataForChart(String categoryName, String categoryValue, List<CustomPlayerDTO<VALUE>> values) {
+		ObjectMapper mapper = new ObjectMapper();
 
         // create header
         ArrayNode parentArray = mapper.createArrayNode();
         ArrayNode first = mapper.createArrayNode();
         first.add(categoryName);
-        first.add(categoryValue);
-        parentArray.add(first);
+		first.add(categoryValue);
+		parentArray.add(first);
 
         // create data
         if (values != null) {
 
             values.forEach(v -> {
-                ArrayNode arr = mapper.createArrayNode();
-                arr.add(v.getPlayer().getFullName());
-                arr.add(v.getMatches());
-                parentArray.add(arr);
-            });
+				ArrayNode arr = mapper.createArrayNode();
+				arr.add(v.getPlayer().getFullName());
+				arr.add(v.getValue().doubleValue());
+				parentArray.add(arr);
+			});
 
         }
         return parentArray.toString();
     }
+
 }

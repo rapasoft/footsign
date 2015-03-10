@@ -69,12 +69,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			throw new IllegalArgumentException("User list cannot be null");
 		}
 		for (String name : users) {
-			User user = userRepository.findByDomainShortName(name);
-			if (user == null) {
-				UserDetails detail = erniLdapCache.getEskEmployee(name);
+			if (name != null && !name.isEmpty()) {
+				User user = userRepository.findByDomainShortName(name);
+				if (user == null) {
+					UserDetails detail = erniLdapCache.getEskEmployee(name);
 
-				User newUser = ldapUserHelper.createUserFromLdapUser(detail).get();
-				userRepository.save(newUser);
+					User newUser = ldapUserHelper.createUserFromLdapUser(detail).get();
+					userRepository.save(newUser);
+				}
 			}
 		}
 
@@ -94,11 +96,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Override
 	@Transactional
-	public List<CustomPlayerDTO> findPlayersWithWorstScorePlayersCustom() {
+	public List<CustomPlayerDTO<Long>> findPlayersWithWorstScorePlayersCustom() {
 		Iterable<CustomPlayer> worst =  userRepository.findPlayersWithWorstScore();
-		List<CustomPlayerDTO> worstPlayers = new ArrayList<>();
+		List<CustomPlayerDTO<Long>> worstPlayers = new ArrayList<>();
 		for (CustomPlayer user : worst) {
-			worstPlayers.add(new CustomPlayerDTO(user.getUser(), user.getMatches()));
+			worstPlayers.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
 		}
 		return worstPlayers;
 	}

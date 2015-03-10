@@ -10,7 +10,11 @@
     
     <form th:action="@{/saveGame}" th:object="${clientMatch}" method="post">
 
-
+        <div class="alert alert-success" role="alert" th:if="${success}">
+            <strong><span>Success!</span></strong>
+            <span th:text="${success}">Success</span>
+        </div>
+        
         <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible" role="alert">
 
             <div th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
@@ -22,8 +26,9 @@
         
         <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
             <div class="btn-group" role="group" style="margin-bottom: 10px">
-                <button type="button" class="btn btn-default active game-type-2">2 vs 2</button>
+                <button type="button" class="btn btn-default active game-type-2"> 2 vs 2</button>
                 <button type="button" class="btn btn-default game-type-1">1 vs 1</button>
+                <input type="text" id="gameType" name="gameType" th:field="*{gameType}" th:value="*{gameType}" class="hidden" />
             </div>
         </div>
 

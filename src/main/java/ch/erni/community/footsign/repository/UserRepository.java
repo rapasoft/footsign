@@ -19,9 +19,9 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result < 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result < 8)) \n" +
 			"with u,m,count(g) as countGames \n" +
 			"where countGames >= 2 \n" +
-			"with u as user, count(distinct m) as matches \n" +
-			"return user, matches \n" +
-			"order by matches desc limit 10")
+			"with u as user, count(distinct m) as value \n" +
+			"return user, value \n" +
+			"order by value desc limit 10")
 	List<CustomPlayer> findPlayersWithWorstScore();
 
 	/*

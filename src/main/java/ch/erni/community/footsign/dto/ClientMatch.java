@@ -18,6 +18,8 @@ public class ClientMatch {
     private final String KEY_TEAM1 = "team1";
     private final String KEY_TEAM2 = "team2";
     
+    private String gameType;
+    
     @NotEmpty @Size(min = 2, max = 2) @UserMap
     private Map<String, List<String>> teams;
     
@@ -25,6 +27,8 @@ public class ClientMatch {
     private Map<String, List<String>> results;
 
     public ClientMatch() {
+        gameType = "2";
+        
         results = new HashMap<>();
         results.put(KEY_TEAM1, new ArrayList<String>(){{add("0"); add("0"); add("0");}});
         results.put(KEY_TEAM2, new ArrayList<String>(){{add("0"); add("0"); add("0");}});
@@ -32,6 +36,14 @@ public class ClientMatch {
         teams = new HashMap<>();
         teams.put(KEY_TEAM1, new ArrayList<String>() {{add(""); add("");}});
         teams.put(KEY_TEAM2, new ArrayList<String>() {{add(""); add("");}});
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
     }
 
     public Map<String, List<String>> getTeams() {

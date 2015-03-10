@@ -5,6 +5,7 @@ import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.util.LdapUserHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +29,8 @@ public class TestDataGeneratorTest {
 		UserRepository userRepository = mock(UserRepository.class);
 		when(userRepository.findByDomainShortName(anyString())).thenReturn(null);
 		testDataGenerator.userRepository = userRepository;
+
+		testDataGenerator.ldapUserHelper = new LdapUserHelper();
 	}
 
 	@Test

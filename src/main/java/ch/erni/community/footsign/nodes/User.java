@@ -127,7 +127,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return fullName + "(" + domainShortName + ")";
+		return fullName + " (" + domainShortName + ")";
 	}
 }
 
