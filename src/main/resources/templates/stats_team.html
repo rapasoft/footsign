@@ -8,8 +8,9 @@
     <div th:fragment="content">
 
         <div class="row well well-lg">
+            <a href="#" class="hide-content-btn">show / hide</a>
             <h3> TOP 10 most played team</h3>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-table">
 
                 <table id="topPlayersTable" class="table table-striped table-hover">
                     <thead>
@@ -28,7 +29,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-chart">
                 <div id="topPlayersPiechart"></div>
             </div>
         </div>
