@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.component;
 
+import ch.erni.community.footsign.event.UserLoggedInEvent;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
@@ -8,6 +9,7 @@ import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.LdapServiceImpl;
 import ch.erni.community.ldap.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,12 +18,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+
 /**
  * @author rap
  */
 @Component
 @Scope("singleton")
-public class ErniLdapCache {
+public class ErniLdapCache implements ApplicationListener<UserLoggedInEvent> {
 
 	private static final long REFRESH_RATE = 60 * 60 * 1000; // in millis (every hour)
 
@@ -83,4 +86,11 @@ public class ErniLdapCache {
 				}
 		);
 	}
+
+
+	@Override
+	public void onApplicationEvent(UserLoggedInEvent event) {
+		findPhotos();
+	}
+
 }
