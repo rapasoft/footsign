@@ -240,6 +240,13 @@ $(document).ready(function () {
 	$(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
 	
 	initStarsRating();
+    
+    $(".hide-content-btn").click(function () {
+       
+        $(this).parent().find("div.stats-table").slideToggle("slow");
+        $(this).parent().find("div.stats-chart").slideToggle("slow");
+
+    });
 
 });
 
