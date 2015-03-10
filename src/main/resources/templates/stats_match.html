@@ -7,8 +7,31 @@
 <body>
 
 <div th:fragment="content">
+    <div class="row well well-lg">
 
-    <div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
+        <a href="#" class="hide-content-btn">show / hide</a>
+        <h3>The last 10 matches</h3>
+
+        <div class="col-md-7 stats-table">
+            <div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
+        </div>
+        <div class="col-md-5 stats-chart">
+            <div id="winnersPiechart"></div>
+            <div id="loosersPiechart"></div>
+        </div>
+    </div>
+
+
+    <script th:inline="javascript">
+
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart( ) {
+
+            getDataForPieChart("/footsign/winner_graph_data", "Winners", "winnersPiechart");
+            getDataForPieChart("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
+        }
+    </script>
 
 </div>
 </body>
