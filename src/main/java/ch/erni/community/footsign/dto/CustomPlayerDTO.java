@@ -5,16 +5,16 @@ import ch.erni.community.footsign.nodes.User;
 /**
  * Created by veda on 3/6/2015.
  */
-public class CustomPlayerDTO {
+public class CustomPlayerDTO<VALUE extends Number> {
 
     private User player;
 
-    private int matches;
+	private VALUE value;
 
-    public CustomPlayerDTO(User player, int matches) {
-        this.player = player;
-        this.matches = matches;
-    }
+	public CustomPlayerDTO(User player, VALUE value) {
+		this.player = player;
+		this.value = value;
+	}
 
     public User getPlayer() {
         return player;
@@ -24,11 +24,11 @@ public class CustomPlayerDTO {
         this.player = player;
     }
 
-    public int getMatches() {
-        return matches;
-    }
+	public VALUE getValue() {
+		return value;
+	}
 
-    public void setMatches(int matches) {
-        this.matches = matches;
-    }
+	public void setValue(VALUE value) {
+		this.value = value;
+	}
 }

@@ -2,7 +2,7 @@
  * Created by cepe on 09.03.2015.
  */
 
-function getDataForPieGraph(url, title, componentId) {
+function getDataForPieChart(url, title, componentId) {
 
     $.ajax({
         url: url,
@@ -30,4 +30,25 @@ function getDataForPieGraph(url, title, componentId) {
         }
 
     });
+}
+
+//todo @rap: merge with the method above
+function getDataForBarChart(url, title, componentId) {
+
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		success: function (data) {
+			var data = google.visualization.arrayToDataTable(data);
+			var options = {
+				backgroundColor: 'transparent',
+				title: title
+			};
+			var chart = new google.visualization.BarChart(document.getElementById(componentId));
+
+			chart.draw(data, options);
+		}
+
+	});
 }
