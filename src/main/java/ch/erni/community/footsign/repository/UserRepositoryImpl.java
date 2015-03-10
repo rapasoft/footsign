@@ -3,6 +3,8 @@ package ch.erni.community.footsign.repository;
 import ch.erni.community.footsign.component.ErniLdapCache;
 import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.dto.CustomPlayerDTO;
+import ch.erni.community.footsign.dto.TeamPlayers;
+import ch.erni.community.footsign.dto.TeamPlayersDTO;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.util.FileDownloader;
@@ -100,5 +102,17 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		}
 		return worstPlayers;
 	}
+
+	@Override
+	@Transactional
+	public List<TeamPlayersDTO> findTeamWithMostMatchesCustom(){
+		Iterable<TeamPlayers> mostTeam =  userRepository.findTeamWithMostMatches();
+		List<TeamPlayersDTO> mostPlayedTeam = new ArrayList<>();
+		for (TeamPlayers team : mostTeam) {
+			mostPlayedTeam.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getNumberOfMatches()));
+		}
+		return mostPlayedTeam;
+	}
+
 
 }

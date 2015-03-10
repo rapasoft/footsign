@@ -6,7 +6,33 @@
 </head>
 <body>
     <div th:fragment="content">
-        Team statistics
+
+        <div class="row well well-lg">
+            <h3> TOP 10 most played team</h3>
+            <div class="col-md-6">
+
+                <table id="topPlayersTable" class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Name</th>
+                        <th>Number of wins</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${most_team_players}">
+                        <td th:text="${item.player1}">${item.player1}</td>
+                        <td th:text="${item.player2}">${item.player2}</td>
+                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div id="topPlayersPiechart"></div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

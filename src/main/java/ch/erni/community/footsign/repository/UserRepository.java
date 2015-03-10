@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.dto.CustomPlayer;
+import ch.erni.community.footsign.dto.TeamPlayers;
 import ch.erni.community.footsign.nodes.User;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,6 +23,16 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			"return user, matches \n" +
 			"order by matches desc limit 10")
 	List<CustomPlayer> findPlayersWithWorstScore();
+
+	/*
+	MOst player team
+	 */
+	@Query("match (user1:User)--(m:Match)--(user2:User)\n" +
+			"where ((user1)<-[:TEAM2]-(m)-[:TEAM2]->(user2) OR(user1)<-[:TEAM1]-(m)-[:TEAM1]->(user2) ) AND ID(user1) < ID(user2)\n" +
+			"with user1, user2, count(distinct m) as matches\n" +
+			"return user1, user2,  matches\n" +
+			"order by matches desc Limit 10")
+	List<TeamPlayers> findTeamWithMostMatches();
 
 
 }
