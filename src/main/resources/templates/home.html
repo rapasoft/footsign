@@ -22,8 +22,9 @@
         
         <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
             <div class="btn-group" role="group" style="margin-bottom: 10px">
-                <button type="button" class="btn btn-default active game-type-2">2 vs 2</button>
+                <button type="button" class="btn btn-default active game-type-2"> 2 vs 2</button>
                 <button type="button" class="btn btn-default game-type-1">1 vs 1</button>
+                <input type="text" id="gameType" name="gameType" th:field="*{gameType}" th:value="*{gameType}" class="hidden" />
             </div>
         </div>
 

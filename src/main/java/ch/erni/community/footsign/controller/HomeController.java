@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -90,8 +91,12 @@ public class HomeController {
 
 			List<String> result1 = clientMatch.getResultTeam1();
 			List<String> result2 = clientMatch.getResultTeam2();
+			
+			
 
 			try {
+				validTeams(team1, team2, Integer.parseInt(clientMatch.getGameType()));
+				
 				userRepository.saveUsersToDB(team1);
 				userRepository.saveUsersToDB(team2);
 			} catch (Exception e) {
@@ -147,6 +152,19 @@ public class HomeController {
 			}
 		}
 
+	}
+	
+	private void validTeams(List<String> team1, List<String> team2, int gameType) {
+		for (int i = 0; i < (gameType); i++) {
+			String name = team1.get(i);
+			if (name.trim().isEmpty()) throw new IllegalArgumentException("Team 1 have to contain " + gameType + " player(s)");
+		}
+
+		for (int i = 0; i < (gameType); i++) {
+			String name = team2.get(i);
+			if (name.trim().isEmpty()) throw new IllegalArgumentException("Team 2 have to contain " + gameType + " player(s)");
+		}
+		
 	}
 
 }

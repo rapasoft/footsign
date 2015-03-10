@@ -55,14 +55,8 @@ public class UserMapValidator implements ConstraintValidator<UserMap, Map<String
             
             List<String> names = usersMap.get(key);
             for (String name : names) {
-                
-                if (name == null || name.isEmpty()) {
-                    cvc.buildConstraintViolationWithTemplate("User domain name can not be empty").addConstraintViolation();
-                    isValid = false;
-                    continue;
-                }
-                
-                if (userNames.contains(name)) {
+
+                if (!name.trim().isEmpty() && userNames.contains(name)) {
                     cvc.buildConstraintViolationWithTemplate("User with domain name \'" + name + "\' already exist in player list").addConstraintViolation();
                     isValid = false;
                 }

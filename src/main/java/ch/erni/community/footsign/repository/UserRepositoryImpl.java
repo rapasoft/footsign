@@ -67,12 +67,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			throw new IllegalArgumentException("User list cannot be null");
 		}
 		for (String name : users) {
-			User user = userRepository.findByDomainShortName(name);
-			if (user == null) {
-				UserDetails detail = erniLdapCache.getEskEmployee(name);
+			if (name != null && !name.isEmpty()) {
+				User user = userRepository.findByDomainShortName(name);
+				if (user == null) {
+					UserDetails detail = erniLdapCache.getEskEmployee(name);
 
-				User newUser = ldapUserHelper.createUserFromLdapUser(detail).get();
-				userRepository.save(newUser);
+					User newUser = ldapUserHelper.createUserFromLdapUser(detail).get();
+					userRepository.save(newUser);
+				}
 			}
 		}
 

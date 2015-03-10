@@ -77,6 +77,8 @@ function changeGameType(event) {
                 $(".game-type-2").addClass("active");
                 $(".game-type-1").removeClass("active");
             }
+            
+            $("#gameType").val(type)
 
         }
 
