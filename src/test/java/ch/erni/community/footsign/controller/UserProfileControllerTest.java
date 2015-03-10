@@ -34,6 +34,9 @@ public class UserProfileControllerTest {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private LdapUserHelper helper;
+
 	private MockMvc mockMvc;
 
 	private ErniAuthentication authentication;
@@ -45,7 +48,7 @@ public class UserProfileControllerTest {
 		authentication = new ErniAuthentication(userDetails, "password", true);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		userRepository.save(LdapUserHelper.createUserFromLdapUser(mockUserDetails()).get());
+		userRepository.save(helper.createUserFromLdapUser(mockUserDetails()).get());
 
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}

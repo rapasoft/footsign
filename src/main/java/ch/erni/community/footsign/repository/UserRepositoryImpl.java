@@ -31,6 +31,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Autowired
 	private ErniLdapCache erniLdapCache;
+	
+	@Autowired
+	private LdapUserHelper ldapUserHelper;
 
 	@Override
 	public void saveOrUpdateDetailsAndPhoto(String password, ErniUserDetails userDetails) {
@@ -38,7 +41,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 		if (user == null) {
 			Path path = fileDownloader.downloadPhoto(userDetails, password);
-			user = LdapUserHelper.createUserFromLdapUser(userDetails).get();
+			user = ldapUserHelper.createUserFromLdapUser(userDetails).get();
 			user.setPhotoPath(path.toString());
 		} else {
 			user.setDepartment(userDetails.getDepartment());
@@ -68,8 +71,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			if (user == null) {
 				UserDetails detail = erniLdapCache.getEskEmployee(name);
 
-				// TODO @rap: hmm...
-				User newUser = LdapUserHelper.createUserFromLdapUser(detail).get();
+				User newUser = ldapUserHelper.createUserFromLdapUser(detail).get();
 				userRepository.save(newUser);
 			}
 		}

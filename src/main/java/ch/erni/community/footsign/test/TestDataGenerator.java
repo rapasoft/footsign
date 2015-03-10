@@ -31,6 +31,9 @@ public class TestDataGenerator {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	private LdapUserHelper ldapUserHelper;
+
 	public void generateUserData() {
 		List<Match> matches = generateMatches(50);
 		matches.forEach(matchRepository::save);
@@ -95,7 +98,7 @@ public class TestDataGenerator {
 			return user;
 		} else {
 			
-			User userNew = LdapUserHelper.createUserFromLdapUser(userDetails).get();
+			User userNew = ldapUserHelper.createUserFromLdapUser(userDetails).get();
 			
 			userRepository.save(userNew);
 

@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -13,14 +14,14 @@ import java.util.Optional;
  * Created by cepe on 03.03.2015.
  */
 public class LdapUserHelperTest {
-    
+
     private LdapUserHelper helper;
-    
-    @After
+
+    @Before
     public void setup() {
         helper = new LdapUserHelper();
     }
-    
+
     @Test
     public void testCopy() {
         UserDetails detail = new UserDetails(
@@ -32,7 +33,7 @@ public class LdapUserHelperTest {
                 Optional.of("Java team")
         );
 
-		User copy = LdapUserHelper.createUserFromLdapUser(detail).get();
+		User copy = helper.createUserFromLdapUser(detail).get();
 
 		Assert.assertNotNull("Copy must be not null", copy);
         Assert.assertEquals("Full name must be equal", detail.getFullName(), copy.getFullName());
@@ -41,7 +42,7 @@ public class LdapUserHelperTest {
         
     }
     
-    @Before
+    @After
     public void destroy() {
         this.helper = null;
         
