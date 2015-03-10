@@ -18,11 +18,6 @@ public class ServletApplication extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//		try {
-//			FileUtils.deleteRecursively(new File(DataConfiguration.NEO4J_DB_PATH));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 		return application.sources(applicationClass);
 	}
 
