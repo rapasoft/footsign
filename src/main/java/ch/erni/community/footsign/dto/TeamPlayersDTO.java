@@ -5,25 +5,23 @@ import ch.erni.community.footsign.nodes.User;
 /**
  * Created by veda on 3/10/2015.
  */
-public class TeamPlayersDTO {
+public class TeamPlayersDTO<VALUE extends Number> {
 
     private User player1;
 
     private User player2;
 
-    public TeamPlayersDTO(User player1, User player2, int matches) {
+    private VALUE matches;
+
+    public TeamPlayersDTO(User player1, User player2, VALUE matches) {
         this.player1 = player1;
         this.player2 = player2;
         this.matches = matches;
     }
 
-    public int getMatches() {
-        return matches;
-    }
+    public VALUE getMatches() { return matches; }
 
-    public void setMatches(int matches) {
-        this.matches = matches;
-    }
+    public void setMatches(VALUE matches) { this.matches = matches; }
 
     public User getPlayer1() {
         return player1;
@@ -41,5 +39,4 @@ public class TeamPlayersDTO {
         this.player2 = player2;
     }
 
-    private int matches;
 }
