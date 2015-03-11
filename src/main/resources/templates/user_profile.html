@@ -26,7 +26,7 @@
 
 					<form id="editForm" action="#" th:action="@{/edit_user}" th:object="${user}" method="post">
 									<span>
-										<input id="stars_rating" type="number" class="rating" data-min="0" data-max="10"
+										Rate your skills: <input id="stars_rating" type="number" class="rating" data-min="0" data-max="10"
 											   data-step="0.1" th:field="*{rating}"
 											   data-stars="10" data-size="xs"/>
 
@@ -50,10 +50,6 @@
 							<span th:text="${lost}"></span>
 							Loses
 						</li>
-						<li>
-							<span th:text="${#numbers.formatDecimal(wonLostRatio, 0, 'COMMA', 2, 'POINT')}">0.00</span>
-							Ratio
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -61,7 +57,6 @@
 			<div class="row user-profile-table">
 				<div class="col-sm-12 col-md-12">
 					<div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
-
 				</div>
 			</div>
 
