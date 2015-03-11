@@ -104,7 +104,7 @@ public class Match {
 
 	public String getFormatedDateOfMatch() {
 		Date date = new Date(dateOfMatch.getTime());
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy' 'HH:mm:ss:S");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm', 'dd.MM.yyyy");
 		return simpleDateFormat.format(date);
 	}
 
