@@ -13,6 +13,6 @@ public interface TeamPlayers {
     User getFirstPlayer();
     @ResultColumn("user2")
     User getSecondPlayer();
-    @ResultColumn("matches")
-    int getNumberOfMatches();
+    @ResultColumn("value")
+    int getValue();
 }

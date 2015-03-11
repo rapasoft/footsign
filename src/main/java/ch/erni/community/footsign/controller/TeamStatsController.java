@@ -2,10 +2,12 @@ package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.dto.TeamPlayersDTO;
 import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.util.GraphBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,13 +19,16 @@ import java.util.List;
 public class TeamStatsController {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    
+    @Autowired
+    private GraphBuilder graphBuilder;
 
-    List<TeamPlayersDTO> mostPlayedTeam;
+    List<TeamPlayersDTO<Long>> mostPlayedTeam;
 
-    List<TeamPlayersDTO> bestTeams;
+    List<TeamPlayersDTO<Long>> bestTeams;
 
-    List<TeamPlayersDTO> worstTeams;
+    List<TeamPlayersDTO<Long>> worstTeams;
 
     @RequestMapping("/stats_team")
     public String teamStats(Model model) {
@@ -45,5 +50,26 @@ public class TeamStatsController {
         }
 
         return "stats_team";
+    }
+
+    @RequestMapping("top_teams_graph_data")
+    public
+    @ResponseBody
+    String getDataForTopPlayersChart() {
+        return graphBuilder.serializeDataForTeamChart("Team", "Top 10 teams", bestTeams);
+    }
+
+    @RequestMapping("worst_teams_graph_data")
+    public
+    @ResponseBody
+    String getDataForWorstPlayersChart() {
+        return graphBuilder.serializeDataForTeamChart("Team", "Not so good 10 teams", worstTeams);
+    }
+
+    @RequestMapping("most_played_team_graph_data")
+    public
+    @ResponseBody
+    String getDataForMostPlayedChart() {
+        return graphBuilder.serializeDataForTeamChart("Team", "Most played teams", mostPlayedTeam);
     }
 }

@@ -23,7 +23,7 @@
                     <tr th:each="item : ${best_teams}">
                         <td th:text="${item.player1}">${item.player1}</td>
                         <td th:text="${item.player2}">${item.player2}</td>
-                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
+                        <td class="col-md-3" th:text="${item.value}">${item.matches}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -49,7 +49,7 @@
                     <tr th:each="item : ${worst_teams}">
                         <td th:text="${item.player1}">${item.player1}</td>
                         <td th:text="${item.player2}">${item.player2}</td>
-                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
+                        <td class="col-md-3" th:text="${item.value}">${item.matches}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -75,15 +75,27 @@
                     <tr th:each="item : ${most_team_players}">
                         <td th:text="${item.player1}">${item.player1}</td>
                         <td th:text="${item.player2}">${item.player2}</td>
-                        <td class="col-md-3" th:text="${item.matches}">${item.matches}</td>
+                        <td class="col-md-3" th:text="${item.value}">${item.matches}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="col-md-6 stats-chart">
-                <div id="topPlayersPiechart"></div>
+                <div id="mostPlayedTeamsPiechart"></div>
             </div>
         </div>
+
+        <script th:inline="javascript">
+
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+            function drawChart( ) {
+
+                getDataForColumnChart("/footsign/top_teams_graph_data", "Top 10", "topTeamsPiechart");
+                getDataForColumnChart("/footsign/worst_teams_graph_data", "'Not so good' 10", "worstTeamsPiechart");
+                getDataForColumnChart("/footsign/most_played_team_graph_data", "Most played", "mostPlayedTeamsPiechart");
+            }
+        </script>
 
     </div>
 </body>

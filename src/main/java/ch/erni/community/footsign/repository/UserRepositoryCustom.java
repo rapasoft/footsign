@@ -21,10 +21,10 @@ public interface UserRepositoryCustom {
 
 	List<CustomPlayerDTO<Long>> findPlayersWithWorstScorePlayersCustom();
 
-	List<TeamPlayersDTO> findTeamWithMostMatchesCustom();
+	List<TeamPlayersDTO<Long>> findTeamWithMostMatchesCustom();
 
-	List<TeamPlayersDTO> findBestTenTeamsCustom();
+	List<TeamPlayersDTO<Long>> findBestTenTeamsCustom();
 
-	List<TeamPlayersDTO> findWorstTenTeamsCustom();
+	List<TeamPlayersDTO<Long>> findWorstTenTeamsCustom();
 
 }

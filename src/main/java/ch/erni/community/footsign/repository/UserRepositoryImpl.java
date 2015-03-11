@@ -107,33 +107,33 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Override
 	@Transactional
-	public List<TeamPlayersDTO> findTeamWithMostMatchesCustom(){
+	public List<TeamPlayersDTO<Long>> findTeamWithMostMatchesCustom(){
 		Iterable<TeamPlayers> mostTeam =  userRepository.findTeamWithMostMatches();
-		List<TeamPlayersDTO> mostPlayedTeam = new ArrayList<>();
+		List<TeamPlayersDTO<Long>> mostPlayedTeam = new ArrayList<>();
 		for (TeamPlayers team : mostTeam) {
-			mostPlayedTeam.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getNumberOfMatches()));
+			mostPlayedTeam.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
 		}
 		return mostPlayedTeam;
 	}
 
 	@Override
 	@Transactional
-	public List<TeamPlayersDTO> findBestTenTeamsCustom() {
+	public List<TeamPlayersDTO<Long>> findBestTenTeamsCustom() {
 		Iterable<TeamPlayers> bestTeams =  userRepository.findBestTenTeams();
-		List<TeamPlayersDTO> bestPlayedTeams = new ArrayList<>();
+		List<TeamPlayersDTO<Long>> bestPlayedTeams = new ArrayList<>();
 		for (TeamPlayers team : bestTeams) {
-			bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getNumberOfMatches()));
+			bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
 		}
 		return bestPlayedTeams;
 	}
 
 	@Override
 	@Transactional
-	public List<TeamPlayersDTO> findWorstTenTeamsCustom() {
+	public List<TeamPlayersDTO<Long>> findWorstTenTeamsCustom() {
 		Iterable<TeamPlayers> worstTeams =  userRepository.findWorstTenTeams();
-		List<TeamPlayersDTO> worstPlayedTeams = new ArrayList<>();
+		List<TeamPlayersDTO<Long>> worstPlayedTeams = new ArrayList<>();
 		for (TeamPlayers team : worstTeams) {
-			worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getNumberOfMatches()));
+			worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
 		}
 		return worstPlayedTeams;
 	}

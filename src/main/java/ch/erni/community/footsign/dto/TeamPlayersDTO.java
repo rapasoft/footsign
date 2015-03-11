@@ -11,17 +11,17 @@ public class TeamPlayersDTO<VALUE extends Number> {
 
     private User player2;
 
-    private VALUE matches;
+    private VALUE value;
 
-    public TeamPlayersDTO(User player1, User player2, VALUE matches) {
+    public TeamPlayersDTO(User player1, User player2, VALUE value) {
         this.player1 = player1;
         this.player2 = player2;
-        this.matches = matches;
+        this.value = value;
     }
 
-    public VALUE getMatches() { return matches; }
+    public VALUE getValue() { return value; }
 
-    public void setMatches(VALUE matches) { this.matches = matches; }
+    public void setValue(VALUE value) { this.value = value; }
 
     public User getPlayer1() {
         return player1;
@@ -37,6 +37,10 @@ public class TeamPlayersDTO<VALUE extends Number> {
 
     public void setPlayer2(User player2) {
         this.player2 = player2;
+    }
+    
+    public String getTeamDomainNames() {
+        return getPlayer1().getDomainShortName() + ", " + getPlayer2().getDomainShortName();
     }
 
 }

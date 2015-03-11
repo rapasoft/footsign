@@ -18,7 +18,7 @@ public interface TeamRepository {
 			"with user,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +
 			"with user,count(distinct m) as matches\n" +
-			"return user.,  matches " +
+			"return user,  matches " +
 			"order by matches desc limit 10")
 	List<CustomPlayer> findBestTenTeams();
 }

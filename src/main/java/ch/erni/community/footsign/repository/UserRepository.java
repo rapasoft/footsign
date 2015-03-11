@@ -29,9 +29,9 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 	 */
 	@Query("match (user1:User)--(m:Match)--(user2:User)\n" +
 			"where ((user1)<-[:TEAM2]-(m)-[:TEAM2]->(user2) OR(user1)<-[:TEAM1]-(m)-[:TEAM1]->(user2) ) AND ID(user1) < ID(user2)\n" +
-			"with user1, user2, count(distinct m) as matches\n" +
-			"return user1, user2,  matches\n" +
-			"order by matches desc Limit 10")
+			"with user1, user2, count(distinct m) as value\n" +
+			"return user1, user2,  value\n" +
+			"order by value desc Limit 10")
 	List<TeamPlayers> findTeamWithMostMatches();
 
 	@Query("match (user1:User)--(m:Match)--(user2:User), (m)-->(g:Game)\n" +
@@ -46,9 +46,9 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			")) AND ID(user1) < ID(user2)\n" +
 			"with user1, user2, count(distinct g) as games, m\n" +
 			"where games >= 2\n" +
-			"with user1, user2, count(distinct m) as matches\n" +
-			"return user1, user2,  matches\n" +
-			"order by matches desc LIMIT 10")
+			"with user1, user2, count(distinct m) as value\n" +
+			"return user1, user2, value\n" +
+			"order by value desc LIMIT 10")
 	List<TeamPlayers> findBestTenTeams();
 
 	@Query("match (user1:User)--(m:Match)--(user2:User), (m)-->(g:Game)\n" +
@@ -63,9 +63,9 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			")) AND ID(user1) < ID(user2)\n" +
 			"with user1, user2, count(distinct g) as games, m\n" +
 			"where games >= 2\n" +
-			"with user1, user2, count(distinct m) as matches\n" +
-			"return user1, user2,  matches\n" +
-			"order by matches desc LIMIT 10")
+			"with user1, user2, count(distinct m) as value\n" +
+			"return user1, user2,  value\n" +
+			"order by value desc LIMIT 10")
 	List<TeamPlayers> findWorstTenTeams();
 
 

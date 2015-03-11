@@ -38,7 +38,6 @@ function getDataForPieChart(url, title, componentId) {
     });
 }
 
-//todo @rap: merge with the method above
 function getDataForBarChart(url, title, componentId) {
 
 	$.ajax({
@@ -54,4 +53,21 @@ function getDataForBarChart(url, title, componentId) {
 		}
 
 	});
+}
+
+function getDataForColumnChart(url, title, componentId) {
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var data = google.visualization.arrayToDataTable(data);
+            var options = getGeneralOptions(title);
+            var chart = new google.visualization.ColumnChart(document.getElementById(componentId));
+
+            chart.draw(data, options);
+        }
+
+    });
 }
