@@ -21,6 +21,10 @@ public class TeamStatsController {
 
     List<TeamPlayersDTO> mostPlayedTeam;
 
+    List<TeamPlayersDTO> bestTeams;
+
+    List<TeamPlayersDTO> worstTeams;
+
     @RequestMapping("/stats_team")
     public String teamStats(Model model) {
 
@@ -28,6 +32,16 @@ public class TeamStatsController {
 
         if(mostPlayedTeam != null) {
             model.addAttribute("most_team_players", mostPlayedTeam);
+        }
+
+        bestTeams = userRepository.findBestTenTeamsCustom();
+        if (bestTeams != null) {
+            model.addAttribute("best_teams", bestTeams);
+        }
+
+        worstTeams = userRepository.findWorstTenTeamsCustom();
+        if (worstTeams != null) {
+            model.addAttribute("worst_teams", worstTeams);
         }
 
         return "stats_team";

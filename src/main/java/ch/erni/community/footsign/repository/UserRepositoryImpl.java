@@ -116,5 +116,25 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return mostPlayedTeam;
 	}
 
+	@Override
+	@Transactional
+	public List<TeamPlayersDTO> findBestTenTeamsCustom() {
+		Iterable<TeamPlayers> bestTeams =  userRepository.findBestTenTeams();
+		List<TeamPlayersDTO> bestPlayedTeams = new ArrayList<>();
+		for (TeamPlayers team : bestTeams) {
+			bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getNumberOfMatches()));
+		}
+		return bestPlayedTeams;
+	}
 
+	@Override
+	@Transactional
+	public List<TeamPlayersDTO> findWorstTenTeamsCustom() {
+		Iterable<TeamPlayers> worstTeams =  userRepository.findWorstTenTeams();
+		List<TeamPlayersDTO> worstPlayedTeams = new ArrayList<>();
+		for (TeamPlayers team : worstTeams) {
+			worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getNumberOfMatches()));
+		}
+		return worstPlayedTeams;
+	}
 }
