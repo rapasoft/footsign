@@ -54,6 +54,8 @@ public class UserProfileController {
 		model.addAttribute("lost", countLost);
 		model.addAttribute("user", userRepository.findByDomainShortName(domainUserName));
 		model.addAttribute("wonPlayedRatio", countRatio(countWon, matchList.size()));
+		model.addAttribute("wonLostRatioPercent", countRatio(countWon, matchList.size()) * 100);
+
 
 		model.addAttribute("last_matches", lastMatches);
 		return USER_PROFILE;

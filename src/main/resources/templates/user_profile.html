@@ -24,15 +24,26 @@
 
 					<p>
 
-					<form id="editForm" action="#" th:action="@{/edit_user}" th:object="${user}" method="post">
-									<span>
-										Rate your skills: <input id="stars_rating" type="number" class="rating" data-min="0" data-max="10"
-											   data-step="0.1" th:field="*{rating}"
-											   data-stars="10" data-size="xs"/>
+						<form id="editForm" action="#" th:action="@{/edit_user}" th:object="${user}" method="post">
+							<span>
+								Rate your skills: 
+								<input id="stars_rating" type="number" class="rating" data-min="0" data-max="10" data-show-clear="false"
+									   data-step="0.1" th:field="*{rating}"
+									   data-stars="10" data-size="xs"/>
 
-									</span>
-						<!--<button id="edit_user_profile" class="btn btn-primary">Edit</button>-->
-					</form>
+							</span>
+							<!--<button id="edit_user_profile" class="btn btn-primary">Edit</button>-->
+						</form>
+					</p>
+
+					<p>
+						<span>
+							Rating by FootSign:
+							<input id="stars_rating_ratio" type="number" class="rating" data-min="0" data-max="10"
+								   data-step="0.1" data-stars="10" data-size="xs" data-readonly="true" data-show-clear="false" data-default-caption="Ratio: {rating}"
+								   th:value="${#numbers.formatDecimal(wonLostRatioPercent, 0, 'COMMA', 2, 'POINT')}"/>
+
+						</span>
 					</p>
 					<!-- Split button -->
 				</div>
