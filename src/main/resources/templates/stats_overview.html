@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:include="layout :: page">
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title>FootSign / Stats - Overview</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row well well-lg">
+            <div class="col-sm-6 col-md-6">
+                <h3>Best ratio: </h3>
+                <div class="col-sm-6 col-md-6">
+
+                    <div class="row" th:each="item : ${highest_ratio}">
+                        <h4 style="font-size: 18px" th:text="${item.player}">${item.player}</h4>
+                        <div class="col-md-3" style="font-size: 20px" th:text="${#numbers.formatDecimal(item.value, 1, 'COMMA', 2, 'POINT')}">${item.value}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <h3> Most wins: </h3>
+                <div class="col-sm-6 col-md-6">
+
+                    <div class="row" th:each="item : ${best_player}">
+                        <div style="font-size: 18px" th:text="${item.player}">${item.player}</div>
+                        <div class="col-md-3" style="font-size: 20px" th:text="${item.value}">${item.value}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>

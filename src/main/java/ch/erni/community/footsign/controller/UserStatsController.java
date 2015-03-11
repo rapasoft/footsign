@@ -51,7 +51,7 @@ public class UserStatsController {
 		bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
-		playersWithHighestRatio = matchRepository.findPlayersWithHighestRatioCustom();
+		playersWithHighestRatio = matchRepository.findTenPlayersWithHighestRatioCustom();
 		int countMatches = 0, countWins = 0;
 
 		if (userWmostPlayed != null) {

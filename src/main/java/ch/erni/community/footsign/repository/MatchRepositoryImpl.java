@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 /**
@@ -42,12 +43,45 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 
 	@Transactional
 	@Override
-	public List<CustomPlayerDTO<Double>> findPlayersWithHighestRatioCustom() {
+	public List<CustomPlayerDTO<Double>> findTenPlayersWithHighestRatioCustom() {
 		Iterable<CustomPlayer> mostPlayedUsers = matchRepository.findTenPlayersWithHighestRatio();
 		List<CustomPlayerDTO<Double>> highestRatioCustom = new ArrayList<>();
 		for (CustomPlayer user : mostPlayedUsers) {
 			highestRatioCustom.add(new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue()));
 		}
 		return highestRatioCustom;
+	}
+
+	@Override
+	@Transactional
+	public List<CustomPlayerDTO<Double>> findPlayerWithHighestRatioCustom() {
+		List<CustomPlayer> highestRatioplayers = matchRepository.findTenPlayersWithHighestRatio();
+
+		List<CustomPlayerDTO<Double>>  playersWithSameBestRatio = new ArrayList<>();
+		CustomPlayer bestPlayer = highestRatioplayers.get(0);
+		for (CustomPlayer user : highestRatioplayers) {
+			if(bestPlayer.getValue().equals(user.getValue())) {
+				playersWithSameBestRatio.add(new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue()));
+			} else {
+				break;
+			}
+		}
+		return playersWithSameBestRatio;
+	}
+
+	@Override
+	@Transactional
+	public List<CustomPlayerDTO<Long>> findBestPlayerCustom() {
+		List<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
+		List<CustomPlayerDTO<Long>> bestPlayerSameWins = new ArrayList<>();
+		CustomPlayer bestPlayer = best.get(0);
+		for (CustomPlayer user : best) {
+			if(bestPlayer.getValue().equals(user.getValue())) {
+				bestPlayerSameWins.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
+			} else {
+				break;
+			}
+		}
+		return bestPlayerSameWins;
 	}
 }
