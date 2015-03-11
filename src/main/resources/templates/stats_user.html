@@ -7,9 +7,10 @@
 <body>
     <div th:fragment="content">
         <div class="row well well-lg">
+            <a href="#" class="hide-content-btn">show / hide</a>
             <h3>TOP 10 players with highest win/loss ratio</h3>
 
-            <div class="col-md-6">
+            <div class="col-md-6 stats-table">
 
                 <table id="topRatioTable" class="table table-striped table-hover">
                     <thead>
@@ -26,13 +27,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-chart">
                 <div id="topRatioBarChart"></div>
             </div>
         </div>
         <div class="row well well-lg">
+            <a href="#" class="hide-content-btn">show / hide</a>
             <h3>TOP 10 most won matches</h3>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-table">
 
                 <table id="topPlayersTable" class="table table-striped table-hover">
                     <thead>
@@ -49,13 +51,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-chart">
                 <div id="topPlayersPiechart"></div>
             </div>
         </div>
         <div class="row well well-lg">
+            <a href="#" class="hide-content-btn">show / hide</a>
             <h3>"Not so good" 10 players</h3>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-table">
 
                 <table id="worstPlayersTable" class="table table-striped table-hover">
                     <thead>
@@ -72,13 +75,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-chart">
                 <div id="worstPlayersPiechart"></div>
             </div>
         </div>
         <div class="row well well-lg">
+            <a href="#" class="hide-content-btn">show / hide</a>
             <h3> TOP 10 most played matches</h3>
-            <div class="col-md-6">
+            <div class="col-md-6 stats-table">
                 <table id="lastMatchesTable" class="table table-striped table-hover">
                     <thead>
                     <tr>
@@ -93,7 +97,7 @@
                     </tr>
                     </tbody>
                 </table>
-            </div> <div class="col-md-6">
+            </div> <div class="col-md-6 stats-chart">
                 <div id="mostPlayedPiechart"></div>
             </div>
         </div>

@@ -7,34 +7,20 @@
 <body>
 
 <div th:fragment="content">
-
     <div class="row well well-lg">
+
+        <a href="#" class="hide-content-btn">show / hide</a>
         <h3>The last 10 matches</h3>
-        <div class="col-md-7">
-            <table id="lastMatchesTable" class="table table-striped table-hover result-table">
-                <thead>
-                    <tr>
-                        <th>Members of team 1</th>
-                        <th>Members of team 2</th>
-                        <th>Date and time </th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${last_matches}">
-                        <td th:class="${item.team1Wins()} ? 'winner' : 'looser'"><div th:each="user : ${item.team1}" th:text="${user.fullName}"></div></td>
-                        <td th:class="${item.team2Wins()} ? 'winner' : 'looser'"><div th:each="user : ${item.team2}" th:text="${user.fullName}"></div></td>
-                        <td th:text="${item.formatedDateOfMatch}">${item.formatedDateOfMatch}</td>
-                        <td th:text="${item.matchResultToString()}">${item.matchResultToString()}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <div class="col-md-7 stats-table">
+            <div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 stats-chart">
             <div id="winnersPiechart"></div>
             <div id="loosersPiechart"></div>
         </div>
     </div>
+
 
     <script th:inline="javascript">
 
@@ -46,6 +32,7 @@
             getDataForPieChart("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
         }
     </script>
+
 </div>
 </body>
 </html>
