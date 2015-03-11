@@ -32,12 +32,13 @@
                                 Statistics <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
+                                <li id="statsMenuItemOverview"><a th:href="@{/stats_overview}">Overview</a></li>
                                 <li id="statsMenuItemUser"><a th:href="@{/stats_user}">Users</a></li>
                                 <li id="statsMenuItemTeam"><a th:href="@{/stats_team}">Team</a></li>
                                 <li id="statsMenuItemMatch"><a th:href="@{/stats_match}">Match</a></li>
                             </ul>
                         </li>
-                        <li id="generateUserDataItem"><a th:href="@{/generate}">GENERATE USER DATA!</a></li>
+                        <li id="rulesMenuItem"><a th:href="@{/rules}">Foosball rules</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
@@ -53,6 +54,10 @@
                         //todo @rap: figure this out... cause it's ugly
                         if (rootUrl.match("home")) activeItemId = "homeMenuItem";
                         if (rootUrl.match("user_profile")) activeItemId = "myProfileMenuItem";
+                        if (rootUrl.match("stats_user")) activeItemId = "statsMenuItemUser";
+                        if (rootUrl.match("stats_team")) activeItemId = "statsMenuItemTeam";
+                        if (rootUrl.match("stats_match")) activeItemId = "statsMenuItemMatch";
+                        if (rootUrl.match("rules")) activeItemId = "rulesMenuItem";
 
                         $('#' + activeItemId).addClass("active");
                         /*]]>*/
