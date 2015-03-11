@@ -8,7 +8,7 @@
 <div class="container">
 	<div th:fragment="content">
 		<div class="well well-sm">
-			<div class="row">
+			<div class="row ">
 				<div class="col-sm-2 col-md-2">
 					<img th:src="${photo}" alt="" class="img-rounded img-responsive"/>
 				</div>
@@ -21,16 +21,18 @@
 						<br/>
 						<i class="glyphicon glyphicon-flag"></i> <span th:text="${department}"/>
 					</p>
+
 					<p>
-						<form id="editForm" action="#" th:action="@{/edit_user}" th:object="${user}" method="post">
+
+					<form id="editForm" action="#" th:action="@{/edit_user}" th:object="${user}" method="post">
 									<span>
 										<input id="stars_rating" type="number" class="rating" data-min="0" data-max="10"
 											   data-step="0.1" th:field="*{rating}"
 											   data-stars="10" data-size="xs"/>
 
 									</span>
-							<!--<button id="edit_user_profile" class="btn btn-primary">Edit</button>-->
-						</form>
+						<!--<button id="edit_user_profile" class="btn btn-primary">Edit</button>-->
+					</form>
 					</p>
 					<!-- Split button -->
 				</div>
@@ -48,14 +50,21 @@
 							<span th:text="${lost}"></span>
 							Loses
 						</li>
-                        <li>
-                            <span th:text="${#numbers.formatDecimal(wonLostRatio, 0, 'COMMA', 2, 'POINT')}">0.00</span>
-                            Ratio
-                        </li>
+						<li>
+							<span th:text="${#numbers.formatDecimal(wonLostRatio, 0, 'COMMA', 2, 'POINT')}">0.00</span>
+							Ratio
+						</li>
 					</ul>
 				</div>
 			</div>
 			<!-- row end -->
+			<div class="row user-profile-table">
+				<div class="col-sm-12 col-md-12">
+					<div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
+
+				</div>
+			</div>
+
 		</div>
 	</div>
 
