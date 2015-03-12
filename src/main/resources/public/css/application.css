@@ -61,3 +61,16 @@
 .result-table .looser {
     color: red;
 }
+
+.overview-item-name{
+    font-size: 18px;
+    color: #777;
+}
+.overview-item-value{
+    font-size: 50px;
+    color: #777;
+}
+.overview-item-ratio{
+    font-size: 40px;
+    color: #777;
+}
