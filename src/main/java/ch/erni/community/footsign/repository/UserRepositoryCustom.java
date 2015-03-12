@@ -31,6 +31,8 @@ public interface UserRepositoryCustom {
 
 	List<TeamPlayersDTO<Long>> findWorstTeamsCustom();
 
-	List<CustomPlayerDTO<Long>> findPlayersWithWorstCustom();
+	List<CustomPlayerDTO<Long>> findWorstPlayersCustom();
+
+	List<CustomPlayerDTO<Long>> findTenMostUnderTablePlayersCustom();
 
 }

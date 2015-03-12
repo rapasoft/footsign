@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by veda on 3/6/2015.
@@ -56,15 +57,11 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 	@Transactional
 	public List<CustomPlayerDTO<Double>> findPlayerWithHighestRatioCustom() {
 		List<CustomPlayer> highestRatioplayers = matchRepository.findTenPlayersWithHighestRatio();
-
-		List<CustomPlayerDTO<Double>>  playersWithSameBestRatio = new ArrayList<>();
 		CustomPlayer bestPlayer = highestRatioplayers.get(0);
-		for (CustomPlayer user : highestRatioplayers) {
-			if(bestPlayer.getValue().equals(user.getValue())) {
+		List<CustomPlayer> filteredratio = highestRatioplayers.stream().filter(r->r.getValue().equals(bestPlayer.getValue())).collect(Collectors.toList());
+		List<CustomPlayerDTO<Double>>  playersWithSameBestRatio = new ArrayList<>();
+		for (CustomPlayer user : filteredratio) {
 				playersWithSameBestRatio.add(new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue()));
-			} else {
-				break;
-			}
 		}
 		return playersWithSameBestRatio;
 	}
@@ -73,14 +70,11 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 	@Transactional
 	public List<CustomPlayerDTO<Long>> findBestPlayerCustom() {
 		List<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
-		List<CustomPlayerDTO<Long>> bestPlayerSameWins = new ArrayList<>();
 		CustomPlayer bestPlayer = best.get(0);
-		for (CustomPlayer user : best) {
-			if(bestPlayer.getValue().equals(user.getValue())) {
+		List<CustomPlayer> filteredPlayer = best.stream().filter(p->p.getValue().equals(bestPlayer.getValue())).collect(Collectors.toList());
+		List<CustomPlayerDTO<Long>> bestPlayerSameWins = new ArrayList<>();
+		for (CustomPlayer user : filteredPlayer) {
 				bestPlayerSameWins.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
-			} else {
-				break;
-			}
 		}
 		return bestPlayerSameWins;
 	}

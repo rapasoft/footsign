@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author rap
@@ -142,36 +143,54 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	@Transactional
 	public List<TeamPlayersDTO<Long>> findBestTeamsCustom() {
 		List<TeamPlayers> bestTeams =  userRepository.findBestTenTeams();
-		List<TeamPlayersDTO<Long>> bestPlayedTeams = new ArrayList<>();
 		TeamPlayers bestTeam = bestTeams.get(0);
-		for (TeamPlayers team : bestTeams) {
-			if(bestTeam.getValue() == team.getValue()) {
+		List<TeamPlayers> filteredTeams = bestTeams.stream().filter(t->t.getValue() == bestTeam.getValue()).collect(Collectors.toList());
+		List<TeamPlayersDTO<Long>> bestPlayedTeams = new ArrayList<>();
+		for (TeamPlayers team : filteredTeams) {
 				bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-			} else {
-				break;
-			}
 		}
 		return bestPlayedTeams;
 	}
 
 	@Override
 	@Transactional
+	public List<CustomPlayerDTO<Long>> findWorstPlayersCustom() {
+		List<CustomPlayer> worstPlayers =  userRepository.findPlayersWithWorstScore();
+		CustomPlayer worstPlayer = worstPlayers.get(0);
+		List<CustomPlayer> filteredPlayers = worstPlayers.stream().filter(p->p.getValue().equals(worstPlayer.getValue())).collect(Collectors.toList());
+		List<CustomPlayerDTO<Long>> worstPlayerWithSameValue= new ArrayList<>();
+		for (CustomPlayer player : filteredPlayers) {
+				worstPlayerWithSameValue.add(new CustomPlayerDTO(player.getUser(), (Long) player.getValue()));
+		}
+		return worstPlayerWithSameValue;
+
+	}
+
+	@Override
+	@Transactional
 	public List<TeamPlayersDTO<Long>> findWorstTeamsCustom() {
 		List<TeamPlayers> worstTeams =  userRepository.findWorstTenTeams();
-		List<TeamPlayersDTO<Long>> worstPlayedTeams = new ArrayList<>();
 		TeamPlayers worstTeam = worstTeams.get(0);
-		for (TeamPlayers team : worstTeams) {
-			if(worstTeam.getValue() == team.getValue()) {
+		List<TeamPlayers> filteredTeam = worstTeams.stream().filter(t->t.getValue() == worstTeam.getValue()).collect(Collectors.toList());
+		List<TeamPlayersDTO<Long>> worstPlayedTeams = new ArrayList<>();
+		for (TeamPlayers team : filteredTeam) {
 				worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-			} else {
-				break;
-			}
 		}
 		return worstPlayedTeams;
 	}
 
+
+
 	@Override
-	public List<CustomPlayerDTO<Long>> findPlayersWithWorstCustom() {
-		return null;
+	@Transactional
+	public List<CustomPlayerDTO<Long>> findTenMostUnderTablePlayersCustom() {
+		List<CustomPlayer> undertablePlayers = userRepository.findTenMostUnderTablePlayers();
+		CustomPlayer bestUndertablePlayer = undertablePlayers.get(0);
+		List<CustomPlayer> filteredPlayers =  undertablePlayers.stream().filter(p->p.getValue().equals(bestUndertablePlayer.getValue())).collect(Collectors.toList());
+		List<CustomPlayerDTO<Long>> underTablePlayersWithSameResult= new ArrayList<>();
+		for(CustomPlayer player : filteredPlayers) {
+				underTablePlayersWithSameResult.add(new CustomPlayerDTO(player.getUser(), (Long) player.getValue()));
+		}
+		return underTablePlayersWithSameResult;
 	}
 }

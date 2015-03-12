@@ -68,5 +68,9 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			"order by value desc LIMIT 10")
 	List<TeamPlayers> findWorstTenTeams();
 
-
+	@Query("match (user:User)<--(m:Match)-->(g:Game)\n" +
+			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 0) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 0))\n" +
+			"return  user,count(distinct g)  as value\n" +
+			"order by value desc LIMIT 10")
+	List<CustomPlayer> findTenMostUnderTablePlayers();
 }

@@ -12,7 +12,6 @@
                 <div class="col-sm-10 col-md-10">
                     <div class="row">
                         <div style="font-size: 20px" th:text="${best_team_score}">${item.value}</div>
-                        <hr/>
                     </div>
                     <div class="row" th:each="item : ${best_team}">
                         <span style="font-size: 18px" th:text="${item.player1}">${item.player1}</span>,
@@ -25,7 +24,6 @@
                 <div class="col-sm-10 col-md-10">
                     <div class="row">
                         <div style="font-size: 20px" th:text="${worst_team_score}">${worst_team_score} </div>
-                        <hr />
                     </div>
                     <div class="row" th:each="item : ${worst_team}">
                         <span style="font-size: 18px" th:text="${item.player1}">${item.player1}</span>,
@@ -37,25 +35,23 @@
 
         <div class="row well well-lg">
             <div class="col-sm-6 col-md-6">
-                <h3>Best ratio: </h3>
+                <h3> Most wins: </h3>
                 <div class="col-sm-10 col-md-10">
                     <div class="row">
-                        <div style="font-size: 20px" th:text="${#numbers.formatDecimal(highest_ratio_value * 100, 2, 'COMMA', 2, 'POINT') + '%'}"> </div>
-                        <hr />
+                        <div style="font-size: 20px" th:text="${best_player_score}"></div>
                     </div>
-                    <div class="row " th:each="item : ${highest_ratio}">
+                    <div class="row" th:each="item : ${best_player}">
                         <span style="font-size: 18px" th:text="${item.player}">${item.player}</span>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6">
-                <h3> Most wins: </h3>
+                <h3> Most losses: </h3>
                 <div class="col-sm-10 col-md-10">
                     <div class="row">
-                        <div style="font-size: 20px" th:text="${best_player_score}"></div>
-                        <hr />
+                        <div style="font-size: 20px" th:text="${worst_player_score}"></div>
                     </div>
-                    <div class="row" th:each="item : ${best_player}">
+                    <div class="row" th:each="item : ${worst_player}">
                         <span style="font-size: 18px" th:text="${item.player}">${item.player}</span>
                     </div>
                 </div>
@@ -63,6 +59,30 @@
         </div>
 
 
+        <div class="row well well-lg">
+            <div class="col-sm-6 col-md-6">
+                <h3>Best ratio: </h3>
+                <div class="col-sm-10 col-md-10">
+                    <div class="row">
+                        <div style="font-size: 20px" th:text="${#numbers.formatDecimal(highest_ratio_value * 100, 2, 'COMMA', 2, 'POINT') + '%'}"> </div>
+                    </div>
+                    <div class="row " th:each="item : ${highest_ratio}">
+                        <span style="font-size: 18px" th:text="${item.player}">${item.player}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <h3>Best "UNDER TABLE" players: </h3>
+                <div class="col-sm-10 col-md-10">
+                    <div class="row">
+                        <div style="font-size: 20px" th:text="${best_underTable_score}"> </div>
+                    </div>
+                    <div class="row " th:each="item : ${best_underTable}">
+                        <span style="font-size: 18px" th:text="${item.player}">${item.player}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
