@@ -137,4 +137,41 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		}
 		return worstPlayedTeams;
 	}
+
+	@Override
+	@Transactional
+	public List<TeamPlayersDTO<Long>> findBestTeamsCustom() {
+		List<TeamPlayers> bestTeams =  userRepository.findBestTenTeams();
+		List<TeamPlayersDTO<Long>> bestPlayedTeams = new ArrayList<>();
+		TeamPlayers bestTeam = bestTeams.get(0);
+		for (TeamPlayers team : bestTeams) {
+			if(bestTeam.getValue() == team.getValue()) {
+				bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
+			} else {
+				break;
+			}
+		}
+		return bestPlayedTeams;
+	}
+
+	@Override
+	@Transactional
+	public List<TeamPlayersDTO<Long>> findWorstTeamsCustom() {
+		List<TeamPlayers> worstTeams =  userRepository.findWorstTenTeams();
+		List<TeamPlayersDTO<Long>> worstPlayedTeams = new ArrayList<>();
+		TeamPlayers worstTeam = worstTeams.get(0);
+		for (TeamPlayers team : worstTeams) {
+			if(worstTeam.getValue() == team.getValue()) {
+				worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
+			} else {
+				break;
+			}
+		}
+		return worstPlayedTeams;
+	}
+
+	@Override
+	public List<CustomPlayerDTO<Long>> findPlayersWithWorstCustom() {
+		return null;
+	}
 }
