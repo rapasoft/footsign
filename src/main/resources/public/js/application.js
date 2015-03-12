@@ -2,61 +2,70 @@
  * Created by cepe on 20.02.2015.
  */
 
+var selectizeUserData;
 
 // initialize comboboxes with players
-function initSelect(rootUrl, name) {
-    if (name) {
+function initSelect(rootUrl, names) {
+    if (names) {
 
-        $(name).selectize({
-            labelField: 'secondName',
-            valueField: 'domainUserName',
-            searchField: ['domainUserName', 'secondName', 'firstName'],
-			remoteUrl: rootUrl + "/user_list",
-            preload: true,
-            load: function (query, callback) {
-                $.ajax({
-                    url: this.settings.remoteUrl,
-                    type: 'GET',
-                    dataType: 'json',
-                    error: function() {
-                        callback();
-                    },
-                    success: function(data) {
-                        callback(data);
-                    }
-                });
-            },
-            render: {
-                item: function (item, escape) {
-                    return '<div class="row" style="width: 100%">' +
-                                '<div class="col-md-10">' +
-                                    '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' +
-                                '</div>'+
-                                '<div class="col-md-2">' +
-						'<img class="icon" src="' + rootUrl + '/' + item.photoPath + '">' + '</img>' +
-                                '</div>' +
-                            '</div>';
-                },
-                option: function(item, escape) {
-                    return '<div class="row">' +
-                                '<div class="col-md-10">' +
-                                    '<span class="user">'+
-                                        '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' + ' ' +
-                                        '<span class="domain-name">'+escape(item.domainUserName)+'</span>' +
-                                    '</span>' +
-                                    '<span>' +
-                                        '<span class="department">' + escape(item.department) + '</span>' +
-                                    '</span>' +
-                                '</div>'+
-                                '<div class="col-md-2">' +
-						'<img class="icon" src="' + rootUrl + '/' + item.photoPath + '">' + '</img>' +
-                                '</div>' + 
-                            '</div>';
+        if (selectizeUserData == undefined) {
+            $.ajax({
+                url: rootUrl + "/user_list",
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                success: function(data) {
+                    selectizeUserData = data;
                 }
-                
-            }
-        });
+            });
+        }
+        
+        for(var i = 0; i < names.length; i++) {
+            var name = names[i];
+            makeSelectAlive(name, rootUrl, selectizeUserData)
+            
+        }
     }
+}
+
+function makeSelectAlive(name, rootUrl, data) {
+    $(name).selectize({
+        labelField: 'secondName',
+        valueField: 'domainUserName',
+        searchField: ['domainUserName', 'secondName', 'firstName'],
+        options: data,
+        hideSelected: true,
+        render: {
+            item: function (item, escape) {
+                return '<div class="row" style="width: 100%">' +
+                    '<div class="col-md-10">' +
+                    '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' +
+                    '</div>'+
+                    '<div class="col-md-2">' +
+                    '<img class="icon" src="' + rootUrl + '/' + item.photoPath + '">' + '</img>' +
+                    '</div>' +
+                    '</div>';
+            },
+            option: function(item, escape) {
+                return '<div class="row">' +
+                    '<div class="col-md-10">' +
+                    '<span class="user">'+
+                    '<span class="full-name">'+escape(item.secondName)+ ' ' + escape(item.firstName) + '</span>' + ' ' +
+                    '<span class="domain-name">'+escape(item.domainUserName)+'</span>' +
+                    '</span>' +
+                    '<span>' +
+                    '<span class="department">' + escape(item.department) + '</span>' +
+                    '</span>' +
+                    '</div>'+
+                    '<div class="col-md-2">' +
+                    '<img class="icon" src="' + rootUrl + '/' + item.photoPath + '">' + '</img>' +
+                    '</div>' +
+                    '</div>';
+            }
+
+        }
+    });
+    
 }
 
 function changeGameType(event) {
