@@ -242,7 +242,7 @@ $(document).ready(function () {
 	initStarsRating();
     
     $(".hide-content-btn").click(function () {
-        $(this).parent().find("div.stats-table, div.stats-chart").slideToggle("slow");
+        $(this).parent().parent().parent().find("div.stats-table, div.stats-chart").slideToggle("slow");
     });
 
 });

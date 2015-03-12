@@ -9,8 +9,14 @@
 <div th:fragment="content">
     <div class="row well well-lg">
 
-        <a href="#" class="hide-content-btn">show / hide</a>
-        <h3>The last 10 matches</h3>
+        <div class="row">
+            <div class="col-sm-6 col-xs-8">
+                <h3>The last 10 matches</h3>
+            </div>
+            <div class="col-sm-6 col-xs-4" style="margin-top: 20px">
+                <a href="#" class="hide-content-btn pull-right">show / hide</a>
+            </div>
+        </div>
 
         <div class="col-md-7 stats-table">
             <div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
