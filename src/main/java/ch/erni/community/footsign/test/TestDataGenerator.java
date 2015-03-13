@@ -50,9 +50,9 @@ public class TestDataGenerator {
 			int month = today.get(Calendar.MONTH) +1 ;
 			int day = today.get(Calendar.DAY_OF_MONTH) + (int) (Math.random()*10);
 
-
-			match.setDateOfMatch(Date.from(Instant.parse("2015-"+ String.format("%02d", month) + "-" + String.format("%02d", ((day > 30 ? day % 30 : day  ) + 1)) + "T" +
-					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z")));
+			Date date = Date.from(Instant.parse("2015-" + String.format("%02d", month) + "-" + String.format("%02d", ((day > 30 ? day % 30 : day) + 1)) + "T" +
+					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
+			match.setDateOfMatch(date);
 			match.addGame(generateGame());
 			match.addGame(generateGame());
 
