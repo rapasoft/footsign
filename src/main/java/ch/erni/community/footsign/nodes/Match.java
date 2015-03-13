@@ -23,7 +23,7 @@ public class Match {
 	@GraphId
 	Long matchId;
 
-	Date dateOfMatch;
+	long dateOfMatch;
 
 	boolean planed = false;
 
@@ -42,11 +42,11 @@ public class Match {
 	@Fetch
 	Set<Game> games = new HashSet<Game>();
 
-	public Date getDateOfMatch() {
+	public long getDateOfMatch() {
 		return dateOfMatch;
 	}
 
-	public void setDateOfMatch(Date dateOfMatch) {
+	public void setDateOfMatch(long dateOfMatch) {
 		this.dateOfMatch = dateOfMatch;
 	}
 
@@ -113,7 +113,7 @@ public class Match {
 	}
 
 	public String getFormatedDateOfMatch() {
-		Date date = new Date(dateOfMatch.getTime());
+		Date date = new Date(dateOfMatch);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm', 'dd.MM.yyyy");
 		return simpleDateFormat.format(date);
 	}
