@@ -52,7 +52,7 @@ public class TestDataGenerator {
 
 			Date date = Date.from(Instant.parse("2015-" + String.format("%02d", month) + "-" + String.format("%02d", ((day > 30 ? day % 30 : day) + 1)) + "T" +
 					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
-			match.setDateOfMatch(date);
+			match.setDateOfMatch(date.getTime());
 			match.addGame(generateGame());
 			match.addGame(generateGame());
 
