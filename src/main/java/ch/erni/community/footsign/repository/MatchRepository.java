@@ -56,5 +56,13 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"return user,  value " +
 			"order by value desc limit 10")
 	List<CustomPlayer> findPlayerBestTenPlayers();
+
+	@Query("Match (m:Match {planed : true} ) return m")
+	List<Match> findAllPlanMatches();
+
+	@Query("match(user:User {domainShortName: {0}})--(m:Match {planed : true}) return m")
+	List<Match> findAllPlanMatchesForUser(String domainShortName);
+
+	List<Match> findAllPlanMatchesForToday();
 	
 }

@@ -2,6 +2,7 @@ package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.dto.TeamPlayers;
+import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -73,4 +74,6 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			"return  user,count(distinct g)  as value\n" +
 			"order by value desc LIMIT 10")
 	List<CustomPlayer> findTenMostUnderTablePlayers();
+
+
 }
