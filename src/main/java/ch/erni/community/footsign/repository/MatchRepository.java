@@ -63,6 +63,19 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("match(user:User {domainShortName: {0}})--(m:Match {planed : true}) return m")
 	List<Match> findAllPlanMatchesForUser(String domainShortName);
 
-	List<Match> findAllPlanMatchesForToday();
-	
+	/**
+	 * Input parameters
+	 *long today = Calendar.getInstance().getTimeInMillis();
+	 *Calendar tomorrow = Calendar.getInstance();
+	 *tomorrow.add(Calendar.DATE, 1);
+	 *tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+	 *tomorrow.set(Calendar.MINUTE, 0);
+	 *tomorrow.set(Calendar.SECOND, 0);
+	 *tomorrow.set(Calendar.MILLISECOND, 0);
+	 */
+	@Query("match(user:User)--(m:Match) \n" +
+			"where m.dateOfMatch >= {0} and m.dateOfMatch < {1} \n" +
+			"return distinct m")
+	List<Match> findAllPlanMatchesForToday(long from, long to);
+
 }
