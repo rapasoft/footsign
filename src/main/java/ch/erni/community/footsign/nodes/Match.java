@@ -25,6 +25,8 @@ public class Match {
 
 	Date dateOfMatch;
 
+	boolean planed = false;
+
 	@RelatedTo(type = "TEAM1", direction = Direction.BOTH)
 	private
 	@Fetch
@@ -46,6 +48,14 @@ public class Match {
 
 	public void setDateOfMatch(Date dateOfMatch) {
 		this.dateOfMatch = dateOfMatch;
+	}
+
+	public boolean isPlaned() {
+		return planed;
+	}
+
+	public void setPlaned(boolean isPlaned) {
+		this.planed = isPlaned;
 	}
 
 	public void addPlayersToTeam1(User player) {

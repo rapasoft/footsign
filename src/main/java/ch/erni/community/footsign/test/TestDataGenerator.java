@@ -43,7 +43,7 @@ public class TestDataGenerator {
 
 		for (int i = 0; i < numberOfMatches; i++) {
 			Match match = new Match();
-
+			match.setPlaned(false);
 			match.setDateOfMatch(Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
 					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z")));
 			match.addGame(generateGame());

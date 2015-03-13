@@ -24,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 /**
@@ -107,7 +106,7 @@ public class HomeController {
 
 			Match match = new Match();
 			match.setDateOfMatch(new Date());
-
+			match.setPlaned(false);
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
 			setGamesToMatch(result1, result2, match);
