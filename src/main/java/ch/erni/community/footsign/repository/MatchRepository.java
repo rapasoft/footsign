@@ -17,18 +17,6 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("match(user:User {domainShortName: {0}})--(m:Match) return m")
 	List<Match> findAllByUserDomainShortName(String domainShortName);
 
-	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN m")
-	List<User> findAllPlayedPlayers();
-
-	@Query("match(user:User {domainShortName: {0}})--(m:Match)-[r:GAMES]->(g) return g")
-	List<Game> findAllGamesByUserDomainShortName(String domainShortName);
-
-	@Query("match(user:User {domainShortName: {0}})--(m:Match)-[r:GAMES]->(g) WHERE g.team1Result = 8 return g")
-	List<Game>findAllTeam1WinsGameByUserDomainShortName(String doma);
-
-	@Query("match(user:User {domainShortName: {0}})--(m:Match)-[r:GAMES]->(g) WHERE g.team2Result = 8 return g")
-	List<Game>findAllTeam2WinsGameByUserDomainShortName(String doma);
-
 	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN DISTINCT n ORDER BY n.dateOfMatch DESC LIMIT 10")
 	List<Match> findlastMatches();
 
