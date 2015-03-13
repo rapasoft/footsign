@@ -52,23 +52,15 @@ public class UserStatsController {
 		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
 		playersWithHighestRatio = matchRepository.findTenPlayersWithHighestRatioCustom();
-		int countMatches = 0, countWins = 0;
 
 		if (userWmostPlayed != null) {
-			countMatches = matchRepository.countPlayedMatches(userWmostPlayed);
 			model.addAttribute("user_name", userWmostPlayed.getFullName() + " , " + userWmostPlayed.getDomainShortName());
 		}
 
 		if (userWmostWins != null) {
-			countWins = matchRepository.countWonMatches(userWmostWins);
 			model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
 		}
-
-
-		model.addAttribute("number_of_matches", countMatches);
-		model.addAttribute("number_of_matches_wins", countWins);
-
-
+		
 		model.addAttribute("best_players", bestPlayers);
 		model.addAttribute("worst_players", worstPlayers);
 		model.addAttribute("most_played", mostPlayed);

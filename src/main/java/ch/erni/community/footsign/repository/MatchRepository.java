@@ -38,11 +38,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"return user, wonMatches*(1.0) / allMatches*(1.0) as value\n" +
 			"order by value desc limit 10")
 	List<CustomPlayer> findTenPlayersWithHighestRatio();
-
-	// TODO @rap: make generic for user
-	@Query("match (u:User)--(m:Match) with u, count(distinct(m)) as matches return matches order by matches desc limit 1")
-	int countPlayedMatches(User userWmostPlayed);
-
+	
 	@Query("match (u:User)<--(m:Match)-->(g:Game) \n" +
 			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with u,m,count(g) as countGames \n" +
@@ -61,13 +57,4 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"order by value desc limit 10")
 	List<CustomPlayer> findPlayerBestTenPlayers();
 
-	// TODO @rap: make generic for user
-	@Query("match (u:User)<--(m:Match)-->(g:Game) \n" +
-			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
-			"with u,m,count(g) as countGames \n" +
-			"where countGames >= 2\n" +
-			"with u,count(distinct m) as matches\n" +
-			"return matches " +
-			"order by matches desc limit 1")
-	int countWonMatches(User userWmostWins);
 }
