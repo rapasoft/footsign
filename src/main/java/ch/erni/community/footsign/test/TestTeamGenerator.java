@@ -40,8 +40,9 @@ public class TestTeamGenerator {
         List<Match> matches = new ArrayList<>();
         for(int i=0 ; i< 10; i++ ) {
             Match match = new Match();
-            match.setDateOfMatch(Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
-                    String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z")));
+            Date date = Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
+                    String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
+            match.setDateOfMatch(date.getTime());
             match.addPlayersToTeam1(selectUser1);
             match.addPlayersToTeam1(selectUser2);
             match.addPlayersToTeam2(selectUser3);
@@ -56,8 +57,9 @@ public class TestTeamGenerator {
 
         for(int i=0 ; i< 5; i++ ) {
             Match match = new Match();
-            match.setDateOfMatch(Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
-                    String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z")));
+            Date date = Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
+                    String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
+            match.setDateOfMatch(date.getTime());
             match.addPlayersToTeam1(selectUser1);
             match.addPlayersToTeam1(selectUser2);
 
@@ -74,8 +76,9 @@ public class TestTeamGenerator {
 
         for(int i=0 ; i< 5; i++ ) {
             Match match = new Match();
-            match.setDateOfMatch(Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
-                    String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z")));
+            Date date = Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
+                    String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
+            match.setDateOfMatch(date.getTime());
 
 
             match.addPlayersToTeam1(selectUser2);

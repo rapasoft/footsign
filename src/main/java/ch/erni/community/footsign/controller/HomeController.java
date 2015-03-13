@@ -105,7 +105,7 @@ public class HomeController {
 			}
 
 			Match match = new Match();
-			match.setDateOfMatch(new Date());
+			match.setDateOfMatch(new Date().getTime());
 			match.setPlaned(false);
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
