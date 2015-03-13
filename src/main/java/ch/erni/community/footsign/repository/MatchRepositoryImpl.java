@@ -57,8 +57,10 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 	@Transactional
 	public List<CustomPlayerDTO<Double>> findPlayerWithHighestRatioCustom() {
 		List<CustomPlayer> highestRatioplayers = matchRepository.findTenPlayersWithHighestRatio();
-		CustomPlayer bestPlayer = highestRatioplayers.get(0);
-		List<CustomPlayer> filteredratio = highestRatioplayers.stream().filter(r->r.getValue().equals(bestPlayer.getValue())).collect(Collectors.toList());
+
+		List<CustomPlayer>	filteredratio =  highestRatioplayers.stream().filter(r -> !highestRatioplayers.isEmpty() ?
+				r.getValue().equals(highestRatioplayers.get(0).getValue())  : false ).collect(Collectors.toList());
+
 		List<CustomPlayerDTO<Double>>  playersWithSameBestRatio = new ArrayList<>();
 		for (CustomPlayer user : filteredratio) {
 				playersWithSameBestRatio.add(new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue()));
@@ -70,8 +72,8 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 	@Transactional
 	public List<CustomPlayerDTO<Long>> findBestPlayerCustom() {
 		List<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
-		CustomPlayer bestPlayer = best.get(0);
-		List<CustomPlayer> filteredPlayer = best.stream().filter(p->p.getValue().equals(bestPlayer.getValue())).collect(Collectors.toList());
+		List<CustomPlayer> filteredPlayer = best.stream().filter(p -> !best.isEmpty() ?
+				p.getValue().equals(best.get(0).getValue()) : false).collect(Collectors.toList());
 		List<CustomPlayerDTO<Long>> bestPlayerSameWins = new ArrayList<>();
 		for (CustomPlayer user : filteredPlayer) {
 				bestPlayerSameWins.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));

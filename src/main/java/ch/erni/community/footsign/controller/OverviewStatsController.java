@@ -45,24 +45,31 @@ public class OverviewStatsController {
         worstTeam = userRepository.findWorstTeamsCustom();
         underTablePlayer = userRepository.findTenMostUnderTablePlayersCustom();
 
-        model.addAttribute("highest_ratio",ratioPlayers );
-        model.addAttribute("highest_ratio_value", !ratioPlayers.isEmpty() ? ratioPlayers.get(0).getValue() : "");
-        model.addAttribute("best_player",bestPlayers );
-        model.addAttribute("best_player_score", !bestPlayers.isEmpty() ? bestPlayers.get(0).getValue()  : "");
+        if(!ratioPlayers.isEmpty() ) {
+            model.addAttribute("highest_ratio", ratioPlayers);
+            model.addAttribute("highest_ratio_value", !ratioPlayers.isEmpty() ? ratioPlayers.get(0).getValue() : "");
+        }
+        if(!bestPlayers.isEmpty()) {
+            model.addAttribute("best_player", bestPlayers);
+            model.addAttribute("best_player_score", !bestPlayers.isEmpty() ? bestPlayers.get(0).getValue() : "");
+        }
 
-
-        model.addAttribute("worst_player",worstPlayer );
-        model.addAttribute("worst_player_score", !worstPlayer.isEmpty() ? worstPlayer.get(0).getValue() : "" );
-
-        model.addAttribute("best_team",bestTeam );
-        model.addAttribute("best_team_score", !bestTeam.isEmpty() ? bestTeam.get(0).getValue() : "" );
-
-        model.addAttribute("worst_team",worstTeam );
-        model.addAttribute("worst_team_score",!worstTeam.isEmpty() ? worstTeam.get(0).getValue() :"" );
-
-        model.addAttribute("best_underTable", underTablePlayer);
-        model.addAttribute("best_underTable_score", !underTablePlayer.isEmpty() ? underTablePlayer.get(0).getValue() :"" );
-
+        if(!worstPlayer.isEmpty()) {
+            model.addAttribute("worst_player", worstPlayer);
+            model.addAttribute("worst_player_score", !worstPlayer.isEmpty() ? worstPlayer.get(0).getValue() : "");
+        }
+        if(!bestTeam.isEmpty()) {
+            model.addAttribute("best_team", bestTeam);
+            model.addAttribute("best_team_score", !bestTeam.isEmpty() ? bestTeam.get(0).getValue() : "");
+        }
+        if(!worstTeam.isEmpty()) {
+            model.addAttribute("worst_team", worstTeam);
+            model.addAttribute("worst_team_score", !worstTeam.isEmpty() ? worstTeam.get(0).getValue() : "");
+        }
+        if(!underTablePlayer.isEmpty()) {
+            model.addAttribute("best_underTable", underTablePlayer);
+            model.addAttribute("best_underTable_score", !underTablePlayer.isEmpty() ? underTablePlayer.get(0).getValue() : "");
+        }
         return "stats_overview";
     }
 
