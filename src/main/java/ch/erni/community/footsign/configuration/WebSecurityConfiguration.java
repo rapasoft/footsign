@@ -33,6 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/home").fullyAuthenticated()
 				.antMatchers("/user_profile").fullyAuthenticated()
 				.antMatchers("/user_list").fullyAuthenticated()
+				.antMatchers("/plane*").fullyAuthenticated()
 				.antMatchers("/stats*").fullyAuthenticated()
 
 				.and()
