@@ -13,46 +13,42 @@
 
 
     <div th:fragment="content">
-
-        <!--<div class="cal-row-fluid cal-row-head">
-            <% _.each(days_name, function(name){ %>
-            <div class="cal-cell1"><%= name %></div>
-            <% }) %>
-        </div>
-        <div class="cal-month-box">
-            <% for(i = 0; i < 6; i++) { %>
-            <% if(cal.stop_cycling == true) break; %>
-            <div class="cal-row-fluid cal-before-eventlist">
-                <div class="cal-cell1 cal-cell" data-cal-row="-day1"><%= cal._day(i, day++) %></div>
-                <div class="cal-cell1 cal-cell" data-cal-row="-day2"><%= cal._day(i, day++) %></div>
-                <div class="cal-cell1 cal-cell" data-cal-row="-day3"><%= cal._day(i, day++) %></div>
-                <div class="cal-cell1 cal-cell" data-cal-row="-day4"><%= cal._day(i, day++) %></div>
-                <div class="cal-cell1 cal-cell" data-cal-row="-day5"><%= cal._day(i, day++) %></div>
-                <div class="cal-cell1 cal-cell" data-cal-row="-day6"><%= cal._day(i, day++) %></div>
-                <div class="cal-cell1 cal-cell" data-cal-row="-day7"><%= cal._day(i, day++) %></div>
+        
+        <div class="container">
+            <div class="row text-center">
+                Date: <span id="plannedDate"></span>
             </div>
-            <% } %>
-        </div>-->
-        
-        
-        <!--<div class="container">
             <div class="row">
                 <div class='col-sm-6'>
                     <div class="form-group">
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                            </span>
                         </div>
                     </div>
                 </div>
                 <script th:inline="javascript">
-                    $(function () {
-                        $('#datetimepicker1').datetimepicker();
+                    $(document).ready(function () {
+                        var minDate = new Date();
+                        minDate.setDate(minDate.getDate() - 1);
+                        var maxDate = new Date();
+                        maxDate.setMonth(maxDate.getMonth() + 1);
+                        
+                        $('#datetimepicker1').datepicker({
+                            daysOfWeekDisabled: [0,6],
+                            inline: true,
+                            format: 'DD.MM.YYYY',
+                            startDate: minDate,
+                            endDate: maxDate,
+                            calendarWeeks: true,
+                            todayHighlight: true
+                        });
+
+                        $('#datetimepicker1').datepicker().on("changeDate", function(e) {
+                            $("#plannedDate").html($(this).datepicker('getDate'))
+                        });
                     });
                 </script>
             </div>
-        </div>-->
+        </div>
     </div>
 
 </body>
