@@ -16,15 +16,15 @@
                     </div>
                 </div>
                 <div class="col-sm-3 ">
-                    <div class="overview-item-value" th:text="${best_team_score}">${item.value}</div>
+                    <div class="overview-item-value" th:text="${best_team_score}">${item.value}00</div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="row col-sm-9">
                     <h3> Team with most losses </h3>
                     <div class="overview-item-name" th:each="item : ${worst_team}">
-                        <span style="font-size: 18px" th:text="${item.player1}">${item.player1}</span>,
-                        <span style="font-size: 18px" th:text="${item.player2}">${item.player2}</span>
+                        <span  th:text="${item.player1}">${item.player1}</span>,
+                        <span  th:text="${item.player2}">${item.player2}</span>
                     </div>
                 </div>
                 <div class="col-sm-3 ">
@@ -49,7 +49,7 @@
                 <div class="row col-sm-9 ">
                 <h3> Most losses </h3>
                     <div class="overview-item-name" th:each="item : ${worst_player}">
-                        <span style="font-size: 18px" th:text="${item.player}">${item.player}</span>
+                        <span th:text="${item.player}">${item.player}</span>
                     </div>
                 </div>
                 <div class="col-sm-3 ">
@@ -75,7 +75,7 @@
                 <div class="row col-sm-9 ">
                     <h3>Best ratio </h3>
                     <div class="overview-item-name" th:each="item : ${highest_ratio}">
-                        <span style="font-size: 18px" th:text="${item.player}">${item.player}</span>
+                        <span  th:text="${item.player}">${item.player}</span>
                     </div>
                 </div>
                 <div class="col-sm-3 ">

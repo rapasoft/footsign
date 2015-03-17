@@ -63,14 +63,32 @@
 }
 
 .overview-item-name{
-    font-size: 18px;
+    font-size: 1.2em;
     color: #777;
 }
 .overview-item-value{
-    font-size: 50px;
+    font-size: 3.3em;
+    margin-top: 15px;
     color: #777;
 }
 .overview-item-ratio{
-    font-size: 40px;
+    font-size: 3.3em;
+    margin-top: 15px;
     color: #777;
+}
+
+@media (max-width: 1200px) {
+    .overview-item-ratio{
+        font-size: 2.8em;
+    }
+}
+@media (max-width: 990px) {
+    .overview-item-ratio{
+        font-size: 2.4em;
+    }
+}
+@media (max-width: 767px) {
+    .overview-item-ratio{
+        font-size: 3.3em;
+    }
 }
