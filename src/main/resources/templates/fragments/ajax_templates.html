@@ -3,9 +3,59 @@
 <head>
 </head>
 <body>
-<div id="planedMatchesOneDay" th:fragment="planed_matches_one_day(matches)">
-    This is content for planned matches
-    <p th:text="${matches}"></p>
+<div id="plannedMatchesOneDay" th:fragment="planned_matches_one_day(matches)">
+
+    <form th:id="'form_' + ${item.key}" th:action="@{/saveMatchAsPlanned}" method="post" th:each="item, stat: ${matches}" >
+        <div class="row well">
+            <!-- time -->
+            <div class="col-md-1">
+                <input type="hidden" th:id="'timestamp_' + ${item.key}" th:value="${item.key} "/>
+                <strong><span th:text="${#dates.format(item.value.date, 'HH:mm')}"></span></strong>
+            </div>
+
+            <!-- team 1 -->
+            <div th:if="${item.value.match != null}" class="col-md-5">
+                <span th:text="${item.value.match.getPlayersOfTeam1InString()}"></span>
+            </div>
+            <div th:if="${item.value.match == null}" class="col-md-5">
+                <select th:id="'selectTeam1_1_' + ${item.key}" class="user-control"></select>
+                <select th:id="'selectTeam1_2_' + ${item.key}" class="user-control second-player"></select>
+            </div>
+
+            <!-- team 2 -->
+            <div th:if="${item.value.match != null}" class="col-md-5">
+                <span th:text="${item.value.match.getPlayersOfTeam2InString()}"></span>
+            </div>
+            <div th:if="${item.value.match == null}" class="col-md-5">
+                <select th:id="'selectTeam2_1_' + ${item.key}" class="user-control"></select>
+                <select th:id="'selectTeam2_2_' + ${item.key}" class="user-control second-player"></select>
+            </div>
+
+            <!-- action -->
+            <div class="col-md-1">
+                <div th:if="${item.value.match != null}">
+                    <span class="label label-danger">Already occupied</span>
+                </div>
+                <div th:if="${item.value.match == null}">
+                    <span class="label label-success">Still free</span>
+                    <a th:id="'reserve_' + ${item.key}" href="#">Reserve!</a>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
+
+        initSelect(rootUrl, $('[id^="selectTeam1_1_"], [id^="selectTeam1_2_"], [id^="selectTeam2_1_"], [id^="selectTeam2_2_"]'));
+
+        /*]]>*/
+    </script>
+    
 </div>
 
 </body>

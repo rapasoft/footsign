@@ -15,20 +15,41 @@
         
         <div class="container">
             <div class="row text-center">
-                Date: <span id="plannedDate"></span>
+                <h2>
+                    <span id="plannedDate"></span>
+                </h2>
             </div>
             <div class="row">
-                <div class='col-sm-4'>
+                <div class='col-sm-3'>
                     <div class="form-group">
                         <div class='input-group date' id='datetimepicker1'>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-9">
                     <div id="matchesContainer"></div>
                 </div>
 
                 <script th:inline="javascript">
+                    
+                    function readDataForDay(date, resultContainerId) {
+                        if ( date ) {
+                            $("#plannedDate").html(getFormattedDate(date, 'dd M yy'));
+
+                            $.ajax({
+                                url: 'plannedMatchesOneDay',
+                                type: 'GET',
+                                data: {
+                                    dateToShow: getFormattedDate(date, 'dd.mm.yy')
+                                },
+                                success: function (data) {
+                                    $("#" + resultContainerId).html(data);
+                                }
+
+                            });
+                        }
+                    }
+                    
                     $(document).ready(function () {
                         var minDate = new Date();
                         minDate.setDate(minDate.getDate() - 1);
@@ -38,25 +59,19 @@
                         $('#datetimepicker1').datepicker({
                             daysOfWeekDisabled: [0,6],
                             inline: true,
-                            format: 'DD.MM.YYYY',
+                            format: 'dd.mm.yyyy',
                             startDate: minDate,
                             endDate: maxDate,
                             calendarWeeks: true,
                             todayHighlight: true
                         });
 
+                        // init - setting current date and show date at the screen
+                        $('#datetimepicker1').datepicker('setDate', new Date());
+                        readDataForDay($('#datetimepicker1').datepicker('getDate'), 'matchesContainer');
+
                         $('#datetimepicker1').datepicker().on("changeDate", function(e) {
-                            $("#plannedDate").html($(this).datepicker('getDate'))
-
-                            $.ajax({
-                                url: 'planedMatchesOneDay',
-                                type: 'GET',
-                                success: function (data) {
-                                    console.log(data);
-                                    $("#matchesContainer").html(data);
-                                }
-
-                            });
+                            readDataForDay($(this).datepicker('getDate'), 'matchesContainer');
                         });
                     });
                 </script>
