@@ -5,14 +5,16 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
 import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.neo4j.kernel.impl.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,34 +71,23 @@ public class TestPlanMatches {
             match.setDateOfMatch(date.getTime());
             matches.add(match);
         }
-        //matches.forEach( matchRepository :: save);
+        matches.forEach( matchRepository :: save);
 
     }
 
     @Test
     public void testUserPlanMatches(){
-        Assert.assertEquals(matchRepository.findAllPlanMatchesForUser("veda").size(),10);
-    }
-
-    @Test
-    public void testAllPlanMatches(){
-        Assert.assertEquals(matchRepository.findAllPlanMatches().size(),20);
-    }
-
-    @Test
-    public void testIfDateIsOccupied(){
+        Assert.assertEquals(matchRepository.findAllPlanMatchesForUser("veda").size(),matches.size());
+        Assert.assertEquals(matchRepository.findAllPlanMatches().size(),matches.size());
         //test already occupied date
         Match testMatch = matches.get(0);
         long bookForThisDate = testMatch.getDateOfMatch();
 
         //Test reservation 1 month further
-        Calendar today = Calendar.getInstance();
-        today.add(Calendar.MONTH,1);
-        Assert.assertFalse(matchRepository.isDateOccupied(today.getTimeInMillis()));
-    }
+        Calendar todayPlusOne = Calendar.getInstance();
+        todayPlusOne.add(Calendar.MONTH,1);
+        Assert.assertFalse(matchRepository.isDateOccupied(todayPlusOne.getTimeInMillis()));
 
-    @Test
-    public void testMatchesPlanForToday(){
         List<Match> todayMatches = new ArrayList<>();
         for(int i=0; i<10; i++) {
             Match match = new Match();
@@ -118,15 +109,14 @@ public class TestPlanMatches {
 
         long today = Calendar.getInstance().getTimeInMillis();
         Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add(Calendar.DATE, 2);
+        tomorrow.add(Calendar.DATE, 1);
         tomorrow.set(Calendar.HOUR_OF_DAY, 0);
         tomorrow.set(Calendar.MINUTE, 0);
         tomorrow.set(Calendar.SECOND, 0);
         tomorrow.set(Calendar.MILLISECOND, 0);
         Assert.assertEquals(matchRepository.findAllPlanMatchesForToday(today, tomorrow.getTimeInMillis()).size(), 10);
-
-
     }
+
 
     Game generateGame(int team1Result, int team2Result) {
         Game game = new Game();
