@@ -7,8 +7,7 @@
 
 <!--
  watch this:
-  - http://bootstrap-calendar.azurewebsites.net/index-bs3.html
-  - http://eonasdan.github.io/bootstrap-datetimepicker/
+ http://bootstrap-datepicker.readthedocs.org/en/latest/markup.html
  -->
 
 
@@ -19,12 +18,16 @@
                 Date: <span id="plannedDate"></span>
             </div>
             <div class="row">
-                <div class='col-sm-6'>
+                <div class='col-sm-4'>
                     <div class="form-group">
                         <div class='input-group date' id='datetimepicker1'>
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-8">
+                    <div id="matchesContainer"></div>
+                </div>
+
                 <script th:inline="javascript">
                     $(document).ready(function () {
                         var minDate = new Date();
@@ -44,6 +47,16 @@
 
                         $('#datetimepicker1').datepicker().on("changeDate", function(e) {
                             $("#plannedDate").html($(this).datepicker('getDate'))
+
+                            $.ajax({
+                                url: 'planedMatchesOneDay',
+                                type: 'GET',
+                                success: function (data) {
+                                    console.log(data);
+                                    $("#matchesContainer").html(data);
+                                }
+
+                            });
                         });
                     });
                 </script>
