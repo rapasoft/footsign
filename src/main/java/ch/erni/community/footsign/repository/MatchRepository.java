@@ -38,7 +38,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"return user, wonMatches*(1.0) / allMatches*(1.0) as value\n" +
 			"order by value desc limit 10")
 	List<CustomPlayer> findTenPlayersWithHighestRatio();
-	
+
 	@Query("match (u:User)<--(m:Match {planed : false})-->(g:Game) \n" +
 			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with u,m,count(g) as countGames \n" +
@@ -65,17 +65,20 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 
 	/**
 	 * Input parameters
-	 *long today = Calendar.getInstance().getTimeInMillis();
-	 *Calendar tomorrow = Calendar.getInstance();
-	 *tomorrow.add(Calendar.DATE, 1);
-	 *tomorrow.set(Calendar.HOUR_OF_DAY, 0);
-	 *tomorrow.set(Calendar.MINUTE, 0);
-	 *tomorrow.set(Calendar.SECOND, 0);
-	 *tomorrow.set(Calendar.MILLISECOND, 0);
+	 * long today = Calendar.getInstance().getTimeInMillis();
+	 * Calendar tomorrow = Calendar.getInstance();
+	 * tomorrow.add(Calendar.DATE, 1);
+	 * tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+	 * tomorrow.set(Calendar.MINUTE, 0);
+	 * tomorrow.set(Calendar.SECOND, 0);
+	 * tomorrow.set(Calendar.MILLISECOND, 0);
 	 */
-	@Query("match(user:User)--(m:Match) \n" +
+	@Query("match (m:Match {planed : true}) \n" +
 			"where m.dateOfMatch >= {0} and m.dateOfMatch < {1} \n" +
 			"return distinct m")
 	List<Match> findAllPlanMatchesForToday(long from, long to);
+	//is ocupated time
 
+	@Query("Match (m:Match {planed : true} ) where m.dateOfMatch = {0} return m")
+	Match findMatchForThisDate(long time);
 }
