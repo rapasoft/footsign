@@ -8,18 +8,20 @@
 <div class="container">
 
     <div th:fragment="content">
-        <div style="width: 400px; margin: 0 auto;">
+        <div style="max-width: 400px; margin: 0 auto;">
             <form class="form-signin" th:action="@{/login}" method="post">
-                <h2 class="form-signin-heading">Sign in</h2>
+                <h2 class="form-signin-heading">Come on in!</h2>
                 <h5>Please use your ERNI domain name/password</h5>
 
                 <div th:if="${param.error}" class="alert alert-danger">
                     Invalid username. Or is it invalid password? You tell me!
                 </div>
-                <label for="username" class="sr-only">Email address</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="Email address" required="required" autofocus="autofocus"/>
+                <label for="username" class="sr-only">User domain shortcut (e.g. abc)</label>
+                <input type="text" name="username" id="username" class="form-control" style="margin-bottom: 5px;"
+                       placeholder="User domain shortcut (e.g. abc)" required="required" autofocus="autofocus"/>
                 <label for="password" class="sr-only">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="required"/>
+                <input type="password" name="password" id="password" class="form-control" style="margin-bottom: 20px;"
+                       placeholder="Password" required="required"/>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
