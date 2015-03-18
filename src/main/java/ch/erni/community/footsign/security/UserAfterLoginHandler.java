@@ -23,7 +23,7 @@ public class UserAfterLoginHandler extends SavedRequestAwareAuthenticationSucces
 	UserRepository userRepository;
 
 	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
+	ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication auth) throws IOException, ServletException {

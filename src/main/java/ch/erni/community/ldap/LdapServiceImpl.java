@@ -52,7 +52,6 @@ public class LdapServiceImpl implements LdapService {
 				.stream()
 				.filter(userDetails -> userDetails.getDomainUserName().equals(domainUserName))
 				.findFirst()
-				.map(userDetails -> userDetails)
 				.orElseThrow(new UserNotFoundException("User with domain username: " + domainUserName + " not found in the AD."));
 	}
 
@@ -62,7 +61,6 @@ public class LdapServiceImpl implements LdapService {
 				.stream()
 				.filter(userDetails -> userDetails.getEmail().equalsIgnoreCase(email))
 				.findFirst()
-				.map(userDetails -> userDetails)
 				.orElseThrow(new UserNotFoundException("User with email: " + email + " not found in the AD."));
 	}
 
@@ -75,7 +73,6 @@ public class LdapServiceImpl implements LdapService {
 								userDetails.getFirstName().equalsIgnoreCase(firstName.trim()) &&
 										userDetails.getSecondName().equalsIgnoreCase(lastName.trim()))
 				.findFirst()
-				.map(userDetails -> userDetails)
 				.orElseThrow(new UserNotFoundException("User with name: " + firstName + " " + lastName + " not found in the AD."));
 	}
 
