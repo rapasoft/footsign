@@ -34,7 +34,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Autowired
 	private ErniLdapCache erniLdapCache;
-	
+
 	@Autowired
 	private LdapUserHelper ldapUserHelper;
 
@@ -98,7 +98,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	@Override
 	@Transactional
 	public List<CustomPlayerDTO<Long>> findPlayersWithWorstScorePlayersCustom() {
-		Iterable<CustomPlayer> worst =  userRepository.findPlayersWithWorstScore();
+		Iterable<CustomPlayer> worst = userRepository.findPlayersWithWorstScore();
 		List<CustomPlayerDTO<Long>> worstPlayers = new ArrayList<>();
 		for (CustomPlayer user : worst) {
 			worstPlayers.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
@@ -108,89 +108,70 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@Override
 	@Transactional
-	public List<TeamPlayersDTO<Long>> findTeamWithMostMatchesCustom(){
-		Iterable<TeamPlayers> mostTeam =  userRepository.findTeamWithMostMatches();
-		List<TeamPlayersDTO<Long>> mostPlayedTeam = new ArrayList<>();
-		for (TeamPlayers team : mostTeam) {
-			mostPlayedTeam.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-		}
-		return mostPlayedTeam;
+	public List<TeamPlayersDTO<Long>> findTeamWithMostMatchesCustom() {
+		Iterable<TeamPlayers> mostTeam = userRepository.findTeamWithMostMatches();
+		return extractTeamPlayers(mostTeam);
 	}
 
 	@Override
 	@Transactional
 	public List<TeamPlayersDTO<Long>> findBestTenTeamsCustom() {
-		Iterable<TeamPlayers> bestTeams =  userRepository.findBestTenTeams();
-		List<TeamPlayersDTO<Long>> bestPlayedTeams = new ArrayList<>();
-		for (TeamPlayers team : bestTeams) {
-			bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-		}
-		return bestPlayedTeams;
+		Iterable<TeamPlayers> bestTeams = userRepository.findBestTenTeams();
+		return extractTeamPlayers(bestTeams);
 	}
 
 	@Override
 	@Transactional
 	public List<TeamPlayersDTO<Long>> findWorstTenTeamsCustom() {
-		Iterable<TeamPlayers> worstTeams =  userRepository.findWorstTenTeams();
-		List<TeamPlayersDTO<Long>> worstPlayedTeams = new ArrayList<>();
-		for (TeamPlayers team : worstTeams) {
-			worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-		}
-		return worstPlayedTeams;
+		Iterable<TeamPlayers> worstTeams = userRepository.findWorstTenTeams();
+		return extractTeamPlayers(worstTeams);
 	}
 
 	@Override
 	@Transactional
 	public List<TeamPlayersDTO<Long>> findBestTeamsCustom() {
-		List<TeamPlayers> bestTeams =  userRepository.findBestTenTeams();
-		List<TeamPlayers> filteredTeams = bestTeams.stream().filter(t -> !bestTeams.isEmpty() ?
-				t.getValue() == bestTeams.get(0).getValue() : false).collect(Collectors.toList());
-		List<TeamPlayersDTO<Long>> bestPlayedTeams = new ArrayList<>();
-		for (TeamPlayers team : filteredTeams) {
-				bestPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-		}
-		return bestPlayedTeams;
+		List<TeamPlayers> bestTeams = userRepository.findBestTenTeams();
+		List<TeamPlayers> filteredTeams = bestTeams.stream().filter(t -> !bestTeams.isEmpty() && t.getValue() == bestTeams.get(0).getValue()).collect(Collectors.toList());
+		return extractTeamPlayers(filteredTeams);
+	}
+
+
+	@Override
+	@Transactional
+	public List<TeamPlayersDTO<Long>> findWorstTeamsCustom() {
+		List<TeamPlayers> worstTeams = userRepository.findWorstTenTeams();
+		List<TeamPlayers> filteredTeam = worstTeams.stream().filter(t -> !worstTeams.isEmpty() && t.getValue() == worstTeams.get(0).getValue()).collect(Collectors.toList());
+		return extractTeamPlayers(filteredTeam);
 	}
 
 	@Override
 	@Transactional
 	public List<CustomPlayerDTO<Long>> findWorstPlayersCustom() {
-		List<CustomPlayer> worstPlayers =  userRepository.findPlayersWithWorstScore();
-		List<CustomPlayer> filteredPlayers = worstPlayers.stream().filter(p -> !worstPlayers.isEmpty() ?
-				p.getValue().equals(worstPlayers.get(0).getValue()) : false).collect(Collectors.toList());
-		List<CustomPlayerDTO<Long>> worstPlayerWithSameValue= new ArrayList<>();
-		for (CustomPlayer player : filteredPlayers) {
-				worstPlayerWithSameValue.add(new CustomPlayerDTO(player.getUser(), (Long) player.getValue()));
-		}
-		return worstPlayerWithSameValue;
+		List<CustomPlayer> worstPlayers = userRepository.findPlayersWithWorstScore();
+		return extractCustomPlayers(worstPlayers);
 
 	}
-
-	@Override
-	@Transactional
-	public List<TeamPlayersDTO<Long>> findWorstTeamsCustom() {
-		List<TeamPlayers> worstTeams =  userRepository.findWorstTenTeams();
-		List<TeamPlayers> filteredTeam = worstTeams.stream().filter(t-> !worstTeams.isEmpty() ?
-				t.getValue() == worstTeams.get(0).getValue() : false).collect(Collectors.toList());
-		List<TeamPlayersDTO<Long>> worstPlayedTeams = new ArrayList<>();
-		for (TeamPlayers team : filteredTeam) {
-				worstPlayedTeams.add(new TeamPlayersDTO(team.getFirstPlayer(), team.getSecondPlayer(), team.getValue()));
-		}
-		return worstPlayedTeams;
-	}
-
 
 
 	@Override
 	@Transactional
 	public List<CustomPlayerDTO<Long>> findTenMostUnderTablePlayersCustom() {
-		List<CustomPlayer> undertablePlayers = userRepository.findTenMostUnderTablePlayers();
-		List<CustomPlayer> filteredPlayers =  undertablePlayers.stream().filter(p-> !undertablePlayers.isEmpty() ?
-				p.getValue().equals(undertablePlayers.get(0).getValue()) : false).collect(Collectors.toList());
-		List<CustomPlayerDTO<Long>> underTablePlayersWithSameResult= new ArrayList<>();
-		for(CustomPlayer player : filteredPlayers) {
-				underTablePlayersWithSameResult.add(new CustomPlayerDTO(player.getUser(), (Long) player.getValue()));
+		List<CustomPlayer> underTablePlayers = userRepository.findTenMostUnderTablePlayers();
+		return extractCustomPlayers(underTablePlayers);
+	}
+
+	// Helper methods for extracting list of teams/players (to keep it DRY)
+
+	private List<TeamPlayersDTO<Long>> extractTeamPlayers(Iterable<TeamPlayers> teamPlayers) {
+		List<TeamPlayersDTO<Long>> mostPlayedTeam = new ArrayList<>();
+		for (TeamPlayers team : teamPlayers) {
+			mostPlayedTeam.add(new TeamPlayersDTO<>(team.getFirstPlayer(), team.getSecondPlayer(), (long) team.getValue()));
 		}
-		return underTablePlayersWithSameResult;
+		return mostPlayedTeam;
+	}
+
+	private List<CustomPlayerDTO<Long>> extractCustomPlayers(List<CustomPlayer> players) {
+		List<CustomPlayer> filteredPlayers = players.stream().filter(p -> !players.isEmpty() && p.getValue().equals(players.get(0).getValue())).collect(Collectors.toList());
+		return filteredPlayers.stream().map(player -> new CustomPlayerDTO<>(player.getUser(), (Long) player.getValue())).collect(Collectors.toList());
 	}
 }
