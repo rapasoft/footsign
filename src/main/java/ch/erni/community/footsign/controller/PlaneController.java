@@ -3,12 +3,17 @@ package ch.erni.community.footsign.controller;
 import ch.erni.community.footsign.dto.ClientMatch;
 import ch.erni.community.footsign.dto.PlannedMatch;
 import ch.erni.community.footsign.nodes.Match;
+import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
+import ch.erni.community.footsign.repository.UserRepository;
+import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.util.CalendarHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,11 +40,18 @@ public class PlaneController {
     private MatchRepository matchRepository;
     
     @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
     private CalendarHelper calendarHelper;
     
+    private PlannedMatch defaultPlannedMatch;
+    
     @RequestMapping("/plane_match")
-    public String home(Model model) {
-
+    public String home(Model model, Authentication authentication) {
+        this.defaultPlannedMatch = createDefaultPlannedMatch(authentication);
+        model.addAttribute("plannedMatch", defaultPlannedMatch);
+        
         return "plane_match";
     }
     
@@ -59,7 +71,7 @@ public class PlaneController {
             PlannedMatch pl = new PlannedMatch(new Date(cal.getTimeInMillis()));
             if (plannedMatches != null && !plannedMatches.isEmpty()) {
                 Optional<Match> match = plannedMatches.stream().filter(m -> m.getDateOfMatch() == cal.getTimeInMillis()).findFirst();
-                pl.setMatch(match.get());
+                pl.setTimestamp(match.isPresent() ? match.get().getDateOfMatch() : null);
             }
 
             result.put(cal.getTimeInMillis(), pl);
@@ -72,11 +84,28 @@ public class PlaneController {
     }
 
     @RequestMapping(value = "/saveMatchAsPlanned", method = RequestMethod.POST)
-    public ModelAndView saveGame(@ModelAttribute @Valid Match match, BindingResult bindingResult) {
+    public ModelAndView saveGame(@ModelAttribute PlannedMatch plannedMatch, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/plane_match");
+        modelAndView.setViewName("plane_match");
 
-        System.out.println(match);
+        if (bindingResult.hasErrors()) {
+            return modelAndView;
+        }
+
+        try {
+            validPlannedMatch(plannedMatch);
+            userRepository.saveUsersToDB(plannedMatch.getTeam1());
+            userRepository.saveUsersToDB(plannedMatch.getTeam2());
+            Match match = createMatch(plannedMatch);
+
+            matchRepository.save(match);
+            modelAndView.addObject("success", "The match was sucessfully saved.");
+            
+        } catch (Exception e) {
+            ObjectError error = new ObjectError("[global]", e.getMessage());
+            bindingResult.addError(error);
+            return modelAndView;
+        }
 
         return  modelAndView;
     }
@@ -88,6 +117,7 @@ public class PlaneController {
 
             Map<Long, PlannedMatch> plannedMatchMap = createPlannedMap(calendar);
             model.addAttribute("matches", plannedMatchMap);
+            model.addAttribute("plannedMatch", defaultPlannedMatch);
             
         } catch (ParseException e) {
             e.printStackTrace();
@@ -95,5 +125,96 @@ public class PlaneController {
 
 
         return "fragments/ajax_templates :: #plannedMatchesOneDay";
+    }
+    
+    private PlannedMatch createDefaultPlannedMatch(Authentication authentication) {
+
+        PlannedMatch pm = new PlannedMatch();
+        try {
+            
+            ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
+            String  domainUserName = principal.getDomainUserName();
+            User u = userRepository.findByDomainShortName(domainUserName);
+
+            pm.setCurrentUser(u);
+
+            pm.addPlayersToTeam1(u.getDomainShortName());
+            pm.addPlayersToTeam1("");
+            pm.addPlayersToTeam2("");
+            pm.addPlayersToTeam2("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        
+        return pm;
+    }
+    
+    private void validPlannedMatch(PlannedMatch plannedMatch) {
+        if (plannedMatch == null) {
+            System.err.println(this.getClass().getSimpleName() + ", validPlannedMatch -> PlannedMatch is null");
+            throw new IllegalArgumentException("Some strange error is occurred. Please contact your most favorite Java team :)");
+        }
+        
+        if (plannedMatch.getTimestamp() == null)
+            throw new IllegalArgumentException("Time of planned match is not specified");
+
+        if (plannedMatch.getTeam1() == null)
+            throw new IllegalArgumentException("Team 1 is not specified");
+
+        if (plannedMatch.getTeam2() == null)
+            throw new IllegalArgumentException("Team 2 is not specified");
+        
+        List<String> team1 = plannedMatch.getTeam1();
+        List<String> team2 = plannedMatch.getTeam2();
+        long count1 = team1.stream().filter(p -> !p.isEmpty()).count();
+        long count2 = team2.stream().filter(p -> !p.isEmpty()).count();
+
+        if (count1 != count2)
+            throw new IllegalArgumentException("Number of players have to be equals!");
+        
+        if (count1 < 1 || count1 > 2)
+            throw new IllegalArgumentException("Number of players in team 1 have to be 1 or 2! Current number is " + count1);
+
+
+        if (count2 < 1 || count2 > 2)
+            throw new IllegalArgumentException("Number of players in team 2 have to be 1 or 2! Current number is " + count2);
+
+        String users = "";
+        for (String player : team1) {
+            if (users.contains(player))
+                throw new IllegalArgumentException("User can not play more than once: " + player);
+            
+            users += (player + ";");
+        }
+
+        for (String player : team2) {
+            if (users.contains(player))
+                throw new IllegalArgumentException("User can not play more than once: " + player);
+
+            users += (player + ";");
+        }
+
+    }
+    
+    public Match createMatch(PlannedMatch plannedMatch) {
+        if (plannedMatch != null) {
+            Match match = new Match();
+            match.setPlaned(true);
+            match.setDateOfMatch(plannedMatch.getTimestamp());
+            
+            plannedMatch.getTeam1().forEach(p -> {
+                User u = userRepository.findByDomainShortName(p);
+                match.addPlayersToTeam1(u);
+            });
+
+            plannedMatch.getTeam2().forEach(p -> {
+                User u = userRepository.findByDomainShortName(p);
+                match.addPlayersToTeam2(u);
+            });
+            
+            return match;
+        }
+        return null;
+        
     }
 }
