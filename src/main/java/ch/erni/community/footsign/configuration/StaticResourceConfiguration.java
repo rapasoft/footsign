@@ -43,10 +43,12 @@ public class StaticResourceConfiguration extends WebMvcAutoConfiguration.WebMvcA
 
 	private void addGzippedStaticResourceHandler(ResourceHandlerRegistry registry) {
 		boolean isCacheEnabled = Boolean.valueOf(env.getProperty("spring.thymeleaf.cache"));
+		String cachePeriodProperty = env.getProperty("spring.resources.cache-period");
+		int cachePeriod = Integer.parseInt(cachePeriodProperty == null ? "0" : cachePeriodProperty);
 
 		registry.addResourceHandler("/**")
 				.addResourceLocations("/public/", "classpath:/public/")
-				.setCachePeriod(Integer.parseInt(env.getProperty("spring.resources.cache-period")))
+				.setCachePeriod(cachePeriod)
 				.resourceChain(isCacheEnabled)
 				.addResolver(new GzipResourceResolver())
 				.addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"))
