@@ -77,6 +77,7 @@
 				<start-class>ch.erni.community.footsign.Application</start-class>
 				<thymeleaf.cache>true</thymeleaf.cache>
 				<photo.dir>avatars/</photo.dir>
+				<project.dir>C:/footsign/</project.dir>
 			</properties>
 			<build>
 				<plugins>
