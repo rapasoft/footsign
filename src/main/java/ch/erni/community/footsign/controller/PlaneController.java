@@ -110,7 +110,7 @@ public class PlaneController {
     @RequestMapping(value = "/saveMatchAsPlanned", method = RequestMethod.POST)
     public ModelAndView saveGame(@ModelAttribute PlannedMatch plannedMatch, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:plane_match");
+        modelAndView.setViewName("plane_match");
 
         if (bindingResult.hasErrors()) {
             return modelAndView;
