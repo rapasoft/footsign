@@ -183,9 +183,9 @@ function validAllGameInputs() {
     });
     
     if ( isValid ) {
-        $("#addNextRoundBtn").removeClass("disabled");
+        $("#addNextRoundBtn, #saveGameBtn").removeClass("disabled");
     } else {
-        $("#addNextRoundBtn").addClass("disabled");
+        $("#addNextRoundBtn, #saveGameBtn").addClass("disabled");
     }
     return isValid;
 }
@@ -246,7 +246,7 @@ $(document).ready(function () {
         btn3.on("click", showNextRound);
     }
 
-	$(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
+	$(".roundResultInput").change(checkMatchState).change(validateRoundInput);
 	
 	initStarsRating();
     
