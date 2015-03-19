@@ -19,11 +19,11 @@ function initSelect(rootUrl, names) {
                 }
             });
         }
-        
+
         for(var i = 0; i < names.length; i++) {
             var name = names[i];
             makeSelectAlive(name, rootUrl, selectizeUserData)
-            
+
         }
     }
 }
@@ -65,14 +65,14 @@ function makeSelectAlive(name, rootUrl, data) {
 
         }
     });
-    
+
 }
 
 function changeGameType(event) {
     if( event && event.data.gameType) {
-        
+
         var type = event.data.gameType;
-        
+
         if (!isNaN(type) && ( type == 1 || type == 2 )) {
 
             if (type == 1) {
@@ -86,20 +86,20 @@ function changeGameType(event) {
                 $(".game-type-2").addClass("active");
                 $(".game-type-1").removeClass("active");
             }
-            
+
             $("#gameType").val(type)
 
         }
 
     }
-    
+
 }
 
 function switchGamesButtons(isOver) {
-    
+
     if (isOver == undefined) isOver = false;
-    
-    
+
+
     if (isOver) {
         $("#addNextRoundBtn").addClass("hidden");
         $("#saveGameBtn").removeClass("hidden");
@@ -111,14 +111,14 @@ function switchGamesButtons(isOver) {
 
 function showNextRound() {
     $("#addNextRoundBtn").addClass("disabled");
-    
+
     if( $("#resultBlock2").hasClass("hidden") ) {
         $("#resultBlock2").removeClass("hidden");
         $($("#resultBlock2 input:first-child")[0]).focus();
 
         $("#resultBlock1 > div").addClass("has-success");
         $("#resultBlock1 input").attr("readonly", true);
-        
+
         switchGamesButtons(false);
         return;
     }
@@ -128,7 +128,7 @@ function showNextRound() {
 
         $("#resultBlock2 > div").addClass("has-success");
         $("#resultBlock2 input").attr("readonly", true);
-        
+
         switchGamesButtons(true);
     }
 }
@@ -142,9 +142,9 @@ function isGoalsInputValid(value) {
 function isGameInputValid(value1, value2) {
     var int1 = parseInt(value1);
     var int2 = parseInt(value2);
-    
-    return !(isNaN(int1) || isNaN(int2) || int1 == int2);
-    
+
+    return !(isNaN(int1) || isNaN(int2) || int1 == int2 || (int1 < 8 && int2 < 8) || int1 > 8 || int2 > 8);
+
 }
 
 function validateRoundInput() {
@@ -153,7 +153,7 @@ function validateRoundInput() {
     } else {
         $(this).parent().addClass("has-error");
     }
-    
+
     validAllGameInputs();
 }
 
@@ -163,14 +163,14 @@ function validAllGameInputs() {
         if ($(this).is(":visible") && !isGoalsInputValid($(this).val())) {
             isValid = false;
 
-		}
+        }
     });
 
     var games = $(".roundResultBlock:not(.hidden)");
     $(games).each(function (index) {
         var inputs = $(this).find("input");
         if (inputs.length == 2) {
-            
+
             if (!isGameInputValid($(inputs[0]).val(), $(inputs[1]).val())) {
                 isValid = false;
                 $(inputs[0]).parent().addClass("has-error");
@@ -181,11 +181,11 @@ function validAllGameInputs() {
             }
         }
     });
-    
+
     if ( isValid ) {
-        $("#addNextRoundBtn").removeClass("disabled");
+        $("#addNextRoundBtn, #saveGameBtn").removeClass("disabled");
     } else {
-        $("#addNextRoundBtn").addClass("disabled");
+        $("#addNextRoundBtn, #saveGameBtn").addClass("disabled");
     }
     return isValid;
 }
@@ -194,7 +194,7 @@ function isGameOver(score1, score2) {
     if (score1 != undefined && score2 != undefined) {
         var s1 = parseInt(score1);
         var s2 = parseInt(score2);
-        
+
         if (s1 == 2 || s2 == 2) {
             switchGamesButtons(true);
         } else {
@@ -204,27 +204,27 @@ function isGameOver(score1, score2) {
 }
 
 function checkMatchState() {
-	var games = $(".roundResultBlock:not(.hidden)");
-	var score1 = 0, score2 = 0;
-	$(games).each(function (index) {
-		var inputs = $(this).find("input");
-		if (inputs.length == 2) {
-			var val1 = parseInt($(inputs[0]).val());
-			var val2 = parseInt($(inputs[1]).val());
+    var games = $(".roundResultBlock:not(.hidden)");
+    var score1 = 0, score2 = 0;
+    $(games).each(function (index) {
+        var inputs = $(this).find("input");
+        if (inputs.length == 2) {
+            var val1 = parseInt($(inputs[0]).val());
+            var val2 = parseInt($(inputs[1]).val());
 
-			if (val1 > val2) {
-				score1++;
-			} else if (val2 > val1) {
-				score2++
-			}
-		}
+            if (val1 > val2) {
+                score1++;
+            } else if (val2 > val1) {
+                score2++
+            }
+        }
 
-	});
+    });
 
-	$(".team1Result").html(score1);
-	$(".team2Result").html(score2);
+    $(".team1Result").html(score1);
+    $(".team2Result").html(score2);
 
-	isGameOver(score1, score2);
+    isGameOver(score1, score2);
 }
 
 
@@ -241,15 +241,15 @@ $(document).ready(function () {
     if (btn2) {
         btn2.on("click", {gameType: 2}, changeGameType);
     }
-    
+
     if(btn3) {
         btn3.on("click", showNextRound);
     }
 
-	$(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
-	
-	initStarsRating();
-    
+    $(".roundResultInput").change(checkMatchState).change(validateRoundInput);
+
+    initStarsRating();
+
     $(".hide-content-btn").click(function () {
         $(this).parent().parent().parent().find("div.stats-table, div.stats-chart").slideToggle("slow");
     });
@@ -257,46 +257,46 @@ $(document).ready(function () {
 });
 
 function initStarsRating(){
-	$('#stars_rating').rating('refresh', {
-		starCaptions: function(val) {
-			if (val == 0) {
-				return 'Not rated yet';
-			} else if (val <= 2) {
-				return 'Beginner';
-			} else if (val <= 3) {
-				return 'Casual Player';
-			} else if (val <= 5) {
-				return 'Intermediate amateur';
-			} else if (val <= 7) {
-				return 'Advanced amateur';
-			} else if (val <= 9) {
-				return 'Professional player';
-			}
-			else {
-				return 'King :)';
-			}
-		},
-		starCaptionClasses: function(val) {
-			if (val == 0) {
-				return 'label label-default';
-			} else if (val <= 2) {
-				return 'label label-danger';
-			} else if (val <= 3) {
-				return 'label label-warning';
-			} else if (val <= 5) {
-				return 'label label-info';
-			} else if (val <= 7) {
-				return 'label label-primary';
-			} else if (val <= 9) {
-				return 'label label-success';
-			}
-			else {
-				return 'label label-success';
-			}
-		}
-	});
+    $('#stars_rating').rating('refresh', {
+        starCaptions: function(val) {
+            if (val == 0) {
+                return 'Not rated yet';
+            } else if (val <= 2) {
+                return 'Beginner';
+            } else if (val <= 3) {
+                return 'Casual Player';
+            } else if (val <= 5) {
+                return 'Intermediate amateur';
+            } else if (val <= 7) {
+                return 'Advanced amateur';
+            } else if (val <= 9) {
+                return 'Professional player';
+            }
+            else {
+                return 'King :)';
+            }
+        },
+        starCaptionClasses: function(val) {
+            if (val == 0) {
+                return 'label label-default';
+            } else if (val <= 2) {
+                return 'label label-danger';
+            } else if (val <= 3) {
+                return 'label label-warning';
+            } else if (val <= 5) {
+                return 'label label-info';
+            } else if (val <= 7) {
+                return 'label label-primary';
+            } else if (val <= 9) {
+                return 'label label-success';
+            }
+            else {
+                return 'label label-success';
+            }
+        }
+    });
 
-	$('#stars_rating').on('rating.change', function(event, value, caption) {
-		document.getElementById("editForm").submit();
-	});
+    $('#stars_rating').on('rating.change', function(event, value, caption) {
+        document.getElementById("editForm").submit();
+    });
 }
