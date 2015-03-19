@@ -25,6 +25,7 @@ public class MatchTest {
 
 	public static User generateUser(String s) {
 		User user = mock(User.class);
+		Mockito.when(user.getFullName()).thenReturn(s);
 		Mockito.when(user.getDomainShortName()).thenReturn(s);
 		return user;
 	}

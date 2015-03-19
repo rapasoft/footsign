@@ -38,7 +38,7 @@ public class TestDataGenerator {
 		matches.forEach(matchRepository::save);
 	}
 
-	List<Match> generateMatches(int numberOfMatches) {
+	public List<Match> generateMatches(int numberOfMatches) {
 		List<Match> matches = new ArrayList<>();
 
 		for (int i = 0; i < numberOfMatches; i++) {
@@ -74,7 +74,7 @@ public class TestDataGenerator {
 		match.addPlayersToTeam2(selectUser4);
 	}
 
-	User selectUser(User... excludes) {
+	public User selectUser(User... excludes) {
 		List<UserDetails> filtered = erniLdapCache
 				.fetchEskEmployees()
 				.stream()
