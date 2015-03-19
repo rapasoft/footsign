@@ -31,7 +31,4 @@ public interface MatchRepositoryCustom {
 	 *
 	 */
 	List<CustomPlayerDTO<Long>> findBestPlayerCustom();
-
-	boolean isDateOccupied(long time);
-
 }

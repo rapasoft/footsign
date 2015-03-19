@@ -46,8 +46,6 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
             return false;
         }
         
-        int numberOfVictories = 0;
-        
         for (String key : resultsMap.keySet()) {
             List<String> results = resultsMap.get(key);
             
@@ -56,8 +54,6 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
                     if (value == null || value.isEmpty()) value = "0";
                     Integer intVal = Integer.parseInt(value);
 
-                    if (intVal == 8) numberOfVictories++;
-                    
                     if (intVal < min || intVal > max) {
                         cvc.buildConstraintViolationWithTemplate("Result \'" + value + "\' isn\'t correct. Min value is: " + min + ", maxResult value is: " + max).addConstraintViolation();
                         return false;
@@ -68,11 +64,6 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
                     return false;
                 }
             }
-        }
-        
-        if (numberOfVictories < size1) {
-            cvc.buildConstraintViolationWithTemplate("Results aren\'t correct. Each game result have to contain one " + max).addConstraintViolation();
-            return false;
         }
         
         
