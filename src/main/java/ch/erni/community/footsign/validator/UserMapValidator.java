@@ -36,8 +36,8 @@ public class UserMapValidator implements ConstraintValidator<UserMap, Map<String
             isValid = false;
         }
 
-        int size1 = results1.size();
-        int size2 = results2.size();
+        long size1 = results1.stream().filter(u -> u != null && !u.isEmpty()).count();
+        long size2 = results2.stream().filter(u -> u != null && !u.isEmpty()).count();
 
         if (size1 != size2) {
             cvc.buildConstraintViolationWithTemplate("Number of users in team have to be equal").addConstraintViolation();

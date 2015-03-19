@@ -8,6 +8,8 @@ import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.util.CalendarHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +28,17 @@ import java.util.*;
  * Created by cepe on 16.03.2015.
  */
 @Controller(value = "planingMatch")
+@PropertySource("classpath:application.properties")
 public class PlaneController {
 
-    // todo: @cepe - read from properties file
-    private final int INTERVAL = 30;
-    private final int START_HOUR = 8;
-    private final int END_HOUR = 19;
+    @Value("${planning.interval}")
+    private int INTERVAL;
+    
+    @Value("${planning.start_hour}")
+    private int START_HOUR;
+
+    @Value("${planning.end_hour}")
+    private int END_HOUR;
     
     @Autowired
     private MatchRepository matchRepository;
@@ -103,7 +110,7 @@ public class PlaneController {
     @RequestMapping(value = "/saveMatchAsPlanned", method = RequestMethod.POST)
     public ModelAndView saveGame(@ModelAttribute PlannedMatch plannedMatch, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("plane_match");
+        modelAndView.setViewName("redirect:plane_match");
 
         if (bindingResult.hasErrors()) {
             return modelAndView;

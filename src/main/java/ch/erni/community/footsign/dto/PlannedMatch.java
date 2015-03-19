@@ -26,7 +26,6 @@ public class PlannedMatch {
     
     public PlannedMatch(Date date) {
         this.date = date;
-        this.timestamp = date.getTime();
     }
 
     public PlannedMatch() {
