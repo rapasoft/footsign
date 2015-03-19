@@ -32,15 +32,6 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>dev</id>
-			<properties>
-				<project.packaging>war</project.packaging>
-				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
-				<thymeleaf.cache>false</thymeleaf.cache>
-				<photo.dir>${project.basedir}/avatars/</photo.dir>
-			</properties>
-		</profile>
-		<profile>
 			<id>dev-veda</id>
 			<properties>
 				<project.packaging>war</project.packaging>
@@ -173,6 +164,7 @@
 		<finalName>footsign</finalName>
 
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -187,6 +179,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -208,6 +201,12 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.1</version>
 			</plugin>
 		</plugins>
 	</build>
