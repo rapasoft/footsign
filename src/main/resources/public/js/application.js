@@ -143,7 +143,7 @@ function isGameInputValid(value1, value2) {
     var int1 = parseInt(value1);
     var int2 = parseInt(value2);
     
-    return !(isNaN(int1) || isNaN(int2) || int1 == int2);
+    return !(isNaN(int1) || isNaN(int2) || int1 == int2 || (int1 < 8 && int2 < 8) || int1 > 8 || int2 > 8);
     
 }
 
