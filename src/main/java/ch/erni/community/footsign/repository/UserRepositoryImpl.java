@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 /**
  * @author rap
  */
+// TODO @rap: write tests that confirm Neo4J query correctness
 @Service
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
@@ -82,6 +83,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		}
 
 	}
+
+	// TODO @rap: everything that is under this comment should be imho in a separate class
 
 	@Override
 	@Transactional
@@ -151,7 +154,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return extractCustomPlayers(worstPlayers);
 
 	}
-
 
 	@Override
 	@Transactional

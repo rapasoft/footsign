@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -31,9 +32,10 @@ public class MatchStatsController {
     
     private List<Match> matches;
     private Map<String, Integer> winners;
-    private Map<String, Integer> loosers;
-    
-    @RequestMapping("/stats_match")
+
+	private Map<String, Integer> losers;
+
+	@RequestMapping("/stats_match")
     public String teamStats(Model model) {
 
         matches = matchRepository.findlastMatches();
@@ -46,56 +48,40 @@ public class MatchStatsController {
     private void extractUsersToMap() {
 
         initGraphData();
-        
-        List<Match> team1Win = this.matches.stream().filter(m -> m.team1Wins()).collect(Collectors.toList());
-        List<Match> team2Win = this.matches.stream().filter(m -> m.team2Wins()).collect(Collectors.toList());
-        
-        team1Win.forEach(m -> {
-            m.getTeam1().forEach(t1 -> {
-                addToMap(winners, t1);
-            });
-            m.getTeam2().forEach(t2 -> {
-                addToMap(loosers, t2);
-            });
-        });
 
-        team2Win.forEach(m -> {
-            m.getTeam2().forEach(t2 -> {
-                addToMap(winners, t2);
-            });
-            m.getTeam1().forEach(t1 -> {
-                addToMap(loosers, t1);
-            });
-        });
+		List<Match> team1Win = this.matches.stream().filter(Match::team1Wins).collect(Collectors.toList());
+		List<Match> team2Win = this.matches.stream().filter(Match::team2Wins).collect(Collectors.toList());
+
+		Consumer<Match> determineMatchWinners = m -> {
+			m.getTeam1().forEach(t1 -> addToMap(winners, t1));
+			m.getTeam2().forEach(t2 -> addToMap(losers, t2));
+		};
+
+		team1Win.forEach(determineMatchWinners);
+		team2Win.forEach(determineMatchWinners);
 
     }
     
     private void initGraphData() {
-        
         this.winners = new HashMap<>();
-        this.loosers = new HashMap<>();
-        
-        for (Match match : this.matches) {
+		this.losers = new HashMap<>();
+
+		for (Match match : this.matches) {
             Set<User> team1 = match.getTeam1();
             Set<User> team2 = match.getTeam2();
-                     
-            team1.forEach(u -> {
-                if (!this.winners.containsKey(u.getFullName())) {
-                    this.winners.put(u.getFullName(), 0);
-                }
-                if (!this.loosers.containsKey(u.getFullName())) {
-                    this.loosers.put(u.getFullName(), 0);
-                }
-            });
-            team2.forEach(u -> {
-                if (!this.winners.containsKey(u.getFullName())) {
-                    this.winners.put(u.getFullName(), 0);
-                }
-                if (!this.loosers.containsKey(u.getFullName())) {
-                    this.loosers.put(u.getFullName(), 0);
-                }
-            });
-        }
+
+			Consumer<User> determineWinnersAndLosers = u -> {
+				if (!winners.containsKey(u.getFullName())) {
+					winners.put(u.getFullName(), 0);
+				}
+				if (!losers.containsKey(u.getFullName())) {
+					losers.put(u.getFullName(), 0);
+				}
+			};
+
+			team1.forEach(determineWinnersAndLosers);
+			team2.forEach(determineWinnersAndLosers);
+		}
     }
     
     private void addToMap(Map<String, Integer> map, User u) {
@@ -113,7 +99,9 @@ public class MatchStatsController {
 	}
     
     @RequestMapping("/looser_graph_data")
-    private @ResponseBody String graphDataForLoosers() {
-		return graphBuilder.serializeDataForChart("Player", "Number of losses", this.loosers);
+	private
+	@ResponseBody
+	String graphDataForLosers() {
+		return graphBuilder.serializeDataForChart("Player", "Number of losses", this.losers);
 	}
 }
