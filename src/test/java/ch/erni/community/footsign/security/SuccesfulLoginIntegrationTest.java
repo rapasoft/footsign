@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.security;
 
+import ch.erni.community.footsign.event.UserLoggedInEvent;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
@@ -11,10 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neo4j.kernel.impl.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
@@ -31,6 +34,7 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestDataConfiguration.class)
+@WebAppConfiguration
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class SuccesfulLoginIntegrationTest {
@@ -53,6 +57,10 @@ public class SuccesfulLoginIntegrationTest {
 	public void before() {
 		userAfterLoginHandler = spy(new UserAfterLoginHandler());
 		userAfterLoginHandler.userRepository = userRepository;
+
+		ApplicationEventPublisher applicationEventPublisher = mock(ApplicationEventPublisher.class);
+		doNothing().when(applicationEventPublisher).publishEvent(any(UserLoggedInEvent.class));
+		userAfterLoginHandler.applicationEventPublisher = applicationEventPublisher;
 
 		FileDownloader fileDownloader = mock(FileDownloader.class);
 		when(fileDownloader.downloadPhoto(any(), anyString())).thenReturn(new File("/").toPath());
