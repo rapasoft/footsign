@@ -143,7 +143,7 @@ function isGameInputValid(value1, value2) {
     var int1 = parseInt(value1);
     var int2 = parseInt(value2);
     
-    return !(isNaN(int1) || isNaN(int2) || int1 == int2);
+    return !(isNaN(int1) || isNaN(int2) || int1 == int2 || (int1 < 8 && int2 < 8) || int1 > 8 || int2 > 8);
     
 }
 
@@ -183,9 +183,9 @@ function validAllGameInputs() {
     });
     
     if ( isValid ) {
-        $("#addNextRoundBtn").removeClass("disabled");
+        $("#addNextRoundBtn, #saveGameBtn").removeClass("disabled");
     } else {
-        $("#addNextRoundBtn").addClass("disabled");
+        $("#addNextRoundBtn, #saveGameBtn").addClass("disabled");
     }
     return isValid;
 }
@@ -246,7 +246,7 @@ $(document).ready(function () {
         btn3.on("click", showNextRound);
     }
 
-	$(".roundResultInput").keyup(validateRoundInput).keyup(checkMatchState);
+	$(".roundResultInput").change(checkMatchState).change(validateRoundInput);
 	
 	initStarsRating();
     

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+</head>
+<body>
+<div id="plannedMatchesOneDay" th:fragment="planned_matches_one_day(matches)">
+
+    <div class="row well">
+
+        <div class="row">
+            <div class="col-md-2" th:each="item, stat: ${matches}">
+                <div class="text-center"><strong th:id="'match_time_'+${item.key}" th:text="${#dates.format(item.value.date, 'HH:mm')}"></strong></div>
+
+                <div th:if="${item.value.timestamp != null}"  class="text-center">
+                    <span class="label label-danger">Already occupied</span>
+                </div>
+                <div th:if="${item.value.timestamp == null}" class="text-center">
+                    <span class="label label-success">Still free</span><br />
+                    <a th:id="'reserve_' + ${item.key}" class="reserveLink" th:data="${item.key}" href="#">Choose me!</a>
+
+                </div>
+                <br />
+            </div>
+        </div>
+        
+
+
+        <form th:id="match_form" th:action="@{/saveMatchAsPlanned}" method="post" th:object="${plannedMatch}" hidden="hidden">
+
+            
+            <hr />
+            <input type="hidden" id="match_timestamp" th:value="*{timestamp}" th:field="*{timestamp}" />
+
+            <div class="row text-center">
+                <h3 id="match_form_time"></h3>
+            </div>
+            <div class="row">   <!-- components for selecting users: comboboxes -->
+
+                <div class="col-md-5">
+                    <h4>Team 1</h4>
+                    <div style="padding: 5px 0 14px 0">
+                        <span th:text="*{currentUser.fullName}" class="h4"></span>
+                        <input type="hidden" th:field="*{team1[0]}" th:value="*{currentUser.domainShortName}" />
+                    </div>
+                    <div>
+                        
+                        <select th:id="'match_selectLeft2'" th:field="*{team1[1]}" th:value="*{team1[1]}" class="user-control"></select>
+                    </div>
+                </div>
+                <div class="col-md-offset-2 col-md-5">
+                    <h4>Team 2</h4>
+                    <div th:each="i : ${#numbers.sequence(1, 2)}">
+                        <select th:id="'match_selectRight' + ${i}" th:field="*{team2}" th:value="*{team2[__${i-1}__]}" class="user-control"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <button type="submit" class="btn btn-primary">Reserve now!</button>
+            </div>
+        </form>
+        
+    </div>
+    
+
+    <script th:inline="javascript">
+        
+        $(".reserveLink").on("click", function() {
+            var link = this;
+            var timestamp = $(link).attr("data");
+            if ( timestamp ) {
+                $("#match_timestamp").val(timestamp);
+                $("#match_form").removeAttr("hidden");
+                $("#match_form_time").html($("#match_time_"+timestamp).html());
+            }
+            
+        });
+
+        var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
+        initSelect(rootUrl, ["#match_selectLeft2", "#match_selectRight1", "#match_selectRight2"]);
+
+    </script>
+    
+</div>
+
+</body>
+</html>

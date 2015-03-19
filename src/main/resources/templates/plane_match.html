@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:include="layout :: page">
+<head>
+    <title>FootSign / Plane match</title>
+</head>
+<body>
+
+<!--
+ watch this:
+ http://bootstrap-datepicker.readthedocs.org/en/latest/markup.html
+ -->
+
+
+    <div th:fragment="content">
+
+        <div class="alert alert-success" role="alert" th:if="${success}">
+            <strong><span>Success!</span></strong>
+            <span th:text="${success}">Success</span>
+        </div>
+
+        <div class="alert alert-danger" role="alert" th:if="${error}">
+            <strong><span>Error!</span></strong>
+            <span th:text="${error}">Success</span>
+        </div>
+
+        <div class="container">
+            <div class="row text-center">
+                <h2>
+                    <span id="plannedDate"></span>
+                </h2>
+            </div>
+            <div class="row">
+                <div class='col-sm-3'>
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker1'>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div id="matchesContainer"></div>
+                </div>
+
+                <script th:inline="javascript">
+                    
+                    function readDataForDay(date, resultContainerId) {
+                        if ( date ) {
+                            $("#plannedDate").html(getFormattedDate(date, 'dd M yy'));
+
+                            $.ajax({
+                                url: 'plannedMatchesOneDay',
+                                type: 'GET',
+                                data: {
+                                    dateToShow: getFormattedDate(date, 'dd.mm.yy')
+                                },
+                                success: function (data) {
+                                    $("#" + resultContainerId).html(data);
+                                }
+
+                            });
+                        }
+                    }
+                    
+                    $(document).ready(function () {
+                        var minDate = new Date();
+                        var maxDate = new Date();
+                        maxDate.setMonth(maxDate.getMonth() + 1);
+                        
+                        $('#datetimepicker1').datepicker({
+                            daysOfWeekDisabled: [0,6],
+                            inline: true,
+                            format: 'dd.mm.yyyy',
+                            startDate: minDate,
+                            endDate: maxDate,
+                            calendarWeeks: true,
+                            todayHighlight: true
+                        });
+
+                        // init - setting current date and show date at the screen
+                        $('#datetimepicker1').datepicker('setDate', new Date());
+                        readDataForDay($('#datetimepicker1').datepicker('getDate'), 'matchesContainer');
+
+                        $('#datetimepicker1').datepicker().on("changeDate", function(e) {
+                            readDataForDay($(this).datepicker('getDate'), 'matchesContainer');
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

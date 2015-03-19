@@ -2,6 +2,7 @@ package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.dto.CustomPlayerDTO;
+import ch.erni.community.footsign.nodes.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,5 +80,12 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 				bestPlayerSameWins.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
 		}
 		return bestPlayerSameWins;
+	}
+
+	@Override
+	@Transactional
+	public boolean isDateOccupied(long time) {
+		Match match = matchRepository.findMatchForThisDate(time);
+		return match != null ? true : false;
 	}
 }
