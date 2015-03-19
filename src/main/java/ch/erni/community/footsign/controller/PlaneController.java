@@ -1,6 +1,5 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.footsign.dto.ClientMatch;
 import ch.erni.community.footsign.dto.PlannedMatch;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -20,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by cepe on 16.03.2015.
@@ -59,8 +56,24 @@ public class PlaneController {
         Map<Long, PlannedMatch> result = new TreeMap<>();
         Calendar cal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
+        Calendar currentDate = Calendar.getInstance();
+        
         cal.setTime(day.getTime());
         cal.set(Calendar.HOUR_OF_DAY, START_HOUR);
+        if (currentDate.get(Calendar.DAY_OF_MONTH) == day.get(Calendar.DAY_OF_MONTH) && currentDate.get(Calendar.MONTH) == day.get(Calendar.MONTH)) {
+            int hoursValue = currentDate.get(Calendar.HOUR_OF_DAY);
+            int minutesValue = currentDate.get(Calendar.MINUTE);
+            
+            if (hoursValue < END_HOUR) {
+                int min = minutesValue % INTERVAL;
+                int minutes = minutesValue - min + INTERVAL;
+                
+                cal.set(Calendar.MINUTE, minutes == 60 ? 0 : minutes);
+                cal.set(Calendar.HOUR_OF_DAY, minutes == 60 ? hoursValue + 1 : hoursValue);
+            } else {
+                cal.set(Calendar.HOUR_OF_DAY, END_HOUR);
+            }
+        }
 
         endCal.setTime(day.getTime());
         endCal.set(Calendar.HOUR_OF_DAY, END_HOUR);
@@ -99,11 +112,10 @@ public class PlaneController {
             Match match = createMatch(plannedMatch);
 
             matchRepository.save(match);
-            modelAndView.addObject("success", "The match was sucessfully saved.");
+            modelAndView.addObject("success", "The match was sucessfully planned.");
             
         } catch (Exception e) {
-            ObjectError error = new ObjectError("[global]", e.getMessage());
-            bindingResult.addError(error);
+            modelAndView.addObject("error", e.getMessage());
             return modelAndView;
         }
 
