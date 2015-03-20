@@ -38,8 +38,8 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
             return false;
         }
 
-        int size1 = results1.size();
-        int size2 = results2.size();
+        long size1 = results1.stream().filter(r -> r != null && !r.isEmpty()).count();
+        long size2 = results2.stream().filter(r -> r != null && !r.isEmpty()).count();
 
         if (size1 != size2) {
             cvc.buildConstraintViolationWithTemplate("Size of results have to be equal").addConstraintViolation();
@@ -53,7 +53,9 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
 
             for (String value : results) {
                 try {
-                    if (value == null || value.isEmpty()) value = "0";
+                    if (value == null || value.isEmpty()) {
+                        value = "0";
+                    }
                     Integer intVal = Integer.parseInt(value);
 
                     if (intVal == 8) numberOfVictories++;

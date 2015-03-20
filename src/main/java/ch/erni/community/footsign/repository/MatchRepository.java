@@ -17,29 +17,28 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("match(user:User {domainShortName: {0}})--(m:Match) return m")
 	List<Match> findAllByUserDomainShortName(String domainShortName);
 
-	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN DISTINCT n ORDER BY n.dateOfMatch DESC LIMIT 10")
+	@Query("MATCH (m {planed : false})-[r:TEAM1]->(u) RETURN DISTINCT m ORDER BY m.dateOfMatch DESC LIMIT 10")
 	List<Match> findlastMatches();
 
-	@Query("MATCH (user:User {domainShortName: {0}})--(m:Match) RETURN DISTINCT m ORDER BY m.dateOfMatch DESC LIMIT 10")
+	@Query("MATCH (user:User {domainShortName: {0}})--(m:Match {planed : false}) RETURN DISTINCT m ORDER BY m.dateOfMatch DESC LIMIT 10")
 	List<Match> findLastMatchesByDomainName(String domainName);
 
-	@Query("match (u:User)--(m:Match) with u,count(m) as matches return u order by matches desc limit 1")
+	@Query("match (u:User)--(m:Match {planed : false}) with u,count(m) as matches return u order by matches desc limit 1")
 	User findPlayerWithMostPlayedMatches();
 
-	@Query("match (user:User)--(m:Match) with user,count(m) as value return user , value order by value desc limit 10")
+	@Query("match (user:User)--(m:Match {planed : false}) with user,count(m) as value return user , value order by value desc limit 10")
 	List<CustomPlayer> findTenPlayerWithMostMatches();
 
-	@Query("match (user:User)<--(m:Match)-->(g:Game)\n" +
+	@Query("match (user:User)<--(m:Match {planed : false})-->(g:Game)\n" +
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with user,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +
-			"with user,count(distinct m) as wonMatches \n" +
-			"match (user)<--(m2:Match) with user,count(m2) as allMatches, wonMatches\n" +
+			"match (user)<--(m2:Match {planed : false}) with user,count(m2) as allMatches, wonMatches\n" +
 			"return user, wonMatches*(1.0) / allMatches*(1.0) as value\n" +
 			"order by value desc limit 10")
 	List<CustomPlayer> findTenPlayersWithHighestRatio();
-	
-	@Query("match (u:User)<--(m:Match)-->(g:Game) \n" +
+
+	@Query("match (u:User)<--(m:Match {planed : false})-->(g:Game) \n" +
 			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with u,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +
@@ -48,7 +47,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"order by matches desc limit 1")
 	User findPlayerWithMostWins();
 
-	@Query("match (user:User)<--(m:Match)-->(g:Game) \n" +
+	@Query("match (user:User)<--(m:Match {planed : false})-->(g:Game) \n" +
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with user,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +
@@ -56,5 +55,31 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"return user,  value " +
 			"order by value desc limit 10")
 	List<CustomPlayer> findPlayerBestTenPlayers();
+
+	@Query("Match (m:Match {planed : true} ) return m")
+	List<Match> findAllPlanMatches();
+
+	@Query("match(user:User {domainShortName: {0}})--(m:Match {planed : true}) return m")
+	List<Match> findAllPlanMatchesForUser(String domainShortName);
+
+	/**
+	 * Input parameters
+	 * long today = Calendar.getInstance().getTimeInMillis();
+	 * Calendar tomorrow = Calendar.getInstance();
+	 * tomorrow.add(Calendar.DATE, 1);
+	 * tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+	 * tomorrow.set(Calendar.MINUTE, 0);
+	 * tomorrow.set(Calendar.SECOND, 0);
+	 * tomorrow.set(Calendar.MILLISECOND, 0);
+	 */
+	@Query("match (m:Match {planed : true}) \n" +
+			"where m.dateOfMatch >= {0} and m.dateOfMatch < {1} \n" +
+			"return distinct m")
+	List<Match> findAllPlanMatchesForToday(long from, long to);
+	//is ocupated time
+
+	@Query("Match (m:Match {planed : true} ) where m.dateOfMatch = {0} return m")
+	Match findMatchForThisDate(long time);
+
 
 }

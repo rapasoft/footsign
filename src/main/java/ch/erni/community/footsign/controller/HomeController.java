@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -44,12 +45,12 @@ public class HomeController {
 	@Autowired
 	private ErniLdapCache erniLdapCache;
 
-	@RequestMapping("/")
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 		return "index";
 	}
 
-	@RequestMapping("/home")
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(Model model) {
 
 		model.addAttribute("clientMatch", new ClientMatch());
