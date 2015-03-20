@@ -27,6 +27,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -36,6 +38,8 @@ import java.util.Set;
 public class MailService {
 
     private JavaMailSender javaMailSender;
+
+    private static final Logger logger = Logger.getLogger(MailService.class.getName());
 
     @Autowired
     private SpringTemplateEngine springTemplateEngine;
@@ -51,12 +55,11 @@ public class MailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendConfirmationMail(Match match) throws UserNotFoundException, MessagingException {
+    public void sendConfirmationMail(Match match) {
 
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        //User user = team.iterator().next();
         for(User user : team) {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
@@ -68,7 +71,6 @@ public class MailService {
         }
     }
 
-    //todo for plan matches
     public void sendPlaneMatchMail(Match match) throws MessagingException {
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
@@ -83,23 +85,31 @@ public class MailService {
         }
     }
 
-
-    public void sendMail(MailType mailType, String recepientMail, IContext ctx) throws MessagingException{
+    public void sendMail(MailType mailType, String recepientMail, IContext ctx) {
         final MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
-        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
-        message.setFrom("footsign@erni.sk");
-        if(MailType.CONFIRMATION_MAIL.equals(mailType)){
-            message.setSubject("Confirmation mail");
-        }else if(MailType.PLANED_MAIL.equals(mailType)){
-            message.setSubject("Planning mail");
-        }else {
-            message.setSubject("Information mail");
+        try {
+            final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+            setSubjectForMail(mailType, message);
+            message.setFrom("footsign@erni.sk");
+            message.setTo(recepientMail);
+
+            final String text = springTemplateEngine.process(mailType.getValue(), ctx);
+            message.setText(text, true); // true = isHtml
+
+            this.javaMailSender.send(mimeMessage);
+
+        } catch (MessagingException e) {
+            logger.severe(e.getMessage());
         }
-        message.setTo(recepientMail);
+    }
 
-        final String text = springTemplateEngine.process(mailType.getValue(), ctx);
-        message.setText(text, true); // true = isHtml
-
-        this.javaMailSender.send(mimeMessage);
+    private void setSubjectForMail(MailType mailType, MimeMessageHelper helper) throws MessagingException {
+        if(MailType.CONFIRMATION_MAIL.equals(mailType)){
+            helper.setSubject("Confirmation mail");
+        }else if(MailType.PLANED_MAIL.equals(mailType)){
+            helper.setSubject("Planning mail");
+        }else {
+            helper.setSubject("Information mail");
+        }
     }
 }

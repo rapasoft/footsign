@@ -1,9 +1,12 @@
 package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.dto.PlannedMatch;
+import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
+import ch.erni.community.footsign.service.MailService;
+import ch.erni.community.ldap.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 /**
@@ -25,6 +29,9 @@ public class ConfirmationController {
     
     @Autowired
     private MatchRepository matchRepository;
+
+    @Autowired
+    MailService mailService;
     
     @RequestMapping(value = "/confirmations", method = RequestMethod.GET)
     public String index(Model model, Authentication authentication) {
@@ -39,12 +46,12 @@ public class ConfirmationController {
     }
     
     @RequestMapping(value = "/confirm_match", method = RequestMethod.POST)
-    public ModelAndView confirmMatch(String matchId) {
+    public ModelAndView confirmMatch(String matchId ) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("confirmations"));
-        
-        //todo: call action for confirmation the match
-        
+        Match match = matchRepository.findOne(Long.valueOf(matchId));
+        match.setState(MatchState.CONFIRMED);
+        matchRepository.save(match);
         return modelAndView;
     }
 
@@ -52,9 +59,10 @@ public class ConfirmationController {
     public ModelAndView cancelMatch(String matchId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("confirmations"));
+        Match match = matchRepository.findOne(Long.valueOf(matchId));
+        match.setState(MatchState.CANCELLED);
+        matchRepository.save(match);
 
-        //todo: call action for cancellation the match
-        
         return modelAndView;
     }
 }
