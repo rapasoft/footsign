@@ -42,6 +42,8 @@ public class Match {
 	@Fetch
 	Set<Game> games = new HashSet<Game>();
 
+	public Long getMatchId() { return matchId; }
+
 	public long getDateOfMatch() {
 		return dateOfMatch;
 	}
