@@ -11,15 +11,13 @@
             <div class="col-md-2" th:each="item, stat: ${matches}">
                 <div class="text-center"><strong th:id="'match_time_'+${item.key}" th:text="${#dates.format(item.value.date, 'HH:mm')}"></strong></div>
 
-                <div th:if="${item.value.timestamp != null}"  class="text-center">
+                <div th:if="${item.value.timestamp != null}"  class="text-center" style="padding-bottom: 30px">
                     <span class="label label-danger">Already occupied</span>
                 </div>
-                <div th:if="${item.value.timestamp == null}" class="text-center">
+                <div th:if="${item.value.timestamp == null}" class="text-center" style="padding-bottom: 10px">
                     <span class="label label-success">Still free</span><br />
                     <a th:id="'reserve_' + ${item.key}" class="reserveLink" th:data="${item.key}" href="#">Choose me!</a>
-
                 </div>
-                <br />
             </div>
         </div>
         
