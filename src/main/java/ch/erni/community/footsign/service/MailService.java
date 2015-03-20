@@ -99,7 +99,7 @@ public class MailService {
             this.javaMailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            logger.severe(e.getMessage());
+            logger.log(Level.SEVERE, "Send Mail Exception", e);
         }
     }
 
