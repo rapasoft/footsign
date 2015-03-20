@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 /**
  * @author rap
  */
+// TODO @rap: write tests that confirm Neo4J query correctness
 @Service
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
@@ -43,14 +44,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		User user = userRepository.findByDomainShortName(userDetails.getDomainUserName());
 
 		if (user == null) {
-			Path path = fileDownloader.downloadPhoto(userDetails, password);
 			user = ldapUserHelper.createUserFromLdapUser(userDetails).get();
-			user.setPhotoPath(path.toString());
 		} else {
 			user.setDepartment(userDetails.getDepartment());
 			user.setEmail(userDetails.getEmail());
 			user.setFullName(userDetails.getFullName());
 		}
+
+		Path path = fileDownloader.downloadPhoto(userDetails, password);
+		user.setPhotoPath(path.toString());
 
 		userRepository.save(user);
 	}
@@ -82,6 +84,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		}
 
 	}
+
+	// TODO @rap: everything that is under this comment should be imho in a separate class
 
 	@Override
 	@Transactional
@@ -151,7 +155,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return extractCustomPlayers(worstPlayers);
 
 	}
-
 
 	@Override
 	@Transactional

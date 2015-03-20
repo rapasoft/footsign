@@ -12,7 +12,17 @@
 
 
     <div th:fragment="content">
-        
+
+        <div class="alert alert-success" role="alert" th:if="${success}">
+            <strong><span>Success!</span></strong>
+            <span th:text="${success}">Success</span>
+        </div>
+
+        <div class="alert alert-danger" role="alert" th:if="${error}">
+            <strong><span>Error!</span></strong>
+            <span th:text="${error}">Success</span>
+        </div>
+
         <div class="container">
             <div class="row text-center">
                 <h2>
@@ -52,7 +62,6 @@
                     
                     $(document).ready(function () {
                         var minDate = new Date();
-                        minDate.setDate(minDate.getDate() - 1);
                         var maxDate = new Date();
                         maxDate.setMonth(maxDate.getMonth() + 1);
                         

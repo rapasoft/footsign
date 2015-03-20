@@ -7,8 +7,8 @@ body {
 }
 .profile-stats {
 	text-align: center;
-	text-shadow: 1px 1px 0px #fff;
-	margin-top: 25px;
+	text-shadow: 1px 1px 0 #fff;
+	margin-top: 10px;
 
 }
 
@@ -18,13 +18,26 @@ body {
 }
 
 .profile-stats span {
-	font-family: Helvetica;
+	font-family: Helvetica, sans-serif;
 	font-weight: bold;
-	text-shadow: 1px 1px 0px #fff;
+	text-shadow: 1px 1px 0 #fff;
 	font-size: 4em;
 
 	display: block;
 	line-height: 1em;
+}
+
+.stats-table, .stats-chart {
+	display: table-cell;
+	min-height: 400px;
+}
+
+.chartArea {
+	margin-top: 15px;
+	width: 100%;
+	vertical-align: middle;
+	height: 320px;
+	display: inline-block;
 }
 
 /* Large desktop */
@@ -67,7 +80,7 @@ body {
 		text-align: center;
 	}
 	.profile-stats{
-		padding: 0px;
+		padding: 0;
 		text-align: left;
 	}
 	.rating-xs{

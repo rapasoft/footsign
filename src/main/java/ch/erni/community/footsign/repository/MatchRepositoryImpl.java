@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by veda on 3/6/2015.
  */
+// TODO @rap: write tests that confirm Neo4J query correctness
 @Service
 public class MatchRepositoryImpl implements MatchRepositoryCustom {
 
@@ -57,29 +57,20 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 	@Override
 	@Transactional
 	public List<CustomPlayerDTO<Double>> findPlayerWithHighestRatioCustom() {
-		List<CustomPlayer> highestRatioplayers = matchRepository.findTenPlayersWithHighestRatio();
+		List<CustomPlayer> highestRatioPlayers = matchRepository.findTenPlayersWithHighestRatio();
 
-		List<CustomPlayer>	filteredratio =  highestRatioplayers.stream().filter(r -> !highestRatioplayers.isEmpty() ?
-				r.getValue().equals(highestRatioplayers.get(0).getValue())  : false ).collect(Collectors.toList());
+		List<CustomPlayer> filteredRatio = highestRatioPlayers.stream().filter(r -> !highestRatioPlayers.isEmpty() && r.getValue().equals(highestRatioPlayers.get(0).getValue()))
+				.collect(Collectors.toList());
 
-		List<CustomPlayerDTO<Double>>  playersWithSameBestRatio = new ArrayList<>();
-		for (CustomPlayer user : filteredratio) {
-				playersWithSameBestRatio.add(new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue()));
-		}
-		return playersWithSameBestRatio;
+		return filteredRatio.stream().map(user -> new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue())).collect(Collectors.toList());
 	}
 
 	@Override
 	@Transactional
 	public List<CustomPlayerDTO<Long>> findBestPlayerCustom() {
 		List<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
-		List<CustomPlayer> filteredPlayer = best.stream().filter(p -> !best.isEmpty() ?
-				p.getValue().equals(best.get(0).getValue()) : false).collect(Collectors.toList());
-		List<CustomPlayerDTO<Long>> bestPlayerSameWins = new ArrayList<>();
-		for (CustomPlayer user : filteredPlayer) {
-				bestPlayerSameWins.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
-		}
-		return bestPlayerSameWins;
+		List<CustomPlayer> filteredPlayer = best.stream().filter(p -> !best.isEmpty() && p.getValue().equals(best.get(0).getValue())).collect(Collectors.toList());
+		return filteredPlayer.stream().map(user -> new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -88,4 +79,5 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 		Match match = matchRepository.findMatchForThisDate(time);
 		return match != null ? true : false;
 	}
+
 }

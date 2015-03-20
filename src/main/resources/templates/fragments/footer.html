@@ -4,9 +4,15 @@
 </head>
 <body>
     <div th:fragment="footer">
+        <script th:inline="javascript">
+            var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
+            $.get(rootUrl + "/version", function (data) {
+                $("#appVersion").html(data);
+            });
+        </script>
         <div class="row text-center" style="padding-top: 5em">
             <div>
-                &copy; 2015 FootSign - project from ERNI Java team
+                &copy; 2015 FootSign <span id="appVersion"></span> - crafted by ERNI Java team
             </div>
         </div>
     </div>

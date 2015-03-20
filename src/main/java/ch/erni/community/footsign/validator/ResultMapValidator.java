@@ -9,11 +9,11 @@ import java.util.Map;
  * Created by cepe on 26.02.2015.
  */
 public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<String, List<String>>> {
-    
+
     private int min;
     private int max;
     private String keyPrefix;
-    
+
     @Override
     public void initialize(ResultMap resultList) {
         min = resultList.minResult();
@@ -24,35 +24,41 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
     @Override
     public boolean isValid(Map<String, List<String>> resultsMap, ConstraintValidatorContext cvc) {
         cvc.disableDefaultConstraintViolation();
-        
+
         if (resultsMap == null || resultsMap.isEmpty()) {
             cvc.buildConstraintViolationWithTemplate("Results have to be entered").addConstraintViolation();
             return false;
         }
-        
+
         List<String> results1 = resultsMap.get(keyPrefix + "1");
         List<String> results2 = resultsMap.get(keyPrefix + "2");
-        
+
         if (results1 == null || results1.isEmpty() || results2 == null || results2.isEmpty()) {
             cvc.buildConstraintViolationWithTemplate("Results have to be entered").addConstraintViolation();
             return false;
         }
-        
-        int size1 = results1.size();
-        int size2 = results2.size();
-        
+
+        long size1 = results1.stream().filter(r -> r != null && !r.isEmpty()).count();
+        long size2 = results2.stream().filter(r -> r != null && !r.isEmpty()).count();
+
         if (size1 != size2) {
             cvc.buildConstraintViolationWithTemplate("Size of results have to be equal").addConstraintViolation();
             return false;
         }
-        
+
+        int numberOfVictories = 0;
+
         for (String key : resultsMap.keySet()) {
             List<String> results = resultsMap.get(key);
-            
+
             for (String value : results) {
                 try {
-                    if (value == null || value.isEmpty()) value = "0";
+                    if (value == null || value.isEmpty()) {
+                        value = "0";
+                    }
                     Integer intVal = Integer.parseInt(value);
+
+                    if (intVal == 8) numberOfVictories++;
 
                     if (intVal < min || intVal > max) {
                         cvc.buildConstraintViolationWithTemplate("Result \'" + value + "\' isn\'t correct. Min value is: " + min + ", maxResult value is: " + max).addConstraintViolation();
@@ -65,8 +71,13 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
                 }
             }
         }
-        
-        
+
+        if (numberOfVictories < size1) {
+            cvc.buildConstraintViolationWithTemplate("Results aren\'t correct. Each game result have to contain one " + max).addConstraintViolation();
+            return false;
+        }
+
+
         return true;
     }
 }

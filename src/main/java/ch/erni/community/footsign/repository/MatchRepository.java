@@ -33,7 +33,6 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with user,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +
-			"with user,count(distinct m) as wonMatches \n" +
 			"match (user)<--(m2:Match {planed : false}) with user,count(m2) as allMatches, wonMatches\n" +
 			"return user, wonMatches*(1.0) / allMatches*(1.0) as value\n" +
 			"order by value desc limit 10")
@@ -81,4 +80,6 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 
 	@Query("Match (m:Match {planed : true} ) where m.dateOfMatch = {0} return m")
 	Match findMatchForThisDate(long time);
+
+
 }

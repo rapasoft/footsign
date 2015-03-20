@@ -34,12 +34,37 @@ public class TestDataGenerator {
 	LdapUserHelper ldapUserHelper;
 
 	public void generateUserData() {
-		List<Match> matches = generateMatches(30);
+		List<Match> matches = generateMatches(50);
 		matches.forEach(matchRepository::save);
+
 		List<Match> planMatches = generatePlanMatches(20);
 		planMatches.forEach(matchRepository :: save);
+
 	}
 
+	public List<Match> generateMatches(int numberOfMatches) {
+		List<Match> matches = new ArrayList<>();
+
+		for (int i = 0; i < numberOfMatches; i++) {
+			Match match = new Match();
+			match.setPlaned(false);
+			Date date = Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
+					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
+			match.setDateOfMatch(date.getTime());
+			match.addGame(generateGame());
+			match.addGame(generateGame());
+
+			if (match.isDraw()) {
+				match.addGame(generateGame());
+			}
+
+			addUsers(match);
+
+			matches.add(match);
+		}
+
+		return matches;
+	}
 
 	List<Match> generatePlanMatches(int numberOfMatches) {
 		List<Match> matches = new ArrayList<>();
@@ -68,29 +93,6 @@ public class TestDataGenerator {
 		return matches;
 	}
 
-	List<Match> generateMatches(int numberOfMatches) {
-		List<Match> matches = new ArrayList<>();
-
-		for (int i = 0; i < numberOfMatches; i++) {
-			Match match = new Match();
-			match.setPlaned(false);
-			Date date = Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
-					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
-			match.setDateOfMatch(date.getTime());
-			match.addGame(generateGame());
-			match.addGame(generateGame());
-
-			if (match.isDraw()) {
-				match.addGame(generateGame());
-			}
-
-			addUsers(match);
-
-			matches.add(match);
-		}
-
-		return matches;
-	}
 
 	private void addUsers(Match match) {
 		User selectUser1 = selectUser();
@@ -104,7 +106,7 @@ public class TestDataGenerator {
 		match.addPlayersToTeam2(selectUser4);
 	}
 
-	User selectUser(User... excludes) {
+	public User selectUser(User... excludes) {
 		List<UserDetails> filtered = erniLdapCache
 				.fetchEskEmployees()
 				.stream()
