@@ -77,7 +77,7 @@ public class StatsControllerTest {
         }
         matches.forEach(matchRepository::save);
 
-        User bestPlayer = matchRepository.findPlayerWithMostWins();
+        User bestPlayer = matchRepository.findPlayerBestTenPlayers().get(0).getUser();
         Assert.assertTrue(winnerUser.equals(bestPlayer));
 
     }

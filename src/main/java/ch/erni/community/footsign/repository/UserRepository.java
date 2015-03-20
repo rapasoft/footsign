@@ -15,7 +15,7 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 
 	User findByDomainShortName(String name);
 
-	@Query("match (u:User)<--(m:Match {planed : false})-->(g:Game) \n" +
+	@Query("match (u:User)<--(m:Match {state : 'CONFIRMED' })-->(g:Game) \n" +
 			"where (((u)-[:TEAM1]-(m)-->(g) and g.team1Result < 8) OR ((u)-[:TEAM2]-(m)-->(g) and g.team2Result < 8)) \n" +
 			"with u,m,count(g) as countGames \n" +
 			"where countGames >= 2 \n" +
@@ -27,14 +27,14 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 	/*
 	MOst player team
 	 */
-	@Query("match (user1:User)--(m:Match {planed : false})--(user2:User)\n" +
+	@Query("match (user1:User)--(m:Match {state : 'CONFIRMED' })--(user2:User)\n" +
 			"where ((user1)<-[:TEAM2]-(m)-[:TEAM2]->(user2) OR(user1)<-[:TEAM1]-(m)-[:TEAM1]->(user2) ) AND ID(user1) < ID(user2)\n" +
 			"with user1, user2, count(distinct m) as value\n" +
 			"return user1, user2,  value\n" +
 			"order by value desc Limit 10")
 	List<TeamPlayers> findTeamWithMostMatches();
 
-	@Query("match (user1:User)--(m:Match {planed : false})--(user2:User), (m)-->(g:Game)\n" +
+	@Query("match (user1:User)--(m:Match {state : 'CONFIRMED' })--(user2:User), (m)-->(g:Game)\n" +
 			"where ((\n" +
 			"(user1)-[:TEAM2]-(m)-->(g)\n" +
 			"and (user2)-[:TEAM2]-(m)-->(g)\n" +
@@ -51,7 +51,7 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			"order by value desc LIMIT 10")
 	List<TeamPlayers> findBestTenTeams();
 
-	@Query("match (user1:User)--(m:Match {planed : false})--(user2:User), (m)-->(g:Game)\n" +
+	@Query("match (user1:User)--(m:Match {state : 'CONFIRMED' })--(user2:User), (m)-->(g:Game)\n" +
 			"where ((\n" +
 			"(user1)-[:TEAM2]-(m)-->(g)\n" +
 			"and (user2)-[:TEAM2]-(m)-->(g)\n" +
@@ -68,7 +68,7 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 			"order by value desc LIMIT 10")
 	List<TeamPlayers> findWorstTenTeams();
 
-	@Query("match (user:User)<--(m:Match {planed : false})-->(g:Game)\n" +
+	@Query("match (user:User)<--(m:Match {state : 'CONFIRMED' })-->(g:Game)\n" +
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 0) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 0))\n" +
 			"return  user,count(distinct g)  as value\n" +
 			"order by value desc LIMIT 10")

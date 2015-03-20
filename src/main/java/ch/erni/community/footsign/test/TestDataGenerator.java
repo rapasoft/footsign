@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.test;
 
 import ch.erni.community.footsign.component.ErniLdapCache;
+import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -47,7 +48,7 @@ public class TestDataGenerator {
 
 		for (int i = 0; i < numberOfMatches; i++) {
 			Match match = new Match();
-			match.setPlaned(false);
+			match.setState(MatchState.CONFIRMED);
 			Date date = Date.from(Instant.parse("2015-01-" + String.format("%02d", ((i % 30) + 1)) + "T" +
 					String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
 			match.setDateOfMatch(date.getTime());
@@ -70,7 +71,7 @@ public class TestDataGenerator {
 		List<Match> matches = new ArrayList<>();
 		for (int i = 0; i < numberOfMatches; i++) {
 			Match match = new Match();
-			match.setPlaned(true);
+			match.setState(MatchState.PLANNED);
 			Calendar today = Calendar.getInstance();
 			int month = today.get(Calendar.MONTH) +1 ;
 			int day = today.get(Calendar.DAY_OF_MONTH) + (int) (Math.random()*10);

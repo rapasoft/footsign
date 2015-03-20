@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.repository;
 
+import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -57,7 +58,7 @@ public class TestPlanMatches {
         for(int i=0; i<10; i++) {
             Match match = new Match();
             match.addGame(generateGame(8,1));
-            match.setPlaned(true);
+            match.setState(MatchState.PLANNED);
             match.addPlayersToTeam1(user1);
             match.addPlayersToTeam1(user2);
             match.addPlayersToTeam2(user3);
@@ -92,7 +93,7 @@ public class TestPlanMatches {
         for(int i=0; i<10; i++) {
             Match match = new Match();
             match.addGame(generateGame(8,1));
-            match.setPlaned(true);
+            match.setState(MatchState.PLANNED);
             Calendar today = Calendar.getInstance();
             int month = today.get(Calendar.MONTH) +1 ;
             int day = today.get(Calendar.DAY_OF_MONTH);

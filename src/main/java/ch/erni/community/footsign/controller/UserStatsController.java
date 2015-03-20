@@ -46,20 +46,11 @@ public class UserStatsController {
 
 	@RequestMapping("/stats_user")
 	public String userStats(Model model) {
-		User userWmostPlayed = matchRepository.findPlayerWithMostPlayedMatches();
-		User userWmostWins = matchRepository.findPlayerWithMostWins();
 		bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
 		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
 		playersWithHighestRatio = matchRepository.findTenPlayersWithHighestRatioCustom();
 
-		if (userWmostPlayed != null) {
-			model.addAttribute("user_name", userWmostPlayed.getFullName() + " , " + userWmostPlayed.getDomainShortName());
-		}
-
-		if (userWmostWins != null) {
-			model.addAttribute("user_name_wins", userWmostWins.getFullName() + " , " + userWmostWins.getDomainShortName());
-		}
 		
 		model.addAttribute("best_players", bestPlayers);
 		model.addAttribute("worst_players", worstPlayers);

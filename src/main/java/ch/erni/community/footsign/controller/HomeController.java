@@ -2,6 +2,7 @@ package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.component.ErniLdapCache;
 import ch.erni.community.footsign.dto.ClientMatch;
+import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -107,7 +108,7 @@ public class HomeController {
 
 			Match match = new Match();
 			match.setDateOfMatch(new Date().getTime());
-			match.setPlaned(false);
+			match.setState(MatchState.PLAYED);
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
 			setGamesToMatch(result1, result2, match);

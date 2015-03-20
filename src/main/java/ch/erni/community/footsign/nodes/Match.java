@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.nodes;
 
+import ch.erni.community.footsign.enums.MatchState;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -25,7 +26,7 @@ public class Match {
 
 	long dateOfMatch;
 
-	boolean planed = false;
+	MatchState state = MatchState.PLAYED;
 
 	@RelatedTo(type = "TEAM1", direction = Direction.BOTH)
 	private
@@ -52,14 +53,6 @@ public class Match {
 		this.dateOfMatch = dateOfMatch;
 	}
 
-	public boolean isPlaned() {
-		return planed;
-	}
-
-	public void setPlaned(boolean isPlaned) {
-		this.planed = isPlaned;
-	}
-
 	public void addPlayersToTeam1(User player) {
 		team1.add(player);
 	}
@@ -83,6 +76,10 @@ public class Match {
 	public Set<Game> getGames() {
 		return games;
 	}
+
+	public MatchState getState() {	return state; 	}
+
+	public void setState(MatchState state) { this.state = state; }
 
 	public boolean team1Wins() {
 		return games.stream().filter(Game::team1Wins).count() == NUMBER_OF_WINS_NEEDED;

@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.util;
 
 import ch.erni.community.footsign.dto.PlannedMatch;
+import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
@@ -159,7 +160,7 @@ public class PlannedMatchConfigurator {
     public Match createMatch(PlannedMatch plannedMatch) {
         if (plannedMatch != null) {
             Match match = new Match();
-            match.setPlaned(true);
+            match.setState(MatchState.PLANNED);
             match.setDateOfMatch(plannedMatch.getTimestamp());
 
             plannedMatch.getTeam1().stream().filter(p -> !p.isEmpty()).forEach(p -> {

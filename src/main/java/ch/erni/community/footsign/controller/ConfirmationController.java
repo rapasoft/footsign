@@ -31,8 +31,7 @@ public class ConfirmationController {
 
         ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
         if (principal != null) {
-            // todo: call function for each unconfirmed matches
-            List<Match> matchesForConfirmation = matchRepository.findAllPlanMatchesForUser(principal.getDomainUserName());
+            List<Match> matchesForConfirmation = matchRepository.findPlayedMatchesForUser(principal.getDomainUserName());
             model.addAttribute("matches", matchesForConfirmation);
         }
         
