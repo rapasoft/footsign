@@ -32,16 +32,22 @@ public class FileDownloader {
 				return new File(photoPathBuilder.buildRelativePath(null)).toPath();
 			}
 
-			Path target = new File(photoPathBuilder.buildAvatarsPath() + photoPathBuilder.buildPhotoName(userDetails)).toPath();
+			File avatarFile = new File(photoPathBuilder.buildAvatarsPath() + photoPathBuilder.buildPhotoName(userDetails));
+			Path target = avatarFile.toPath();
+
+			if (avatarFile.exists()) {
+				return new File(photoPathBuilder.buildRelativePath(userDetails)).toPath();
+			}
+
 			URL server = new URL(photoPathBuilder.buildURLPhotoPath(userDetails));
 			Authenticator.setDefault(new SharePointAuthenticator(userDetails.getDomainUserName(), password));
 			Files.copy(server.openStream(), target, StandardCopyOption.REPLACE_EXISTING);
-			
 
 			return new File(photoPathBuilder.buildRelativePath(userDetails)).toPath();
 		} catch (PropertyFileNotFound | IOException e) {
 			throw new RuntimeException(e);
 		}
+
 	}
 
 
