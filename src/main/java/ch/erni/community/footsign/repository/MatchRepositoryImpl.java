@@ -2,7 +2,6 @@ package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.dto.CustomPlayerDTO;
-import ch.erni.community.footsign.nodes.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,12 +70,5 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 		List<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
 		List<CustomPlayer> filteredPlayer = best.stream().filter(p -> !best.isEmpty() && p.getValue().equals(best.get(0).getValue())).collect(Collectors.toList());
 		return filteredPlayer.stream().map(user -> new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue())).collect(Collectors.toList());
-	}
-
-	@Override
-	@Transactional
-	public boolean isDateOccupied(long time) {
-		Match match = matchRepository.findMatchForThisDate(time);
-		return match != null ? true : false;
 	}
 }
