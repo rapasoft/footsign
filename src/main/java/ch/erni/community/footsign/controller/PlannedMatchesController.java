@@ -6,6 +6,7 @@ import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
+import ch.erni.community.footsign.service.MailService;
 import ch.erni.community.footsign.util.CalendarHelper;
 import ch.erni.community.footsign.util.PlannedMatchConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class PlannedMatchesController {
     private PlannedMatchConfigurator configurator;
     
     private PlannedMatch defaultPlannedMatch;
+
+    @Autowired
+    MailService mailService;
     
     @RequestMapping("/plane_match")
     public String home(Model model, Authentication authentication) {
@@ -69,7 +73,10 @@ public class PlannedMatchesController {
             Match match = configurator.createMatch(plannedMatch);
 
             matchRepository.save(match);
+
             modelAndView.addObject("success", "The match was sucessfully planned.");
+            mailService.sendPlaneMatchMail(match);
+
             
         } catch (Exception e) {
             modelAndView.addObject("error", e.getMessage());

@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h4>Hi <span th:text="${user_name}">${user_name}</span>, </h4>
+You have planed match at <span th:text="${day_of_match}"> ${day_of_match}</span>
+<p>
+    Match information:
+</p>
+<div style="margin-left: 30px; padding: 5px">
+    <div>
+        <strong>Team 1:</strong>
+        <div style="margin-left: 30px;" th:each="item : ${team1}">
+            <span th:text="${item.fullName}"></span>
+        </div>
+        <div th:if="${!team2.isEmpty()}">
+            <strong>Team 2:</strong>
+        </div>
+        <div style="margin-left: 30px;" th:remove="all-but-first" th:each="item : ${team2}">
+            <span th:text="${item.fullName}"></span>
+        </div>
+    </div>
+</div>
+
+<p>
+    <em>FootSign Team</em>
+</p>
+</body>
+</html>

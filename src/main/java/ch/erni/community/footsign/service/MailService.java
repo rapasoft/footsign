@@ -69,18 +69,28 @@ public class MailService {
     }
 
     //todo for plan matches
-    public void sendPlaneMatchMail(String recipientShortDomainName) {
-        final IContext ctx= new Context();
+    public void sendPlaneMatchMail(Match match) throws MessagingException {
+        Set<User> team = new HashSet<>();
+        team.addAll(match.getTeam1());
+        team.addAll(match.getTeam2());
+        for(User user : team) {
+            final Context ctx = new Context();
+            ctx.setVariable("user_name", user.getFullName());
+            ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
+            ctx.setVariable("team1", match.getTeam1());
+            ctx.setVariable("team2", match.getTeam2());
+            sendMail(MailType.PLANED_MAIL, user.getEmail(), ctx);
+        }
     }
 
 
     public void sendMail(MailType mailType, String recepientMail, IContext ctx) throws MessagingException{
         final MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
-        message.setFrom("footsign@example.com");
+        message.setFrom("footsign@erni.sk");
         if(MailType.CONFIRMATION_MAIL.equals(mailType)){
             message.setSubject("Confirmation mail");
-        }else if(MailType.CONFIRMATION_MAIL.equals(mailType)){
+        }else if(MailType.PLANED_MAIL.equals(mailType)){
             message.setSubject("Planning mail");
         }else {
             message.setSubject("Information mail");
