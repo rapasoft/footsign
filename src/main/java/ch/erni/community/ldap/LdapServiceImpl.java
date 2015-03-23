@@ -22,7 +22,7 @@ public class LdapServiceImpl implements LdapService {
 
 		try {
 			connection = createConnection(new DefaultCredentials().getCredentials());
-		} catch (CredentialsNotFoundException | CredentialsFileNotFoundException e) {
+		} catch (CredentialsNotFoundException | CredentialsFileNotFoundException | LDAPException e) {
 			throw new RuntimeException(e);
 		}
 
@@ -38,12 +38,8 @@ public class LdapServiceImpl implements LdapService {
 		return extractUserDetails(searchResult);
 	}
 
-	Connection createConnection(Credentials credentials) {
-		try {
-			return Connection.forCredentials(credentials);
-		} catch (LDAPException e) {
-			throw new RuntimeException(e.getDiagnosticMessage());
-		}
+	Connection createConnection(Credentials credentials) throws LDAPException {
+		return Connection.forCredentials(credentials);
 	}
 
 	@Override
@@ -80,14 +76,19 @@ public class LdapServiceImpl implements LdapService {
 	public AuthenticationResult authenticate(String domainUserName, String password) throws UserNotFoundException {
 		UserDetails userDetails = findByDomainUserName(domainUserName);
 
-		Connection connection = createConnection(new Credentials(userDetails.getDN(), password));
+		Connection connection = null;
 
 		try {
+			connection = createConnection(new Credentials(userDetails.getDN(), password));
 			boolean result = connection.getLdapConnection().isConnected();
 
 			return new AuthenticationResult(userDetails, result);
+		} catch (LDAPException e) {
+			throw new UserNotFoundException(e.getDiagnosticMessage());
 		} finally {
-			connection.close();
+			if (connection != null) {
+				connection.close();
+			}
 		}
 	}
 
