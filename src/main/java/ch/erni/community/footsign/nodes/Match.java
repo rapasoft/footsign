@@ -43,6 +43,19 @@ public class Match {
 	@Fetch
 	Set<Game> games = new HashSet<Game>();
 
+	@RelatedTo(type = "CONFIRMED_BY", direction = Direction.OUTGOING)
+	private
+	@Fetch
+	Set<User> confirmedBy = new HashSet<>();
+
+	public boolean confirmedByPlayer(User player){
+		return confirmedBy.add(player);
+	}
+
+	public Set<User> getConfirmedBy() {
+		return confirmedBy;
+	}
+
 	public Long getMatchId() { return matchId; }
 
 	public long getDateOfMatch() {
