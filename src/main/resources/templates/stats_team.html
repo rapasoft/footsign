@@ -16,7 +16,7 @@
                     <a href="#" class="hide-content-btn pull-right">show / hide</a>
                 </div>
             </div>
-            <div class="col-md-6 stats-table">
+            <div class="col-xs-12 col-sm-12 col-md-6 stats-table">
 
                 <table id="topTeamsTable" class="table table-striped table-hover">
                     <thead>
@@ -34,7 +34,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 stats-chart">
+            <div class="col-xs-12 col-sm-12 col-md-6 stats-chart">
                 <div id="topTeamsPiechart" class="chartArea"></div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                     <a href="#" class="hide-content-btn pull-right">show / hide</a>
                 </div>
             </div>
-            <div class="col-md-6 stats-table">
+            <div class="col-xs-12 col-sm-12 col-md-6 stats-table">
 
                 <table id="worstTeamsTable" class="table table-striped table-hover">
                     <thead>
@@ -66,7 +66,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 stats-chart">
+            <div class="col-xs-12 col-sm-12 col-md-6 stats-chart">
                 <div id="worstTeamsPiechart" class="chartArea"></div>
             </div>
         </div>
@@ -80,7 +80,7 @@
                     <a href="#" class="hide-content-btn pull-right">show / hide</a>
                 </div>
             </div>
-            <div class="col-md-6 stats-table">
+            <div class="col-xs-12 col-sm-12 col-md-6 stats-table">
 
                 <table id="topPlayersTable" class="table table-striped table-hover">
                     <thead>
@@ -98,7 +98,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6 stats-chart">
+            <div class="col-xs-12 col-sm-12 col-md-6 stats-chart">
                 <div id="mostPlayedTeamsPiechart" class="chartArea"></div>
             </div>
         </div>
@@ -113,6 +113,8 @@
                 getDataForColumnChart("/footsign/worst_teams_graph_data", "'Not so good' 10", "worstTeamsPiechart");
                 getDataForColumnChart("/footsign/most_played_team_graph_data", "Most played", "mostPlayedTeamsPiechart");
             }
+
+            window.onresize = drawChart;
         </script>
 
     </div>
