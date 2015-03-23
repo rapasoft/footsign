@@ -4,7 +4,6 @@ import ch.erni.community.footsign.event.UserLoggedInEvent;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
-import ch.erni.community.footsign.util.FileDownloader;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -54,16 +53,13 @@ public class SuccesfulLoginIntegrationTest {
 	}
 
 	@Before
-	public void before() {
+	public void before() throws NoSuchFieldException, IllegalAccessException {
 		userAfterLoginHandler = spy(new UserAfterLoginHandler());
 		userAfterLoginHandler.userRepository = userRepository;
 
 		ApplicationEventPublisher applicationEventPublisher = mock(ApplicationEventPublisher.class);
 		doNothing().when(applicationEventPublisher).publishEvent(any(UserLoggedInEvent.class));
 		userAfterLoginHandler.applicationEventPublisher = applicationEventPublisher;
-
-		FileDownloader fileDownloader = mock(FileDownloader.class);
-		when(fileDownloader.downloadPhoto(any(), anyString())).thenReturn(new File("/").toPath());
 
 		authentication = mock(ErniAuthentication.class);
 
@@ -99,7 +95,9 @@ public class SuccesfulLoginIntegrationTest {
 		Assert.assertEquals("Pavol Rajzak", user.getFullName());
 
 		// Any other successful login (when the user's info changes)
-		when(userDetails.getSecondName()).thenReturn("NewSecond");
+		when(userDetails.getSecondName()).thenReturn("Badura");
+		when(userDetails.getFirstName()).thenReturn("Roman");
+
 		userAfterLoginHandler.onAuthenticationSuccess(mock(HttpServletRequest.class), mock(HttpServletResponse.class), authentication);
 
 		user = userRepository.findByDomainShortName("test");
@@ -107,7 +105,7 @@ public class SuccesfulLoginIntegrationTest {
 
 		Assert.assertNotNull(user);
 		Assert.assertEquals("test", user.getDomainShortName());
-		Assert.assertEquals("Pavol NewSecond", user.getFullName());
+		Assert.assertEquals("Roman Badura", user.getFullName());
 
 		Assert.assertEquals(id, newId);
 	}
