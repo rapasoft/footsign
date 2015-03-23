@@ -1,7 +1,6 @@
 package ch.erni.community.footsign.controller;
 
-import ch.erni.community.footsign.dto.CustomPlayerDTO;
-import ch.erni.community.footsign.dto.TeamPlayersDTO;
+import ch.erni.community.footsign.dto.Valuable;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,68 +8,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
-/**
- * Created by veda on 3/11/2015.
- */
 @Controller(value = "overviewStatistic")
 public class OverviewStatsController {
-    @Autowired
-    MatchRepository matchRepository;
+	@Autowired
+	MatchRepository matchRepository;
 
-    @Autowired
-    UserRepository userRepository;
+	@Autowired
+	UserRepository userRepository;
 
-    List<CustomPlayerDTO<Double>> ratioPlayers;
+	@RequestMapping("/stats_overview")
+	public String teamStats(Model model) {
+		addToModel("highest_ratio", "highest_ratio_value", matchRepository.findPlayerWithHighestRatioCustom(), model);
+		addToModel("best_player", "best_player_score", matchRepository.findBestPlayerCustom(), model);
+		addToModel("worst_player", "worst_player_score", userRepository.findWorstPlayersCustom(), model);
+		addToModel("best_team", "best_team_score", userRepository.findBestTeamsCustom(), model);
+		addToModel("worst_team", "worst_team_score", userRepository.findWorstTeamsCustom(), model);
+		addToModel("best_underTable", "best_underTable_score", userRepository.findTenMostUnderTablePlayersCustom(), model);
 
-    List<CustomPlayerDTO<Long>> bestPlayers;
+		return "stats_overview";
+	}
 
-    List<CustomPlayerDTO<Long>> worstPlayer;
-
-    List<TeamPlayersDTO<Long>> bestTeam;
-
-    List<TeamPlayersDTO<Long>> worstTeam;
-
-    List<CustomPlayerDTO<Long>> underTablePlayer;
-
-    @RequestMapping("/stats_overview")
-    public String teamStats(Model model) {
-        ratioPlayers = matchRepository.findPlayerWithHighestRatioCustom();
-        bestPlayers = matchRepository.findBestPlayerCustom();
-        worstPlayer = userRepository.findWorstPlayersCustom();
-        bestTeam = userRepository.findBestTeamsCustom();
-        worstTeam = userRepository.findWorstTeamsCustom();
-        underTablePlayer = userRepository.findTenMostUnderTablePlayersCustom();
-
-        if(!ratioPlayers.isEmpty() ) {
-            model.addAttribute("highest_ratio", ratioPlayers);
-            model.addAttribute("highest_ratio_value", !ratioPlayers.isEmpty() ? ratioPlayers.get(0).getValue() : "");
-        }
-        if(!bestPlayers.isEmpty()) {
-            model.addAttribute("best_player", bestPlayers);
-            model.addAttribute("best_player_score", !bestPlayers.isEmpty() ? bestPlayers.get(0).getValue() : "");
-        }
-
-        if(!worstPlayer.isEmpty()) {
-            model.addAttribute("worst_player", worstPlayer);
-            model.addAttribute("worst_player_score", !worstPlayer.isEmpty() ? worstPlayer.get(0).getValue() : "");
-        }
-        if(!bestTeam.isEmpty()) {
-            model.addAttribute("best_team", bestTeam);
-            model.addAttribute("best_team_score", !bestTeam.isEmpty() ? bestTeam.get(0).getValue() : "");
-        }
-        if(!worstTeam.isEmpty()) {
-            model.addAttribute("worst_team", worstTeam);
-            model.addAttribute("worst_team_score", !worstTeam.isEmpty() ? worstTeam.get(0).getValue() : "");
-        }
-        if(!underTablePlayer.isEmpty()) {
-            model.addAttribute("best_underTable", underTablePlayer);
-            model.addAttribute("best_underTable_score", !underTablePlayer.isEmpty() ? underTablePlayer.get(0).getValue() : "");
-        }
-        return "stats_overview";
-    }
+	private void addToModel(String key, String value, List<? extends Valuable> sourceCollection, Model model) {
+		if (!sourceCollection.isEmpty()) {
+			model.addAttribute(key, sourceCollection);
+			model.addAttribute(value, !sourceCollection.isEmpty() ? sourceCollection.get(0).getValue() : "");
+		}
+	}
 
 }

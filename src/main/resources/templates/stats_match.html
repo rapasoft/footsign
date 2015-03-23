@@ -18,10 +18,10 @@
             </div>
         </div>
 
-        <div class="col-md-7 stats-table">
+        <div class="col-xs-12 col-sm-12 col-md-7 stats-table">
             <div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
         </div>
-        <div class="col-md-5 stats-chart">
+        <div class="col-xs-12 col-sm-12 col-md-5 stats-chart">
             <div id="winnersPiechart" class="chartArea"></div>
             <div id="loosersPiechart" class="chartArea"></div>
         </div>
@@ -37,6 +37,8 @@
             getDataForPieChart("/footsign/winner_graph_data", "Winners", "winnersPiechart");
             getDataForPieChart("/footsign/looser_graph_data", "Loosers", "loosersPiechart");
         }
+
+        window.onresize = drawChart;
     </script>
 
 </div>

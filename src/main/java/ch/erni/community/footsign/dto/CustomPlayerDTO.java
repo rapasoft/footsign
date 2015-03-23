@@ -5,7 +5,7 @@ import ch.erni.community.footsign.nodes.User;
 /**
  * Created by veda on 3/6/2015.
  */
-public class CustomPlayerDTO<VALUE extends Number> {
+public class CustomPlayerDTO<VALUE extends Number> implements Valuable<VALUE> {
 
     private User player;
 
