@@ -29,6 +29,7 @@
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
 				<photo.dir>avatars/</photo.dir>
+				<spring.profile>development</spring.profile>
 			</properties>
 		</profile>
 		<profile>
@@ -38,6 +39,7 @@
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
 				<photo.dir>avatars/</photo.dir>
+				<spring.profile>development</spring.profile>
 			</properties>
 		</profile>
 		<profile>
@@ -47,6 +49,7 @@
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
 				<photo.dir>avatars/</photo.dir>
+				<spring.profile>development</spring.profile>
 			</properties>
 		</profile>
 		<profile>
@@ -56,6 +59,7 @@
 				<start-class>ch.erni.community.footsign.ServletApplication</start-class>
 				<thymeleaf.cache>false</thymeleaf.cache>
 				<photo.dir>avatars/</photo.dir>
+				<spring.profile>development</spring.profile>
 			</properties>
 		</profile>
 		<profile>
@@ -69,30 +73,8 @@
 				<thymeleaf.cache>true</thymeleaf.cache>
 				<photo.dir>avatars/</photo.dir>
 				<project.dir>C:/footsign/</project.dir>
+				<spring.profile>production</spring.profile>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>net.alchim31.maven</groupId>
-						<artifactId>yuicompressor-maven-plugin</artifactId>
-						<version>1.5.1</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>jslint</goal>
-									<goal>compress</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<nosuffix>true</nosuffix>
-							<gzip>true</gzip>
-							<force>true</force>
-							<jswarn>false</jswarn>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
@@ -169,7 +151,7 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
@@ -212,6 +194,56 @@
 							${project.basedir}/src/main/resources/security.properties
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<version>1.5.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jslint</goal>
+							<goal>compress</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<nosuffix>true</nosuffix>
+					<gzip>true</gzip>
+					<force>true</force>
+					<jswarn>false</jswarn>
+					<aggregations>
+						<aggregation>
+							<output>${project.build.outputDirectory}/public/js/all.js</output>
+							<includes>
+								<include>jquery-2.1.3.min.js</include>
+								<include>bootstrap.min.js</include>
+								<include>selectize.js</include>
+								<include>graphs.js</include>
+								<include>application.js</include>
+								<include>star-rating.min.js</include>
+							</includes>
+							<excludes>
+								<exclude>**/all.js</exclude>
+							</excludes>
+						</aggregation>
+						<aggregation>
+							<output>${project.build.outputDirectory}/public/css/all.css</output>
+							<includes>
+								<include>normalize.css</include>
+								<include>bootstrap.min.css</include>
+								<include>main.css</include>
+								<include>selectize.bootstrap3.css</include>
+								<include>application.css</include>
+								<include>star-rating.min.css</include>
+							</includes>
+							<excludes>
+								<exclude>**/all.css</exclude>
+							</excludes>
+						</aggregation>
+					</aggregations>
 				</configuration>
 			</plugin>
 
