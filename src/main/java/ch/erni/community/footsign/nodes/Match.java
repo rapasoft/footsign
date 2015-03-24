@@ -2,10 +2,7 @@ package ch.erni.community.footsign.nodes;
 
 import ch.erni.community.footsign.enums.MatchState;
 import org.neo4j.graphdb.Direction;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.NodeEntity;
-import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.data.neo4j.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +20,8 @@ public class Match {
 
 	@GraphId
 	Long matchId;
-
+	
+	@Indexed(unique = true, failOnDuplicate = true)
 	long dateOfMatch;
 
 	MatchState state = MatchState.PLAYED;
@@ -108,6 +106,14 @@ public class Match {
 
 	public String matchResultToString() {
 		return games.stream().filter(Game::team1Wins).count() + " : " + games.stream().filter(Game::team2Wins).count();
+	}
+	
+	public boolean userPlayedMatch(String userDomainShortName) {
+		return (
+				getTeam1().stream().anyMatch(u -> u.getDomainShortName().equals(userDomainShortName)) ||
+				getTeam2().stream().anyMatch(u -> u.getDomainShortName().equals(userDomainShortName))
+		);
+		
 	}
 	
 	public boolean teamWithUserWins(String userDomainShortName) {

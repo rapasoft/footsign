@@ -46,7 +46,7 @@ public class ConfirmationController {
     }
     
     @RequestMapping(value = "/confirm_match", method = RequestMethod.POST)
-    public ModelAndView confirmMatch(String matchId ) {
+    public ModelAndView confirmMatch(String matchId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("confirmations"));
         Match match = matchRepository.findOne(Long.valueOf(matchId));

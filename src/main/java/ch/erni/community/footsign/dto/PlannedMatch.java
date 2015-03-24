@@ -19,11 +19,11 @@ public class PlannedMatch {
     
     private User currentUser;
     
+    private boolean cancelable = false;
+    
     private List<String> team1 = new ArrayList<>();
     private List<String> team2 = new ArrayList<>();
 
-    
-    
     public PlannedMatch(Date date) {
         this.date = date;
     }
@@ -54,6 +54,14 @@ public class PlannedMatch {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public boolean isCancelable() {
+        return cancelable;
+    }
+
+    public void setCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
     }
 
     public List<String> getTeam1() {
