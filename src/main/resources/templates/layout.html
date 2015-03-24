@@ -7,24 +7,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
     <link rel="shortcut icon" th:href="@{/img/icon-xsmall.jpg}"/>
-    <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
-	<link rel="stylesheet" th:href="@{/css/main.css}"/>
-    <link rel="stylesheet" th:href="@{/css/selectize.bootstrap3.css}"/>
-    <link rel="stylesheet" th:href="@{/css/application.css}"/>
-	<link rel="stylesheet" th:href="@{/css/star-rating.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/date-time-picker.css}"/>
 
-    <script th:src="@{/js/jquery-2.1.3.min.js}"></script>
-    <script th:src="@{/js/jquery-ui-1.11.3.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/selectize.js}"></script>
-    <script th:src="@{/js/graphs.js}"></script>
-    <script th:src="@{/js/application.js}"></script>
-    <script th:src="@{/js/utils.js}"></script>
-    <script th:src="@{/js/star-rating.min.js}"></script>
-    <script th:src="@{/js/moment.js}"></script>
-    <script th:src="@{/js/date-time-picker.js}"></script>
+    <link th:if="${@environment.getActiveProfiles()[0] == 'production'}" rel="stylesheet" th:href="@{/css/all.css}"/>
+    <script th:if="${@environment.getActiveProfiles()[0] == 'production'}" th:src="@{/js/all.js}"></script>
+
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/normalize.css}"/>
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/selectize.bootstrap3.css}"/>
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/application.css}"/>
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/star-rating.min.css}"/>
+    <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/date-time-picker.css}"/>
+
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/jquery-2.1.3.min.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/jquery-ui-1.11.3.min.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/selectize.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/graphs.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/application.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/utils.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/star-rating.min.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/moment.js}"></script>
+    <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/date-time-picker.js}"></script>
 
     <script th:src="@{https://www.google.com/jsapi}"></script>
 </head>
