@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
-    <link th:if="${@environment.getActiveProfiles()[0] == 'production'}" rel="shortcut icon" th:href="@{/img/icon-xsmall.jpg}"/>
+    <link rel="shortcut icon" th:href="@{/img/icon-xsmall.jpg}"/>
+
     <link th:if="${@environment.getActiveProfiles()[0] == 'production'}" rel="stylesheet" th:href="@{/css/all.css}"/>
+    <script th:if="${@environment.getActiveProfiles()[0] == 'production'}" th:src="@{/js/all.js}"></script>
 
     <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/normalize.css}"/>
     <link th:if="${@environment.getActiveProfiles()[0] != 'production'}" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
@@ -23,8 +25,7 @@
     <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/application.js}"></script>
     <script th:if="${@environment.getActiveProfiles()[0] != 'production'}" th:src="@{/js/star-rating.min.js}"></script>
 
-    <script th:src="@{/js/all.js}"></script>
-    <script th:src="@{https://www.google.com/jsapi}"></script>
+    <script src="https://www.google.com/jsapi"></script>
 </head>
 <body>
 
