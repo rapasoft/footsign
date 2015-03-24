@@ -296,7 +296,4 @@ function initStarsRating(){
         }
     });
 
-    $('#stars_rating').on('rating.change', function(event, value, caption) {
-        document.getElementById("editForm").submit();
-    });
 }

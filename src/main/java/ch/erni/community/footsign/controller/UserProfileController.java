@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -71,15 +73,20 @@ public class UserProfileController {
 	}
 
 	@RequestMapping(value = "/edit_user", method = RequestMethod.POST)
-	public String editUser(@ModelAttribute User param, Model model, Authentication authentication) {
+	public ModelAndView editUser(@ModelAttribute User user, Model model, Authentication authentication) {
 
 		UserDetails principal = (UserDetails) authentication.getPrincipal();
-		User user = userRepository.findByDomainShortName(principal.getDomainUserName());
-		user.setRating(param.getRating());
+		User dbUser = userRepository.findByDomainShortName(principal.getDomainUserName());
+		dbUser.setRating(user.getRating());
+		dbUser.setPlannedMatchNofitication(user.isPlannedMatchNofitication());
+		dbUser.setCancelledMatchNotification(user.isCancelledMatchNotification());
+		dbUser.setConfirmMatchNotification(user.isConfirmMatchNotification());
 
-		userRepository.save(user);
+		userRepository.save(dbUser);
 
-		return index(model, authentication);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setView(new RedirectView(USER_PROFILE));
+		return modelAndView;
 	}
 
 	private long countWon(List<Match> matchList, String domainShortName) {

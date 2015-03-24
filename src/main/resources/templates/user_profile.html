@@ -48,6 +48,26 @@
                                 <input id="stars_rating" type="number" class="rating" data-min="0" data-max="10" data-show-clear="false"
                                        data-step="0.1" th:field="*{rating}"
                                        data-stars="10" data-size="xs"/>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" th:value="*{plannedMatchNofitication}" th:field="*{plannedMatchNofitication}" id="plannedNotification" name="plannedNotification" />
+                                        I want to receive mails about planned matches
+                                    </label>
+                                </div>
+                                <div class="checkbox" >
+                                    <label>
+                                        <input type="checkbox" th:value="*{cancelledMatchNotification}" th:field="*{cancelledMatchNotification}" id="cancelledNotification" name="cancelledNotification"/>
+                                        I want to receive mails about cancelled matches
+                                    </label>
+                                </div>
+                                <div class="checkbox" >
+                                    <label>
+                                        <input type="checkbox" th:value="*{confirmMatchNotification}" th:field="*{confirmMatchNotification}" id="confirmNotification" name="confirmNotification"/>
+                                        I want to receive mails about confirmed matches
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
                             </form>
                         </div>
                         <div class="col-sm-6 col-md-6">
