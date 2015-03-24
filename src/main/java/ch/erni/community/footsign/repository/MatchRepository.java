@@ -67,7 +67,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	List<Match> findAllPlanMatchesForToday(long from, long to);
 	//is ocupated time
 
-	@Query("Match (m:Match {state : 'PLANNED' } ) where m.dateOfMatch = {0} return m")
+	@Query("Match (m:Match {state : 'PLANNED' } ) where m.dateOfMatch = {0} return m limit 1")
 	Match findMatchForThisDate(long time);
 
 	@Query("match(user:User {domainShortName: {0}})--(m:Match {state : 'PLAYED' }) return m")

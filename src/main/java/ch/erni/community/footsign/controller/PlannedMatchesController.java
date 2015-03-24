@@ -12,6 +12,7 @@ import ch.erni.community.footsign.util.PlannedMatchConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.text.ParseException;
 import java.util.*;
@@ -43,11 +45,13 @@ public class PlannedMatchesController {
     
     @Autowired
     private PlannedMatchConfigurator configurator;
+
+    @Autowired
+    private MailService mailService;
     
     private PlannedMatch defaultPlannedMatch;
 
-    @Autowired
-    MailService mailService;
+    private Map<Long, PlannedMatch> plannedMatchMap;
     
     @RequestMapping("/plane_match")
     public String home(Model model, Authentication authentication) {
@@ -79,10 +83,39 @@ public class PlannedMatchesController {
 
             
         } catch (Exception e) {
-            modelAndView.addObject("error", e.getMessage());
+
+            if (e instanceof DataIntegrityViolationException) {
+                modelAndView.addObject("error", "We are so sorry, but current match is reserved yet. Please, choose another one.");
+            } else {
+                modelAndView.addObject("error", e.getMessage());
+            }
             return modelAndView;
         }
 
+        return  modelAndView;
+    }
+    
+    @RequestMapping(value = "cancelMatchFromPlanned", method = RequestMethod.POST)
+    public ModelAndView cancelMatchFromPlanned(String timestamp) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setView(new RedirectView("plane_match"));
+        
+        if (timestamp != null && plannedMatchMap != null) {
+            try {
+                PlannedMatch plannedMatch = plannedMatchMap.get(Long.parseLong(timestamp));
+
+                if (plannedMatch != null) {
+                    Match match = matchRepository.findMatchForThisDate(plannedMatch.getTimestamp());
+                    if (match != null) {
+                        matchRepository.delete(match);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
         return  modelAndView;
     }
     
@@ -91,7 +124,7 @@ public class PlannedMatchesController {
         try {
             Calendar calendar = calendarHelper.getSpecificDate(dateToShow, "dd.MM.yyyy");
 
-            Map<Long, PlannedMatch> plannedMatchMap = configurator.createPlannedMap(calendar);
+            plannedMatchMap = configurator.createPlannedMap(calendar, defaultPlannedMatch.getCurrentUser().getDomainShortName());
             model.addAttribute("matches", plannedMatchMap);
             model.addAttribute("plannedMatch", defaultPlannedMatch);
             

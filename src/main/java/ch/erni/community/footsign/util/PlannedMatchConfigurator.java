@@ -60,7 +60,7 @@ public class PlannedMatchConfigurator {
         return pm;
     }
     
-    public Map<Long, PlannedMatch> createPlannedMap(Calendar day) {
+    public Map<Long, PlannedMatch> createPlannedMap(Calendar day, String currentUserDomainName) {
         Map<Long, PlannedMatch> result = new TreeMap<>();
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
@@ -79,6 +79,7 @@ public class PlannedMatchConfigurator {
             if (plannedMatches != null && !plannedMatches.isEmpty()) {
                 Optional<Match> match = plannedMatches.stream().filter(m -> m.getDateOfMatch() == startCal.getTimeInMillis()).findFirst();
                 pl.setTimestamp(match.isPresent() ? match.get().getDateOfMatch() : null);
+                pl.setCancelable((match.isPresent() && match.get().userPlayedMatch(currentUserDomainName)));
             }
 
             result.put(startCal.getTimeInMillis(), pl);
