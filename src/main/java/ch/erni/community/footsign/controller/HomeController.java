@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.GraphDatabase;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -77,7 +78,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)
-	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
+	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult, Authentication authentication) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("home");
 		modelAndView.addObject("clientMatch", clientMatch);
@@ -112,7 +113,12 @@ public class HomeController {
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
 			setGamesToMatch(result1, result2, match);
-
+			ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
+			String domainUserName = principal.getDomainUserName();
+			User u = userRepository.findByDomainShortName(domainUserName);
+			if(match.getTeam1().contains(u) || match.getTeam2().contains(u)) {
+				match.confirmedByPlayer(u);
+			}
 			matchRepository.save(match);
 			
 			modelAndView.addObject("success", "The match was sucessfully saved.");
