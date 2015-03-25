@@ -70,7 +70,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("Match (m:Match {state : 'PLANNED' } ) where m.dateOfMatch = {0} return m limit 1")
 	Match findMatchForThisDate(long time);
 
-	@Query("match(user:User {domainShortName: {0}})--(m:Match {state : 'PLAYED' }) return m")
+	@Query("match(user:User {domainShortName: {0}})--(m:Match {state : 'PLAYED' }) return distinct m")
 	List<Match> findPlayedMatchesForUser(String domainShortName);
 
 }

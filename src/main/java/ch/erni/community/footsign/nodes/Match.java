@@ -160,5 +160,35 @@ public class Match {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Match match = (Match) o;
+
+		if (dateOfMatch != match.dateOfMatch) return false;
+		if (confirmedBy != null ? !confirmedBy.equals(match.confirmedBy) : match.confirmedBy != null) return false;
+		if (games != null ? !games.equals(match.games) : match.games != null) return false;
+		if (matchId != null ? !matchId.equals(match.matchId) : match.matchId != null) return false;
+		if (state != match.state) return false;
+		if (team1 != null ? !team1.equals(match.team1) : match.team1 != null) return false;
+		if (team2 != null ? !team2.equals(match.team2) : match.team2 != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = matchId != null ? matchId.hashCode() : 0;
+		result = 31 * result + (int) (dateOfMatch ^ (dateOfMatch >>> 32));
+		result = 31 * result + (state != null ? state.hashCode() : 0);
+		result = 31 * result + (team1 != null ? team1.hashCode() : 0);
+		result = 31 * result + (team2 != null ? team2.hashCode() : 0);
+		result = 31 * result + (games != null ? games.hashCode() : 0);
+		result = 31 * result + (confirmedBy != null ? confirmedBy.hashCode() : 0);
+		return result;
+	}
 }
 
