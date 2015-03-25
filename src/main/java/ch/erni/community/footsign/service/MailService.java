@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 /**
@@ -60,7 +62,7 @@ public class MailService {
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        team.stream().filter(user -> user.isConfirmMatchNotification()).forEach(user -> {
+        team.stream().filter(user -> user.isConfirmMatchNotification()).collect(Collectors.toList()).forEach(user -> {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
@@ -75,7 +77,7 @@ public class MailService {
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        team.stream().filter(user -> user.isPlannedMatchNofitication()).forEach(user -> {
+        team.stream().filter(user -> user.isPlannedMatchNofitication()).collect(Collectors.toList()).forEach(user -> {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
