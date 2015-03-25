@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.component.ErniLdapCache;
+import ch.erni.community.footsign.component.UserHolder;
 import ch.erni.community.footsign.dto.ClientMatch;
 import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Game;
@@ -46,6 +47,9 @@ public class HomeController {
 
 	@Autowired
 	private ErniLdapCache erniLdapCache;
+
+	@Autowired
+	private UserHolder userHolder;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -113,14 +117,11 @@ public class HomeController {
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
 			setGamesToMatch(result1, result2, match);
-			ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
-			String domainUserName = principal.getDomainUserName();
-			User u = userRepository.findByDomainShortName(domainUserName);
+			User u = userHolder.getLoggedUser();
 			if(match.getTeam1().contains(u) || match.getTeam2().contains(u)) {
 				match.confirmedByPlayer(u);
 			}
 			matchRepository.save(match);
-			
 			modelAndView.addObject("success", "The match was sucessfully saved.");
 		}
 
