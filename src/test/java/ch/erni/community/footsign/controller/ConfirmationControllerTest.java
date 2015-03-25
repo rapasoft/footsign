@@ -41,30 +41,16 @@ public class ConfirmationControllerTest {
 
     @Autowired
     TestDataGenerator testDataGenerator;
+
     @Autowired
     private ConfirmationController confirmationController;
 
     @Autowired
     private MatchRepository matchRepository;
 
-    private ErniUserDetails userDetails;
-
-
     @Autowired
     private UserRepository userRepository;
 
-    @Before
-    public void before() {
-        userDetails = mockUserDetails();
-    }
-
-    private ErniUserDetails mockUserDetails() {
-        ErniUserDetails erniUserDetails = new ErniUserDetails(
-                Optional.of("David"), Optional.of("Vesely"), Optional.of("veda"), Optional.of("firstName.secondName@erni.sk"),
-                Optional.of("Test"), Optional.of("Test"));
-        erniUserDetails.setPhotoPath("/path");
-        return erniUserDetails;
-    }
     @Test
     public void testNotConfirmationMatches() throws Exception {
         testDataGenerator.generatePlayedMatches();
