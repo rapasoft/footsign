@@ -66,14 +66,14 @@ public class ConfirmationController {
     
     @RequestMapping(value = "/confirm_match", method = RequestMethod.POST)
     public ModelAndView confirmMatch(String matchId, Authentication authentication ) {
-        ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
-
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("confirmations"));
-        Match match = matchRepository.findOne(Long.valueOf(matchId));
-        match.setState(MatchState.CONFIRMED);
+
+        ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
         User user = userRepository.findByDomainShortName(principal.getDomainUserName());
+        Match match = matchRepository.findOne(Long.valueOf(matchId));
         match.confirmedByPlayer(user);
+        match.setState(MatchState.CONFIRMED);
         matchRepository.save(match);
         return modelAndView;
     }
@@ -82,9 +82,7 @@ public class ConfirmationController {
     public ModelAndView cancelMatch(String matchId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("confirmations"));
-        Match match = matchRepository.findOne(Long.valueOf(matchId));
-        match.setState(MatchState.CANCELLED);
-        matchRepository.save(match);
+        matchRepository.delete(Long.valueOf(matchId));
         return modelAndView;
     }
 }
