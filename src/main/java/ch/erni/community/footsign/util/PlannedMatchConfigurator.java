@@ -38,18 +38,13 @@ public class PlannedMatchConfigurator {
     @Autowired
     private UserRepository userRepository;
 
-    public PlannedMatch createDefaultPlannedMatch(Authentication authentication) {
+    public PlannedMatch createDefaultPlannedMatch(User user) {
 
         PlannedMatch pm = new PlannedMatch();
         try {
+            pm.setCurrentUser(user);
 
-            ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
-            String  domainUserName = principal.getDomainUserName();
-            User u = userRepository.findByDomainShortName(domainUserName);
-
-            pm.setCurrentUser(u);
-
-            pm.addPlayersToTeam1(u.getDomainShortName());
+            pm.addPlayersToTeam1(user.getDomainShortName());
             pm.addPlayersToTeam1("");
             pm.addPlayersToTeam2("");
             pm.addPlayersToTeam2("");

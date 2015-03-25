@@ -60,7 +60,7 @@ public class MailService {
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        for(User user : team) {
+        team.stream().filter(user -> user.isConfirmMatchNotification()).forEach(user -> {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
@@ -68,21 +68,21 @@ public class MailService {
             ctx.setVariable("team2", match.getTeam2());
             ctx.setVariable("games", match.getGames());
             sendMail(MailType.CONFIRMATION_MAIL, user.getEmail(), ctx);
-        }
+        });
     }
 
     public void sendPlaneMatchMail(Match match) throws MessagingException {
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        for(User user : team) {
+        team.stream().filter(user -> user.isPlannedMatchNofitication()).forEach(user -> {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
             ctx.setVariable("team1", match.getTeam1());
             ctx.setVariable("team2", match.getTeam2());
             sendMail(MailType.PLANED_MAIL, user.getEmail(), ctx);
-        }
+        });
     }
 
     public void sendMail(MailType mailType, String recepientMail, IContext ctx) {

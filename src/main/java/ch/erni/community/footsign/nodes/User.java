@@ -16,7 +16,7 @@ public class User {
 	/**
 	 * Domain shortcut, e.g. rap, ban, etc.
 	 */
-	@Indexed(unique = true)
+	@Indexed(unique = true, failOnDuplicate = true)
 	private String domainShortName;
 
 	private String fullName;
@@ -28,6 +28,10 @@ public class User {
 	private String photoPath = "avatars/default_profile_photo.png";
 
 	private Float rating = 0.0f;
+
+	private boolean plannedMatchNofitication = true;
+	private boolean cancelledMatchNotification = true;
+	private boolean confirmMatchNotification = false;
 
 	public User() {
 	}
@@ -94,6 +98,30 @@ public class User {
 
 	public void setRating(Float rating) {
 		this.rating = rating;
+	}
+
+	public boolean isPlannedMatchNofitication() {
+		return plannedMatchNofitication;
+	}
+
+	public void setPlannedMatchNofitication(boolean plannedMatchNofitication) {
+		this.plannedMatchNofitication = plannedMatchNofitication;
+	}
+
+	public boolean isCancelledMatchNotification() {
+		return cancelledMatchNotification;
+	}
+
+	public void setCancelledMatchNotification(boolean cancelledMatchNotification) {
+		this.cancelledMatchNotification = cancelledMatchNotification;
+	}
+
+	public boolean isConfirmMatchNotification() {
+		return confirmMatchNotification;
+	}
+
+	public void setConfirmMatchNotification(boolean confirmMatchNotification) {
+		this.confirmMatchNotification = confirmMatchNotification;
 	}
 
 	@Override
