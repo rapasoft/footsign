@@ -82,8 +82,8 @@ public class PlannedMatchesController {
             Match match = configurator.createMatch(plannedMatch);
 
             matchRepository.save(match);
-
             modelAndView.addObject("success", "The match was sucessfully planned.");
+
             mailService.sendPlaneMatchMail(match);
 
             
@@ -140,6 +140,5 @@ public class PlannedMatchesController {
 
         return "fragments/ajax_templates :: #plannedMatchesOneDay";
     }
-    
 
 }
