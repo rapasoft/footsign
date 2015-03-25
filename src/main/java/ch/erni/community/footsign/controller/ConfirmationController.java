@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cepe on 20.03.2015.
@@ -48,25 +49,15 @@ public class ConfirmationController {
         if (principal != null) {
             User user = userRepository.findByDomainShortName(principal.getDomainUserName());
             List<Match> matchesForConfirmation = matchRepository.findPlayedMatchesForUser(principal.getDomainUserName());
-            //todo need refactor
-            List<Match> confirmation = new ArrayList<>();
-            for (Match match : matchesForConfirmation) {
-                if (match.getTeam1().contains(user)) {
-                    for (User u : match.getTeam1()) {
-                        if (match.getConfirmedBy().contains(u)) {
-                            confirmation.add(match);
-                        }
-                    }
-                } else {
-                    for (User u : match.getTeam2()) {
-                        if (match.getConfirmedBy().contains(u)) {
-                            confirmation.add(match);
-                        }
-                    }
-                }
-            }
-            matchesForConfirmation.removeAll(confirmation);
 
+            List<Match> confirmationFromTeam1 = matchesForConfirmation.stream().filter(m->m.getTeam1().contains(user))
+                    .filter(m->m.getTeam1().stream().anyMatch(u-> m.getConfirmedBy().contains(u))).collect(Collectors.toList());
+
+            List<Match> confirmationFromTeam2 = matchesForConfirmation.stream().filter(m->m.getTeam2().contains(user))
+                    .filter(m->m.getTeam2().stream().anyMatch(u-> m.getConfirmedBy().contains(u))).collect(Collectors.toList());
+
+            matchesForConfirmation.removeAll(confirmationFromTeam1);
+            matchesForConfirmation.removeAll(confirmationFromTeam2);
             model.addAttribute("matches", matchesForConfirmation);
         }
         
