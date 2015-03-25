@@ -1,5 +1,6 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.component.UserHolder;
 import ch.erni.community.footsign.dto.PlannedMatch;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -49,13 +50,17 @@ public class PlannedMatchesController {
     @Autowired
     private MailService mailService;
     
+    @Autowired
+    private UserHolder userHolder;
+    
     private PlannedMatch defaultPlannedMatch;
 
     private Map<Long, PlannedMatch> plannedMatchMap;
     
     @RequestMapping("/plane_match")
-    public String home(Model model, Authentication authentication) {
-        this.defaultPlannedMatch = configurator.createDefaultPlannedMatch(authentication);
+    public String home(Model model) {
+        User current = userHolder.getLoggedUser();
+        this.defaultPlannedMatch = configurator.createDefaultPlannedMatch(current);
         model.addAttribute("plannedMatch", defaultPlannedMatch);
         
         return "plane_match";

@@ -1,8 +1,10 @@
 package ch.erni.community.footsign.controller;
 
+import ch.erni.community.footsign.component.UserHolder;
 import ch.erni.community.footsign.dto.PlannedMatch;
 import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Match;
+import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.service.MailService;
@@ -29,16 +31,20 @@ public class ConfirmationController {
     
     @Autowired
     private MatchRepository matchRepository;
+    
+    @Autowired
+    private UserHolder userHolder;
 
     @Autowired
     MailService mailService;
     
     @RequestMapping(value = "/confirmations", method = RequestMethod.GET)
-    public String index(Model model, Authentication authentication) {
+    public String index(Model model) {
 
-        ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
-        if (principal != null) {
-            List<Match> matchesForConfirmation = matchRepository.findPlayedMatchesForUser(principal.getDomainUserName());
+        User u = userHolder.getLoggedUser();
+
+        if (u != null) {
+            List<Match> matchesForConfirmation = matchRepository.findPlayedMatchesForUser(u.getDomainShortName());
             model.addAttribute("matches", matchesForConfirmation);
         }
         
