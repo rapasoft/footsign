@@ -46,12 +46,12 @@ public class StaticResourceConfiguration extends WebMvcAutoConfiguration.WebMvcA
 		String cachePeriodProperty = env.getProperty("spring.resources.cache-period");
 		int cachePeriod = Integer.parseInt(cachePeriodProperty == null ? "0" : cachePeriodProperty);
 
-		registry.addResourceHandler("/**")
+		registry.addResourceHandler("*//**")
 				.addResourceLocations("/public/", "classpath:/public/")
 				.setCachePeriod(cachePeriod)
 				.resourceChain(isCacheEnabled)
 				.addResolver(new GzipResourceResolver())
-				.addResolver(new VersionResourceResolver().addContentVersionStrategy("/**"))
+				.addResolver(new VersionResourceResolver().addContentVersionStrategy("*//**"))
 				.addTransformer(new AppCacheManifestTransformer());
 	}
 
