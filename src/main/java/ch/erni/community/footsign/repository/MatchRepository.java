@@ -1,7 +1,6 @@
 package ch.erni.community.footsign.repository;
 
 import ch.erni.community.footsign.dto.CustomPlayer;
-import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import org.springframework.data.neo4j.annotation.Query;
@@ -31,7 +30,8 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"with user,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +            
 			"with user,count(distinct m) as wonMatches \n" +
-			"match (user)<--(m2:Match {state : 'CONFIRMED' }) with user,count(m2) as allMatches, wonMatches \n" +
+			"match (user)<--(m2:Match) with user,count(m2) as allMatches, wonMatches\n" +
+			"where allMatches > 4\n" +
 			"return user, wonMatches*(1.0) / allMatches*(1.0) as value\n" +
 			"order by value desc limit 10")
 	List<CustomPlayer> findTenPlayersWithHighestRatio();
