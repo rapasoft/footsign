@@ -115,32 +115,34 @@
 				</div>
 
 				<div th:each="match : ${plannedMatches} ">
-					<div class="row" style="border-top: 1px dotted #e7e7e7; padding:5px; ">
-						<div class="col-xs-8" style="padding:5px ">
-							<div class="row vertical-align-row">
-								<div class="col-xs-5 vertical-align-col">
-									<div class="text-center">
+					<div class="row vertical-align-row" style="border-top: 1px dotted #e7e7e7; padding:5px; ">
+
+
+						<div class="col-xs-4 vertical-align-col">
+							<div class="text-center">
 										<span th:each="user : ${match.team1}" class="inline-block">
-											<div th:text="${user.fullName}"  class="text-center"></div>
+											<div th:text="${user.fullName}" class="text-center"></div>
 										</span>
-									</div>
-								</div>
-								<div class="col-xs-2 vertical-align-col">
-									VS.
-								</div>
-								<div class="col-xs-5 vertical-align-col">
-									<div class="text-center">
+							</div>
+						</div>
+						<div class="col-xs-1 vertical-align-col">
+							VS.
+						</div>
+						<div class="col-xs-4 vertical-align-col">
+							<div class="text-center">
 										<span th:each="user : ${match.team2}" class="inline-block">
 											<div th:text="${user.fullName}" class="text-center"></div>
 										</span>
-									</div>
-								</div>
 							</div>
 						</div>
-						<div class="col-xs-2 text-center">
-							<span th:text="${match.formatedDateOfMatchWithoutYear}" class="text-center label label-success"></span>
+
+
+						<div class="col-xs-2 vertical-align-col">
+							<span th:text="${match.formatedDateOfMatchWithoutYear}"
+								  class="text-center custom-label label-success"></span>
 						</div>
-						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}" class="col-xs-2">
+						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}"
+							 class="col-xs-1 vertical-align-col">
 							<form th:id="cancel_form_ + ${match.dateOfMatch}" th:action="@{/cancelPlannedMatch}"
 								  method="post">
 								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
@@ -158,36 +160,31 @@
 					<h4>Planned and already played matches</h4>
 				</div>
 
-				<div th:each="match : ${notFilledMatches} ">
-					<div class="row" th:id="planned_match_ + ${match.matchId}" style="border-top: 1px dotted #e7e7e7; padding:5px; " th:data="${match.matchId}">
-						<div class="col-xs-8 nopadding" style="padding:5px ">
-							<div class="row vertical-align-row">
-								<div class="col-xs-5 vertical-align-col">
-									<div class="text-center">
-										<span th:each="user : ${match.team1}" class="inline-block team1-player" >
-											<div th:text="${user.fullName}" th:data="${user.domainShortName}" class="text-center"></div>
-										</span>
-									</div>
-								</div>
-								<div class="col-xs-2 vertical-align-col">
-									VS.
-								</div>
-								<div class="col-xs-5 vertical-align-col">
-									<div class="text-center">
-										<span th:each="user : ${match.team2}" class="inline-block team2-player">
-											<div th:text="${user.fullName}" th:data="${user.domainShortName}" class="text-center"></div>
-										</span>
-									</div>
-								</div>
-							</div>
+				<div th:each="match : ${notFilledMatches} " class="dashboard-matches">
+					<div class="row vertical-align dotted-border" th:id="planned_match_ + ${match.matchId}"
+						 th:data="${match.matchId}">
+						<div class="col-xs-3 col-md-4 ">
+							<span th:each="user : ${match.team1}" class="team1-player">
+								<div th:text="${user.fullName}" th:data="${user.domainShortName}"></div>
+							</span>
 						</div>
-						<div class="col-xs-2 text-center nopadding">
-							<span th:text="${match.formatedDateOfMatchWithoutYear}" class="text-center label label-success"></span>
+						<div class="col-xs-1 col-md-1">
+							VS.
 						</div>
-						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}" class="col-xs-1 nopadding">
+						<div class="col-xs-3 col-md-4" >
+							<span th:each="user : ${match.team2}" class="team2-player">
+								<div th:text="${user.fullName}" th:data="${user.domainShortName}"></div>
+							</span>
+						</div>
+						<div class="col-xs-2  col-md-1 nopadding" style="  margin-right: 5px;">
+							<div th:text="${match.formatedDateOfMatchWithoutYear}"
+								 class="custom-label label-danger"></div>
+						</div>
+						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}"
+							 class="col-xs-1 col-md-1 nopadding">
 							<form th:action="@{/cancelPlannedMatch}" method="post">
 								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
-								<button type="submit" class="btn glyphicon glyphicon-remove"></button>
+								<button type="submit" class="btn glyphicon glyphicon-remove" title="Cancel me"></button>
 							</form>
 						</div>
 						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}" class="col-xs-1 nopadding">

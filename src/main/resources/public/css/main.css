@@ -90,6 +90,15 @@ body {
 	}
 
 
+	.dashboard-matches{
+		font-size: 0.8em;
+	}
+	.dashboard-matches .btn{
+		font-size: 12px;
+		padding: 3px 6px;
+	}
+
+
 }
 
 /* Landscape phones and down */
@@ -100,10 +109,15 @@ body {
 	margin-top: 30px;
 }
 
+.vertical-align {
+	display: flex;
+	align-items: center;
+}
 
 /*    Dashboard - upcoming matches and planned matches */
 .vertical-align-row{
 	display: table;
+	table-layout: fixed;
 	height: 100%;
 }
 
@@ -114,6 +128,22 @@ body {
 }
 
 .nopadding {
-	padding: 0 !important;
-	margin: 0 !important;
+	padding: 2px !important;
+
+}
+.custom-label{
+	display: block;
+	padding: .3em .6em .3em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+.dotted-border{
+	border-top: 1px dotted #e7e7e7;
+	padding:5px;
 }
