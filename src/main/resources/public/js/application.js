@@ -227,6 +227,31 @@ function checkMatchState() {
     isGameOver(score1, score2);
 }
 
+function fillPlannedMatch(event) {
+    if (event && event.data.matchId) {
+        // set hidden input
+        $("#matchId").val(event.data.matchId);
+        
+        // load teams in planned match
+        var team1 = $("#planned_match_" + event.data.matchId + " .team1-player > div");
+        var team2 = $("#planned_match_" + event.data.matchId + " .team2-player > div");
+        
+        // set combobox for each players in teams
+        if (team1) {
+            team1.each(function(index, data) {
+                $("#selectLeft" + (index + 1))[0].selectize.setValue($(data).attr("data"));
+            });
+        }
+
+        if (team2) {
+            team2.each(function(index, data) {
+                $("#selectRight" + (index + 1))[0].selectize.setValue($(data).attr("data"));
+            });
+        }
+    }
+    
+}
+
 
 
 // initialize components and binding events
@@ -245,6 +270,11 @@ $(document).ready(function () {
     if(btn3) {
         btn3.on("click", showNextRound);
     }
+
+    $(".fill-form-btn").each(function() {
+        var matchId = $(this).attr("data");
+        $(this).on("click", {matchId: matchId}, fillPlannedMatch);
+    });
 
     $(".roundResultInput").change(checkMatchState).change(validateRoundInput);
 

@@ -76,12 +76,14 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("match (m:Match {state :  'PLANNED'}) \n" +
 			"where m.dateOfMatch >= timestamp() \n" +
 			"return distinct m \n" +
+			"order by m.dateOfMatch \n" +
 			"limit 10")
 	List<Match> findTenUpcomingMatches();
 
 	@Query("match (m:Match {state :  'PLANNED'}) \n" +
 			"where m.dateOfMatch <= timestamp() \n" +
 			"return distinct m \n" +
+			"order by m.dateOfMatch \n" +
 			"limit 10")
 	List<Match> findTenNotFilledMatches();
 

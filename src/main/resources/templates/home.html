@@ -31,6 +31,8 @@
 					<button type="button" class="btn btn-default game-type-1">1 vs 1</button>
 					<input type="text" id="gameType" name="gameType" th:field="*{gameType}" th:value="*{gameType}"
 						   class="hidden"/>
+					<input type="text" id="matchId" name="matchId" th:field="*{matchId}" th:value="*{matchId}"
+						   class="hidden"/>
 				</div>
 			</div>
 
@@ -157,7 +159,7 @@
 				</div>
 
 				<div th:each="match : ${notFilledMatches} ">
-					<div class="row" style="border-top: 1px dotted #e7e7e7; padding:5px; " th:data="${match.matchId}">
+					<div class="row" th:id="planned_match_ + ${match.matchId}" style="border-top: 1px dotted #e7e7e7; padding:5px; " th:data="${match.matchId}">
 						<div class="col-xs-8 nopadding" style="padding:5px ">
 							<div class="row vertical-align-row">
 								<div class="col-xs-5 vertical-align-col">
@@ -187,12 +189,12 @@
 								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
 								<button type="submit" class="btn glyphicon glyphicon-remove"></button>
 							</form>
-							</div>
+						</div>
 						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}" class="col-xs-1 nopadding">
-							<form th:action="@{/fillMatch}" method="post">
+							<!--<form th:action="@{/fillMatch}" method="post">-->
 								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
-								<button type="submit" class="btn glyphicon glyphicon-pencil" title="Fill me" th:data="${match.matchId}"></button>
-							</form>
+								<button type="button" class="btn glyphicon glyphicon-pencil fill-form-btn" title="Fill me" th:data="${match.matchId}"></button>
+							<!--</form>-->
 						</div>
 					</div>
 				</div>
