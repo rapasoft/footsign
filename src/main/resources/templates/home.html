@@ -191,10 +191,7 @@
 							</form>
 						</div>
 						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}" class="col-xs-1 nopadding">
-							<!--<form th:action="@{/fillMatch}" method="post">-->
-								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
-								<button type="button" class="btn glyphicon glyphicon-pencil fill-form-btn" title="Fill me" th:data="${match.matchId}"></button>
-							<!--</form>-->
+							<button type="button" class="btn glyphicon glyphicon-pencil fill-form-btn" title="Fill me" th:data="${match.matchId}"></button>
 						</div>
 					</div>
 				</div>
