@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepositoryCustom {
 
-	@Query("match(user:User {domainShortName: {0}})--(m:Match) return m")
+	@Query("match(user:User {domainShortName: {0}})--(m:Match) return distinct m")
 	List<Match> findAllByUserDomainShortName(String domainShortName);
 
 	@Query("MATCH (n)-[r:TEAM1]->(m) RETURN DISTINCT n ORDER BY n.dateOfMatch DESC LIMIT 10")
@@ -22,7 +22,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("MATCH (user:User {domainShortName: {0}})--(m:Match) RETURN DISTINCT m ORDER BY m.dateOfMatch DESC LIMIT 10")
 	List<Match> findLastMatchesByDomainName(String domainName);
 
-	@Query("match (u:User)--(m:Match) with u,count(m) as matches return u order by matches desc limit 1")
+	@Query("match (u:User)--(m:Match) with u,count(distinct m) as matches return u order by matches desc limit 1")
 	User findPlayerWithMostPlayedMatches();
 
 	@Query("match (user:User)--(m:Match) with user,count(m) as value return user , value order by value desc limit 10")
