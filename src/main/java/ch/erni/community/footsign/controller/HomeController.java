@@ -46,6 +46,9 @@ public class HomeController {
 	MatchRepository matchRepository;
 
 	@Autowired
+	UserHolder loggedUser;
+
+	@Autowired
 	private ErniLdapCache erniLdapCache;
 
 	@Autowired
@@ -60,6 +63,9 @@ public class HomeController {
 	public String home(Model model) {
 
 		model.addAttribute("clientMatch", new ClientMatch());
+		model.addAttribute("plannedMatches", matchRepository.findTenUpcomingMatches());
+		model.addAttribute("notFilledMatches", matchRepository.findTenNotFilledMatches());
+		model.addAttribute("loggedUser", loggedUser.getLoggedUser());
 		return "home";
 	}
 
@@ -79,6 +85,18 @@ public class HomeController {
 
 		return json;
 
+	}
+
+	@RequestMapping(value = "/cancelPlannedMatch", method = RequestMethod.POST)
+	public ModelAndView cancelPlannedMatch(String timestamp){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setView(new RedirectView("home"));
+
+		Match match = matchRepository.findMatchForThisDate(new Long(timestamp));
+		if (match != null) {
+			matchRepository.delete(match);
+		}
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)

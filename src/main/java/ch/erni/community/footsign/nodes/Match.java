@@ -136,6 +136,12 @@ public class Match {
 		return simpleDateFormat.format(date);
 	}
 
+	public String getFormatedDateOfMatchWithoutYear() {
+		Date date = new Date(dateOfMatch);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm', 'dd.MM");
+		return simpleDateFormat.format(date);
+	}
+
 	public String getPlayersOfTeam1InString(){
 		StringBuilder sb = new StringBuilder();
 		boolean lastUser = false;

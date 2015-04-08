@@ -1,9 +1,11 @@
 body {
 	padding-top: 25px !important;
 }
-
+.inline-block{
+	display: inline-block;
+}
 .user-profile-table{
-   padding:20px;
+	padding:20px;
 }
 .profile-stats {
 	text-align: center;
@@ -93,4 +95,25 @@ body {
 /* Landscape phones and down */
 @media (max-width: 480px) {
 
+}
+.matches-vs{
+	margin-top: 30px;
+}
+
+
+/*    Dashboard - upcoming matches and planned matches */
+.vertical-align-row{
+	display: table;
+	height: 100%;
+}
+
+.vertical-align-col{
+	display: table-cell;
+	vertical-align: middle;
+	float: none;
+}
+
+.nopadding {
+	padding: 0 !important;
+	margin: 0 !important;
 }
