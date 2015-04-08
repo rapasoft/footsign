@@ -134,14 +134,14 @@ public class HomeController {
 				// create match. Do only for new matches
 				match = new Match();
 				match.setDateOfMatch(new Date().getTime());
-				setPlayersToTeam(team1, match, true);
-				setPlayersToTeam(team2, match, false);
 			} else {
 				// load match. Do only for planned matches
 				match = matchRepository.findOne(Long.parseLong(clientMatch.getMatchId()));
 			}
 
 			// set additional info. Do for new and existing matches
+			setPlayersToTeam(team1, match, true);
+			setPlayersToTeam(team2, match, false);
 			match.setState(MatchState.PLAYED);
 			setGamesToMatch(result1, result2, match);
 			User u = userHolder.getLoggedUser();

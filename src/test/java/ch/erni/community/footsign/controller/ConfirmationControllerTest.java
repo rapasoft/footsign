@@ -56,7 +56,7 @@ public class ConfirmationControllerTest {
         testDataGenerator.generatePlayedMatches();
         User user = userRepository.findByDomainShortName("veda");
         List<Match> allMatchesForConfirmUser = matchRepository.findPlayedMatchesForUser(user.getDomainShortName());
-        List<Match> confirmMatchesUser = confirmationController.getMatchesForConfirmation(user);
+        List<Match> confirmMatchesUser = confirmationController.getMatchesForConfirmation(user, allMatchesForConfirmUser);
         Assert.assertTrue(allMatchesForConfirmUser.size() == confirmMatchesUser.size());
 
         Match match = allMatchesForConfirmUser.get(0);
@@ -66,18 +66,20 @@ public class ConfirmationControllerTest {
         }else {
             oponent = match.getTeam1().iterator().next();
         }
-        List<Match> allMatchesForConfirmOponent= matchRepository.findPlayedMatchesForUser(oponent.getDomainShortName());
+        List<Match> allMatchesForConfirmOponent = matchRepository.findPlayedMatchesForUser(oponent.getDomainShortName());
 
         match.confirmedByPlayer(user);
         matchRepository.save(match);
-        confirmMatchesUser = confirmationController.getMatchesForConfirmation(user);
+        allMatchesForConfirmUser = matchRepository.findPlayedMatchesForUser(user.getDomainShortName());
+        confirmMatchesUser = confirmationController.getMatchesForConfirmation(user, allMatchesForConfirmUser);
         Assert.assertTrue((allMatchesForConfirmUser.size()-1) == confirmMatchesUser.size());
 
         match.confirmedByPlayer(oponent);
         match.setState(MatchState.CONFIRMED);
         matchRepository.save(match);
 
-        List<Match> confirmMatchesOponent = confirmationController.getMatchesForConfirmation(oponent);
+        List<Match> allMatchesForConfirmOponentAfter = matchRepository.findPlayedMatchesForUser(oponent.getDomainShortName());
+        List<Match> confirmMatchesOponent = confirmationController.getMatchesForConfirmation(oponent, allMatchesForConfirmOponentAfter);
         Assert.assertTrue((allMatchesForConfirmOponent.size()-1) == confirmMatchesOponent.size());
 
     }

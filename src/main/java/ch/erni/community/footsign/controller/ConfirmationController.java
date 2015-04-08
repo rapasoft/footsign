@@ -50,25 +50,47 @@ public class ConfirmationController {
 
         User user = userHolder.getLoggedUser();
         if (user != null) {
-            List<Match> matchesForConfirmation = getMatchesForConfirmation(user);
-            model.addAttribute("matches", matchesForConfirmation);
+            List<Match> allMatches = matchRepository.findPlayedMatchesForUser(user.getDomainShortName());
+            List<Match> notConfirmedMatches = getMatchesForConfirmation(user, allMatches);
+            List<Match> confirmedMatches = getMatchesAlreadyConfirmed(user, allMatches);
+
+            model.addAttribute("notConfirmedMatches", notConfirmedMatches);
+            model.addAttribute("confirmedMatches", confirmedMatches);
         }
         
         return "confirmations";
     }
 
-    public List<Match> getMatchesForConfirmation(User user) {
-        List<Match> matchesForConfirmation = matchRepository.findPlayedMatchesForUser(user.getDomainShortName());
-
-        List<Match> confirmationFromTeam1 = matchesForConfirmation.stream().filter(m->m.getTeam1().contains(user))
+    public List<Match> getMatchesForConfirmation(User user, List<Match> allMatches) {
+        
+        List<Match> list = new ArrayList<>(allMatches);
+        
+        List<Match> confirmationFromTeam1 = list.stream().filter(m->m.getTeam1().contains(user))
                 .filter(m->m.getTeam1().stream().anyMatch(u-> m.getConfirmedBy().contains(u))).collect(Collectors.toList());
 
-        List<Match> confirmationFromTeam2 = matchesForConfirmation.stream().filter(m->m.getTeam2().contains(user))
+        List<Match> confirmationFromTeam2 = list.stream().filter(m->m.getTeam2().contains(user))
                 .filter(m->m.getTeam2().stream().anyMatch(u-> m.getConfirmedBy().contains(u))).collect(Collectors.toList());
 
-        matchesForConfirmation.removeAll(confirmationFromTeam1);
-        matchesForConfirmation.removeAll(confirmationFromTeam2);
-        return matchesForConfirmation;
+        list.removeAll(confirmationFromTeam1);
+        list.removeAll(confirmationFromTeam2);
+        
+        return list;
+
+    }
+
+    public List<Match> getMatchesAlreadyConfirmed(User user, List<Match> allMatches) {
+
+        List<Match> list = new ArrayList<>(allMatches);
+        
+        List<Match> confirmationFromTeam1 = list.stream().filter(m->m.getTeam1().contains(user))
+                .filter(m->m.getTeam1().stream().anyMatch(u-> m.getConfirmedBy().contains(u))).collect(Collectors.toList());
+
+        List<Match> confirmationFromTeam2 = list.stream().filter(m->m.getTeam2().contains(user))
+                .filter(m->m.getTeam2().stream().anyMatch(u-> m.getConfirmedBy().contains(u))).collect(Collectors.toList());
+
+        confirmationFromTeam1.addAll(confirmationFromTeam2);
+
+        return confirmationFromTeam1;
     }
 
     @RequestMapping(value = "/confirm_match", method = RequestMethod.POST)
