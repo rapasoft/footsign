@@ -91,11 +91,11 @@ body {
 
 
 	.dashboard-matches{
-		font-size: 0.8em;
+		font-size: 0.9em;
 	}
 	.dashboard-matches .btn{
-		font-size: 12px;
-		padding: 3px 6px;
+		/*font-size: 12px;*/
+		/*padding: 3px 6px;*/
 	}
 
 
@@ -103,7 +103,9 @@ body {
 
 /* Landscape phones and down */
 @media (max-width: 480px) {
-
+	.dashboard-matches{
+		font-size: 0.8em;
+	}
 }
 .matches-vs{
 	margin-top: 30px;
@@ -127,9 +129,11 @@ body {
 	float: none;
 }
 
-.nopadding {
+.no-padding {
+	padding: 0px !important;
+}
+.min-padding{
 	padding: 2px !important;
-
 }
 .custom-label{
 	display: block;
