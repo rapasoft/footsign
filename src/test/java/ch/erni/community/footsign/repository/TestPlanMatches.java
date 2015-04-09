@@ -41,28 +41,39 @@ public class TestPlanMatches {
 
     @Before
     public void before(){
-        User user1 = new User();
-        user1.setDomainShortName("veda");
-        User user2 = new User();
-        user2.setDomainShortName("rap");
-        User user3 = new User();
-        user3.setDomainShortName("cepe");
-        User user4 = new User();
-        user4.setDomainShortName("ban");
-
-        userRepository.save(user1);
-        userRepository.save(user2);
-        userRepository.save(user3);
-        userRepository.save(user4);
+        User userV = userRepository.findByDomainShortName("veda");
+        User userR = userRepository.findByDomainShortName("rap");
+        User userC = userRepository.findByDomainShortName("cepe");
+        User userB = userRepository.findByDomainShortName("ban");
+        if (userV == null) {
+            userV = new User();
+            userV.setDomainShortName("veda");
+            userRepository.save(userV);
+        }
+        if(userR == null){
+            userR = new User();
+            userR.setDomainShortName("rap");
+            userRepository.save(userR);
+        }
+        if(userC == null) {
+            userC = new User();
+            userC.setDomainShortName("cepe");
+            userRepository.save(userC);
+        }
+        if(userB == null) {
+            userB = new User();
+            userB.setDomainShortName("ban");
+            userRepository.save(userB);
+        }
 
         for(int i=0; i<10; i++) {
             Match match = new Match();
             match.addGame(generateGame(8,1));
             match.setState(MatchState.PLANNED);
-            match.addPlayersToTeam1(user1);
-            match.addPlayersToTeam1(user2);
-            match.addPlayersToTeam2(user3);
-            match.addPlayersToTeam2(user4);
+            match.addPlayersToTeam1(userV);
+            match.addPlayersToTeam1(userR);
+            match.addPlayersToTeam2(userC);
+            match.addPlayersToTeam2(userB);
             Calendar today = Calendar.getInstance();
             int month = today.get(Calendar.MONTH) +2 ;
             int day = today.get(Calendar.DAY_OF_MONTH) + (int) (Math.random()*10);
