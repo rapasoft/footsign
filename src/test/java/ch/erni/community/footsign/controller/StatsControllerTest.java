@@ -2,6 +2,7 @@ package ch.erni.community.footsign.controller;
 
 import ch.erni.community.footsign.dto.CustomPlayer;
 import ch.erni.community.footsign.component.ErniLdapCache;
+import ch.erni.community.footsign.enums.MatchState;
 import ch.erni.community.footsign.nodes.Game;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
@@ -73,6 +74,7 @@ public class StatsControllerTest {
             match.addPlayersToTeam1(selectUser2);
             match.addPlayersToTeam2(selectUser3);
             match.addPlayersToTeam2(selectUser4);
+            match.setState(MatchState.CONFIRMED);
             matches.add(match);
         }
         matches.forEach(matchRepository::save);

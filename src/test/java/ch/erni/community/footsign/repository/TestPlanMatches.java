@@ -64,10 +64,10 @@ public class TestPlanMatches {
             match.addPlayersToTeam2(user3);
             match.addPlayersToTeam2(user4);
             Calendar today = Calendar.getInstance();
-            int month = today.get(Calendar.MONTH) +1 ;
+            int month = today.get(Calendar.MONTH) +2 ;
             int day = today.get(Calendar.DAY_OF_MONTH) + (int) (Math.random()*10);
 
-            Date date = Date.from(Instant.parse("2015-" + String.format("%02d", month) + "-" + String.format("%02d", ((day > 30 ? day % 30 : day) + 1)) + "T" +
+            Date date = Date.from(Instant.parse("2015-" + String.format("%02d", month) + "-" + String.format("%02d", i+ 1) + "T" +
                     String.format("%02d", (int) (Math.random() * 11) + 1) + ":00:00.00Z"));
             match.setDateOfMatch(date.getTime());
             matches.add(match);
@@ -98,24 +98,28 @@ public class TestPlanMatches {
             int month = today.get(Calendar.MONTH) +1 ;
             int day = today.get(Calendar.DAY_OF_MONTH);
             int time = today.get(Calendar.HOUR_OF_DAY);
-            int diff = 24 - time;
-            int random = (int) (Math.random() * 11) % diff;
-            today.add(Calendar.HOUR_OF_DAY, random);
-            today.add(Calendar.MINUTE, 5);
+            //int diff = 24 - time+1;
+            // 22 hours because it should return only matches for this day
+            int randomHour = (int) (Math.random() * 100) % 22;
+            int randomMinit = (int) (Math.random() * 100) % 60;
+            today.add(Calendar.HOUR_OF_DAY, randomHour);
+            today.add(Calendar.MINUTE, randomMinit);
 
             match.setDateOfMatch(today.getTimeInMillis());
             todayMatches.add(match);
         }
+
+
         todayMatches.forEach(matchRepository :: save );
 
         long today = Calendar.getInstance().getTimeInMillis();
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DATE, 1);
-        tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+       /* tomorrow.set(Calendar.HOUR_OF_DAY, 0);
         tomorrow.set(Calendar.MINUTE, 0);
         tomorrow.set(Calendar.SECOND, 0);
-        tomorrow.set(Calendar.MILLISECOND, 0);
-        Assert.assertEquals(matchRepository.findAllPlanMatchesForToday(today, tomorrow.getTimeInMillis()).size(), 10);
+        tomorrow.set(Calendar.MILLISECOND, 0);*/
+        Assert.assertEquals(matchRepository.findAllPlanMatchesForToday(today, tomorrow.getTimeInMillis()).size(), todayMatches.size());
     }
 
 
