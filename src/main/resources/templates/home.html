@@ -1,87 +1,197 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:include="layout :: page">
 <head>
-    <meta charset="UTF-8" />
-    <title>FootSign / Home</title>
+	<meta charset="UTF-8"/>
+	<title>FootSign / Home</title>
 </head>
 <body>
 
 <div th:fragment="content">
-    
-    <form th:action="@{/saveGame}" th:object="${clientMatch}" method="post">
+	<div class="row">
 
-        <div class="alert alert-success" role="alert" th:if="${success}">
-            <strong><span>Success!</span></strong>
-            <span th:text="${success}">Success</span>
-        </div>
-        
-        <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible" role="alert">
+		<form th:action="@{/saveGame}" th:object="${clientMatch}" method="post">
 
-            <div th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
-                <strong><span th:text="${e.global}? 'Error' : ${e.fieldName}">The field name</span></strong> -
-                <span th:text="${e.message}">The error message</span>
-            </div>
+			<div class="alert alert-success" role="alert" th:if="${success}">
+				<strong><span>Success!</span></strong>
+				<span th:text="${success}">Success</span>
+			</div>
 
-        </div>
-        
-        <div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
-            <div class="btn-group" role="group" style="margin-bottom: 10px">
-                <button type="button" class="btn btn-default active game-type-2"> 2 vs 2</button>
-                <button type="button" class="btn btn-default game-type-1">1 vs 1</button>
-                <input type="text" id="gameType" name="gameType" th:field="*{gameType}" th:value="*{gameType}" class="hidden" />
-            </div>
-        </div>
+			<div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible" role="alert">
 
-        <div class="row">   <!-- components for selecting users: comboboxes -->
+				<div th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+					<strong><span th:text="${e.global}? 'Error' : ${e.fieldName}">The field name</span></strong> -
+					<span th:text="${e.message}">The error message</span>
+				</div>
 
-            <div class="col-md-4">
-                <div th:each="i : ${#numbers.sequence(1, 2)}">
-                    <select  th:id="'selectLeft' + ${i}" th:field="*{teams[__${'team1'}__]}" th:value="*{teams[__${'team1'}__][__${i-1}__]}" class="user-control" th:classappend="${i > 1} ? 'second-player'"></select>
-                </div>
-            </div>
-            <div class="col-md-4 text-center game-result">
-                <h1>
-                    <span class="team1Result">0</span> : <span class="team2Result">0</span>
-                </h1>
-            </div>
-            <div class="col-md-4">
-                <div th:each="i : ${#numbers.sequence(1, 2)}">
-                    <select  th:id="'selectRight' + ${i}" th:field="*{teams[__${'team2'}__]}" th:value="*{teams[__${'team2'}__][__${i-1}__]}" class="user-control" th:classappend="${i > 1} ? 'second-player'"></select>
-                </div>
-            </div>
+			</div>
 
-            <script th:inline="javascript">
-                /*<![CDATA[*/
+			<div class="row text-center">   <!-- type of game: 2vs2 or 1vs1 -->
+				<div class="btn-group" role="group" style="margin-bottom: 10px">
+					<button type="button" class="btn btn-default active game-type-2"> 2 vs 2</button>
+					<button type="button" class="btn btn-default game-type-1">1 vs 1</button>
+					<input type="text" id="gameType" name="gameType" th:field="*{gameType}" th:value="*{gameType}"
+						   class="hidden"/>
+					<input type="text" id="matchId" name="matchId" th:field="*{matchId}" th:value="*{matchId}"
+						   class="hidden"/>
+				</div>
+			</div>
 
-                var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
+			<div class="row">   <!-- components for selecting users: comboboxes -->
 
-                initSelect(rootUrl, ["#selectLeft1", "#selectLeft2", "#selectRight1", "#selectRight2"]);
+				<div class="col-md-4">
+					<div th:each="i : ${#numbers.sequence(1, 2)}">
+						<select th:id="'selectLeft' + ${i}" th:field="*{teams[__${'team1'}__]}"
+								th:value="*{teams[__${'team1'}__][__${i-1}__]}" class="user-control"
+								th:classappend="${i > 1} ? 'second-player'"></select>
+					</div>
+				</div>
+				<div class="col-md-4 text-center game-result">
+					<h1>
+						<span class="team1Result">0</span> : <span class="team2Result">0</span>
+					</h1>
+				</div>
+				<div class="col-md-4">
+					<div th:each="i : ${#numbers.sequence(1, 2)}">
+						<select th:id="'selectRight' + ${i}" th:field="*{teams[__${'team2'}__]}"
+								th:value="*{teams[__${'team2'}__][__${i-1}__]}" class="user-control"
+								th:classappend="${i > 1} ? 'second-player'"></select>
+					</div>
+				</div>
 
-                /*]]>*/
-            </script>
-        </div>
+				<script th:inline="javascript">
+					/*<![CDATA[*/
 
-       <div class="row">
-            <div th:each="i : ${#numbers.sequence(1, 3)}" th:id="'resultBlock' + ${i}"  class="roundResultBlock" th:classappend="${i != 1} ? 'hidden'">
+					var rootUrl = /*[[${#httpServletRequest.contextPath}]]*/ '/';
 
-                <div class="col-xs-3 col-xs-offset-3 col-md-2 col-md-offset-4 form-group">
-                    <input type="number" th:field="*{results[__${'team1'}__]}" th:id="'result' + ${i} + 'Team1'" th:name="'result' + ${i} + 'Team1'" class="form-control roundResultInput" min="0" max="8" value="0" />
-                </div>
+					initSelect(rootUrl, ["#selectLeft1", "#selectLeft2", "#selectRight1", "#selectRight2"]);
 
-                <div class="col-xs-3 col-md-2 form-group">
-                    <input type="number" th:field="*{results[__${'team2'}__]}" th:id="'result' + ${i} + 'Team2'" th:name="'result' + ${i} + 'Team2'" class="form-control roundResultInput" min="0" max="8" value="0" />
-                </div>
-            </div>
+					/*]]>*/
+				</script>
+			</div>
 
-        </div>
+			<div class="row">
+				<div th:each="i : ${#numbers.sequence(1, 3)}" th:id="'resultBlock' + ${i}" class="roundResultBlock"
+					 th:classappend="${i != 1} ? 'hidden'">
 
-        <div class="row text-center form-control-static">
-            <button id="addNextRoundBtn" type="button" class="btn btn-default btn-sm disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Next</button>
-            <button id="saveGameBtn" type="submit" class="btn btn-default btn-sm hidden"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
-        </div>
+					<div class="col-xs-3 col-xs-offset-3 col-md-2 col-md-offset-4 form-group">
+						<input type="number" th:field="*{results[__${'team1'}__]}" th:id="'result' + ${i} + 'Team1'"
+							   th:name="'result' + ${i} + 'Team1'" class="form-control roundResultInput" min="0"
+							   max="8"
+							   value="0"/>
+					</div>
 
-        
-    </form>
+					<div class="col-xs-3 col-md-2 form-group">
+						<input type="number" th:field="*{results[__${'team2'}__]}" th:id="'result' + ${i} + 'Team2'"
+							   th:name="'result' + ${i} + 'Team2'" class="form-control roundResultInput" min="0"
+							   max="8"
+							   value="0"/>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row text-center form-control-static">
+				<button id="addNextRoundBtn" type="button" class="btn btn-default btn-sm disabled"><span
+						class="glyphicon glyphicon-plus" aria-hidden="true"></span> Next
+				</button>
+				<button id="saveGameBtn" type="submit" class="btn btn-default btn-sm hidden"><span
+						class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save
+				</button>
+			</div>
+
+
+		</form>
+
+		<!-- end of column-->
+	</div>
+
+	<div class="row">
+		<div class="col-md-6 ">
+			<div class="well">
+				<div class="row text-center">
+					<h4>Upcoming matches</h4>
+				</div>
+
+				<div th:each="match : ${plannedMatches} " class="dashboard-matches">
+					<div class="row vertical-align dotted-border">
+						<div class="col-xs-4 ">
+							<span th:each="user : ${match.team1}" >
+								<div th:text="${user.fullName}" ></div>
+							</span>
+						</div>
+
+						<div class="col-xs-1 no-padding">
+							VS.
+						</div>
+
+						<div class="col-xs-4 ">
+							<span th:each="user : ${match.team2}">
+								<div th:text="${user.fullName}"></div>
+							</span>
+						</div>
+
+						<div class="col-xs-1 no-padding">
+							<span th:text="${match.formatedDateOfMatchWithoutYear}"
+								  class="text-center custom-label label-success"></span>
+						</div>
+
+						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}"
+							 class="col-xs-2 ">
+							<form th:id="cancel_form_ + ${match.dateOfMatch}" th:action="@{/cancelPlannedMatch}"
+								  method="post">
+								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
+								<button type="submit" class="btn glyphicon glyphicon-remove" title="Cancel me"></button>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="well">
+				<div class="row text-center">
+					<h4>Planned and already played matches</h4>
+				</div>
+
+				<div th:each="match : ${notFilledMatches} " class="dashboard-matches">
+					<div class="row vertical-align dotted-border" th:id="planned_match_ + ${match.matchId}"
+						 th:data="${match.matchId}">
+						<div class="col-xs-3 col-md-3 ">
+							<span th:each="user : ${match.team1}" class="team1-player">
+								<div th:text="${user.fullName}" th:data="${user.domainShortName}"></div>
+							</span>
+						</div>
+						<div class="col-xs-1 col-md-1 min-padding">
+							VS.
+						</div>
+						<div class="col-xs-3 col-md-3 ">
+							<span th:each="user : ${match.team2}" class="team2-player">
+								<div th:text="${user.fullName}" th:data="${user.domainShortName}"></div>
+							</span>
+						</div>
+						<div class="col-xs-1  col-md-1 no-padding" style="  margin-right: 5px;">
+							<div th:text="${match.formatedDateOfMatchWithoutYear}"
+								 class="custom-label label-danger"></div>
+						</div>
+						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}"
+							 class="col-xs-2 col-md-2  min-padding" style="text-align: right">
+							<form th:action="@{/cancelPlannedMatch}" method="post">
+								<input type="hidden" name="timestamp" th:value="${match.dateOfMatch}"/>
+								<button type="submit" class="btn glyphicon glyphicon-remove" title="Cancel me"></button>
+							</form>
+						</div>
+						<div th:if="${match.userPlayedMatch(loggedUser.domainShortName)}"
+							 class="col-xs-2 col-md-2 min-padding">
+							<button type="button" class="btn glyphicon glyphicon-pencil fill-form-btn" title="Fill me"
+									th:data="${match.matchId}"></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End of row -->
+	</div>
 </div>
 
 </body>

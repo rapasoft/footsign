@@ -7,6 +7,7 @@ import org.springframework.data.neo4j.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -136,13 +137,19 @@ public class Match {
 		return simpleDateFormat.format(date);
 	}
 
+	public String getFormatedDateOfMatchWithoutYear() {
+		Date date = new Date(dateOfMatch);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm', 'dd.MM");
+		return simpleDateFormat.format(date);
+	}
+
 	public String getPlayersOfTeam1InString(){
 		StringBuilder sb = new StringBuilder();
 		boolean lastUser = false;
 		for(User u : team1) {
 			sb.append(u.getFullName());
 			if(!lastUser) {
-				sb.append(",");
+				sb.append(", ");
 				lastUser = true;
 			}
 		}
@@ -154,10 +161,24 @@ public class Match {
 		for(User u : team2) {
 			sb.append(u.getFullName());
 			if(!lastUser) {
-				sb.append(",");
+				sb.append(", ");
 				lastUser = true;
 			}
 		}
+		return sb.toString();
+	}
+
+	public String getConfirmedPlayersInString(){
+		StringBuilder sb = new StringBuilder();
+		Iterator<User> it = confirmedBy.iterator();
+		while (it.hasNext()) {
+			User u = it.next();
+			sb.append(u.getFullName());
+			if(it.hasNext()) {
+				sb.append(", ");
+			}
+		}
+
 		return sb.toString();
 	}
 

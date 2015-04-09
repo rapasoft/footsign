@@ -1,9 +1,11 @@
 body {
 	padding-top: 25px !important;
 }
-
+.inline-block{
+	display: inline-block;
+}
 .user-profile-table{
-   padding:20px;
+	padding:20px;
 }
 .profile-stats {
 	text-align: center;
@@ -88,9 +90,64 @@ body {
 	}
 
 
+	.dashboard-matches{
+		font-size: 0.9em;
+	}
+	.dashboard-matches .btn{
+		/*font-size: 12px;*/
+		/*padding: 3px 6px;*/
+	}
+
+
 }
 
 /* Landscape phones and down */
 @media (max-width: 480px) {
+	.dashboard-matches{
+		font-size: 0.8em;
+	}
+}
+.matches-vs{
+	margin-top: 30px;
+}
 
+.vertical-align {
+	display: flex;
+	align-items: center;
+}
+
+/*    Dashboard - upcoming matches and planned matches */
+.vertical-align-row{
+	display: table;
+	table-layout: fixed;
+	height: 100%;
+}
+
+.vertical-align-col{
+	display: table-cell;
+	vertical-align: middle;
+	float: none;
+}
+
+.no-padding {
+	padding: 0px !important;
+}
+.min-padding{
+	padding: 2px !important;
+}
+.custom-label{
+	display: block;
+	padding: .3em .6em .3em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+.dotted-border{
+	border-top: 1px dotted #e7e7e7;
+	padding:5px;
 }

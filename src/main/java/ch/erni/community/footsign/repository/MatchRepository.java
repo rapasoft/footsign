@@ -73,4 +73,20 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("match(user:User {domainShortName: {0}})--(m:Match {state : 'PLAYED' }) return distinct m")
 	List<Match> findPlayedMatchesForUser(String domainShortName);
 
+	@Query("match (m:Match {state :  'PLANNED'}) \n" +
+			"where m.dateOfMatch >= timestamp() \n" +
+			"return distinct m \n" +
+			"order by m.dateOfMatch \n" +
+			"limit 10")
+	List<Match> findTenUpcomingMatches();
+
+	@Query("match (m:Match {state :  'PLANNED'}) \n" +
+			"where m.dateOfMatch <= timestamp() \n" +
+			"return distinct m \n" +
+			"order by m.dateOfMatch \n" +
+			"limit 10")
+	List<Match> findTenNotFilledMatches();
+
+
+
 }

@@ -12,7 +12,7 @@
         <h3>Matches, which are waiting for your confirmation</h3>
     </div>
     
-    <div class="row well" th:each="match, stat : ${matches}">
+    <div class="row well" th:each="match, stat : ${notConfirmedMatches}">
         <div class="col-md-2">
             <p><strong>Date and time</strong></p>
             <p th:text="${match.getFormatedDateOfMatch()}"></p>
@@ -46,6 +46,35 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <h3>Matches, which are not confirmed by opponent team</h3>
+    </div>
+
+    <div class="row well" th:each="match, stat : ${confirmedMatches}">
+        <div class="col-md-2">
+            <p><strong>Date and time</strong></p>
+            <p th:text="${match.getFormatedDateOfMatch()}"></p>
+        </div>
+
+        <div class="col-md-3">
+            <p><strong>Team 1</strong></p>
+            <p th:text="${match.getPlayersOfTeam1InString()}"></p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Team 2</strong></p>
+            <p th:text="${match.getPlayersOfTeam2InString()}"></p>
+        </div>
+        <div class="col-md-1">
+            <p><strong>Result</strong></p>
+            <p th:text="${match.matchResultToString()}"></p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Confirmed by</strong></p>
+            <p th:text="${match.getConfirmedPlayersInString()}"></p>
         </div>
     </div>
 

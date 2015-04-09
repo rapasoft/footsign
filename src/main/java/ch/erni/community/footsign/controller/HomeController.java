@@ -46,6 +46,9 @@ public class HomeController {
 	MatchRepository matchRepository;
 
 	@Autowired
+	UserHolder loggedUser;
+
+	@Autowired
 	private ErniLdapCache erniLdapCache;
 
 	@Autowired
@@ -57,10 +60,13 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(Model model) {
+	public ModelAndView home() {
 
-		model.addAttribute("clientMatch", new ClientMatch());
-		return "home";
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("home");
+		setModelDefaultValues(modelAndView);
+
+		return modelAndView;
 	}
 
 	@RequestMapping("/user_list")
@@ -81,8 +87,20 @@ public class HomeController {
 
 	}
 
+	@RequestMapping(value = "/cancelPlannedMatch", method = RequestMethod.POST)
+	public ModelAndView cancelPlannedMatch(String timestamp){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setView(new RedirectView("home"));
+
+		Match match = matchRepository.findMatchForThisDate(new Long(timestamp));
+		if (match != null) {
+			matchRepository.delete(match);
+		}
+		return modelAndView;
+	}
+
 	@RequestMapping(value = "/saveGame", method = RequestMethod.POST)
-	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult, Authentication authentication) {
+	public ModelAndView saveGame(@ModelAttribute @Valid ClientMatch clientMatch, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("home");
 		modelAndView.addObject("clientMatch", clientMatch);
@@ -91,6 +109,7 @@ public class HomeController {
 			return modelAndView;
 		}
 
+		// validations. Do for new and existing matches
 		if (clientMatch != null) {
 			List<String> team1 = clientMatch.getTeam1();
 			List<String> team2 = clientMatch.getTeam2();
@@ -98,8 +117,6 @@ public class HomeController {
 			List<String> result1 = clientMatch.getResultTeam1();
 			List<String> result2 = clientMatch.getResultTeam2();
 			
-			
-
 			try {
 				validTeams(team1, team2, Integer.parseInt(clientMatch.getGameType()));
 				
@@ -111,11 +128,21 @@ public class HomeController {
 				return modelAndView;
 			}
 
-			Match match = new Match();
-			match.setDateOfMatch(new Date().getTime());
-			match.setState(MatchState.PLAYED);
+			
+			Match match;
+			if (clientMatch.isNewMatch()) {
+				// create match. Do only for new matches
+				match = new Match();
+				match.setDateOfMatch(new Date().getTime());
+			} else {
+				// load match. Do only for planned matches
+				match = matchRepository.findOne(Long.parseLong(clientMatch.getMatchId()));
+			}
+
+			// set additional info. Do for new and existing matches
 			setPlayersToTeam(team1, match, true);
 			setPlayersToTeam(team2, match, false);
+			match.setState(MatchState.PLAYED);
 			setGamesToMatch(result1, result2, match);
 			User u = userHolder.getLoggedUser();
 			if(match.getTeam1().contains(u) || match.getTeam2().contains(u)) {
@@ -124,6 +151,8 @@ public class HomeController {
 			matchRepository.save(match);
 			modelAndView.addObject("success", "The match was sucessfully saved.");
 		}
+
+		setModelDefaultValues(modelAndView);
 
 		return modelAndView;
 	}
@@ -176,5 +205,14 @@ public class HomeController {
 		}
 		
 	}
+
+
+	private void setModelDefaultValues(ModelAndView modelAndView) {
+		modelAndView.getModelMap().addAttribute("clientMatch", new ClientMatch());
+		modelAndView.getModelMap().addAttribute("plannedMatches", matchRepository.findTenUpcomingMatches());
+		modelAndView.getModelMap().addAttribute("notFilledMatches", matchRepository.findTenNotFilledMatches());
+		modelAndView.getModelMap().addAttribute("loggedUser", loggedUser.getLoggedUser());
+	}
+
 
 }

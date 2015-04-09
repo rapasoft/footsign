@@ -18,6 +18,8 @@ public class ClientMatch {
     private final String KEY_TEAM1 = "team1";
     private final String KEY_TEAM2 = "team2";
     
+    private String matchId;
+    
     private String gameType;
     
     @NotEmpty @Size(min = 2, max = 2) @UserMap
@@ -37,6 +39,10 @@ public class ClientMatch {
         teams.put(KEY_TEAM1, new ArrayList<String>() {{add(""); add("");}});
         teams.put(KEY_TEAM2, new ArrayList<String>() {{add(""); add("");}});
     }
+
+    public String getMatchId() { return matchId; }
+
+    public void setMatchId(String matchId) { this.matchId = matchId; }
 
     public String getGameType() {
         return gameType;
@@ -67,16 +73,16 @@ public class ClientMatch {
     }
 
     public List<String> getResultTeam2() {
-        
         return results.get(KEY_TEAM2);
     }
 
     public List<String> getResultTeam1() {
-        
         return results.get(KEY_TEAM1);
     }
 
-
+    public boolean isNewMatch() {
+        return this.matchId == null || this.matchId.isEmpty();
+    }
    
 
 }
