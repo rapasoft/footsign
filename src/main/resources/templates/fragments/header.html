@@ -6,7 +6,10 @@
 <div th:fragment="header">
     <div class="row">
         <div class="pull-right">
-            <h1><small>ERNI</small>&nbsp;FootSign</h1>
+            <h1>
+                <small>ERNI</small>
+                &nbsp;FootSign
+            </h1>
         </div>
     </div>
     <div class="row">
@@ -24,9 +27,22 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
+                        <!-- HOME -->
                         <li id="homeMenuItem"><a th:href="@{/home}">Dashboard <span class="sr-only">(current)</span></a></li>
-                        <li id="myProfileMenuItem"><a th:href="@{/user_profile}">My profile</a></li>
-                        <!-- <li id="statsMenuItem"><a th:href="@{/stats}">Stats</a></li> -->
+
+                        <!-- USER PROFILE -->
+                        <li id="userMenuItem" role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                User <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li id="myProfileMenuItem"><a th:href="@{/user_profile}">My profile</a></li>
+                                <li id="notificationSettingsMenuItem"><a th:href="@{/user_profile_notification_settings}">Notification settings</a></li>
+                                <li id="confirmationMenuItem"><a th:href="@{/confirmations}">My confirmations</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- STATISTICS -->
                         <li id="statsMenuItem" role="presentation" class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                 Statistics <span class="caret"></span>
@@ -38,17 +54,19 @@
                                 <li id="statsMenuItemMatch"><a th:href="@{/stats_match}">Match</a></li>
                             </ul>
                         </li>
+
+                        <!-- MATCH PLANNING -->
                         <li id="planingMenuItem" role="presentation" class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                 Planing <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li id="planMatchMenuItem"><a th:href="@{/plane_match}">Planing match</a></li>
+                                <li id="planMatchMenuItem"><a th:href="@{/plan_match}">Plan a match</a></li>
                             </ul>
                         </li>
 
+                        <!-- GENERAL RULES -->
                         <li id="rulesMenuItem"><a th:href="@{/rules}">Foosball rules</a></li>
-                        <li id="confirmationMenuItem"><a th:href="@{/confirmations}">My confirmations</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
@@ -63,10 +81,18 @@
 
                         //todo @rap: figure this out... cause it's ugly
                         if (rootUrl.match("home")) activeItemId = "homeMenuItem";
+
                         if (rootUrl.match("user_profile")) activeItemId = "myProfileMenuItem";
+                        if (rootUrl.match("user_profile_notification_settings")) activeItemId = "notificationSettingsMenuItem";
+                        if (rootUrl.match("confirmations")) activeItemId = "confirmationMenuItem";
+
                         if (rootUrl.match("stats_user")) activeItemId = "statsMenuItemUser";
+                        if (rootUrl.match("stats_overview")) activeItemId = "statsMenuItemOverview";
                         if (rootUrl.match("stats_team")) activeItemId = "statsMenuItemTeam";
                         if (rootUrl.match("stats_match")) activeItemId = "statsMenuItemMatch";
+
+                        if (rootUrl.match("plan_match")) activeItemId = "planMatchMenuItem";
+
                         if (rootUrl.match("rules")) activeItemId = "rulesMenuItem";
 
                         $('#' + activeItemId).addClass("active");

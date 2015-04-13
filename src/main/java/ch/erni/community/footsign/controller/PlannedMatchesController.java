@@ -6,19 +6,14 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
-import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.service.MailService;
 import ch.erni.community.footsign.util.CalendarHelper;
 import ch.erni.community.footsign.util.PlannedMatchConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,16 +22,19 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Map;
 
 /**
  * Created by cepe on 16.03.2015.
  */
 @Controller(value = "planingMatch")
 public class PlannedMatchesController {
-    
-    @Autowired
-    private MatchRepository matchRepository;
+
+	public static final String PLAN_MATCH = "plan_match";
+
+	@Autowired
+	private MatchRepository matchRepository;
     
     @Autowired
     private UserRepository userRepository;
@@ -56,20 +54,20 @@ public class PlannedMatchesController {
     private PlannedMatch defaultPlannedMatch;
 
     private Map<Long, PlannedMatch> plannedMatchMap;
-    
-    @RequestMapping("/plane_match")
-    public String home(Model model) {
+
+	@RequestMapping("/" + PLAN_MATCH)
+	public String home(Model model) {
         User current = userHolder.getLoggedUser();
         this.defaultPlannedMatch = configurator.createDefaultPlannedMatch(current);
         model.addAttribute("plannedMatch", defaultPlannedMatch);
-        
-        return "plane_match";
-    }
+
+		return PLAN_MATCH;
+	}
 
     @RequestMapping(value = "/saveMatchAsPlanned", method = RequestMethod.POST)
     public ModelAndView saveGame(@ModelAttribute PlannedMatch plannedMatch, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("plane_match");
+		modelAndView.setViewName(PLAN_MATCH);
 
         if (bindingResult.hasErrors()) {
             return modelAndView;
@@ -103,9 +101,9 @@ public class PlannedMatchesController {
     @RequestMapping(value = "cancelMatchFromPlanned", method = RequestMethod.POST)
     public ModelAndView cancelMatchFromPlanned(String timestamp) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setView(new RedirectView("plane_match"));
-        
-        if (timestamp != null && plannedMatchMap != null) {
+		modelAndView.setView(new RedirectView(PLAN_MATCH));
+
+		if (timestamp != null && plannedMatchMap != null) {
             try {
                 PlannedMatch plannedMatch = plannedMatchMap.get(Long.parseLong(timestamp));
 

@@ -5,10 +5,7 @@ import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
-import ch.erni.community.footsign.security.ErniUserDetails;
-import ch.erni.community.ldap.data.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +24,8 @@ public class UserProfileController {
 
 	private static final String USER_PROFILE = "user_profile";
 
+	private static final String USER_PROFILE_NOTIFICATION_SETTINGS = "user_profile_notification_settings";
+
 	@Autowired
 	private MatchRepository matchRepository;
 
@@ -37,7 +36,7 @@ public class UserProfileController {
 	private UserHolder userHolder;
 
 	@RequestMapping("/user_profile")
-	public String index(Model model) {
+	public String userProfile(Model model) {
 
 		User user = userHolder.getLoggedUser();
 
@@ -66,6 +65,13 @@ public class UserProfileController {
 		return USER_PROFILE;
 	}
 
+	@RequestMapping("/user_profile_notification_settings")
+	public String notificationSettings(Model model) {
+		model.addAttribute("user", userRepository.findByDomainShortName(userHolder.getLoggedUser().getDomainShortName()));
+
+		return USER_PROFILE_NOTIFICATION_SETTINGS;
+	}
+
 	private double countRatio(long countWon, long countLost) {
 		if (countWon == 0) {
 			return 0;
@@ -75,12 +81,25 @@ public class UserProfileController {
 		return countWon / (double) countLost;
 	}
 
-	@RequestMapping(value = "/edit_user", method = RequestMethod.POST)
-	public ModelAndView editUser(@ModelAttribute User user, Model model) {
+	@RequestMapping(value = "/edit_rating", method = RequestMethod.POST)
+	public ModelAndView editRating(@ModelAttribute User user) {
 
 		User currentUser = userHolder.getLoggedUser();
 		
 		currentUser.setRating(user.getRating());
+
+		userRepository.save(currentUser);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setView(new RedirectView(USER_PROFILE));
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/edit_user_settings", method = RequestMethod.POST)
+	public ModelAndView editNotificationSettings(@ModelAttribute User user) {
+
+		User currentUser = userHolder.getLoggedUser();
+
 		currentUser.setPlannedMatchNofitication(user.isPlannedMatchNofitication());
 		currentUser.setCancelledMatchNotification(user.isCancelledMatchNotification());
 		currentUser.setConfirmMatchNotification(user.isConfirmMatchNotification());
@@ -88,7 +107,7 @@ public class UserProfileController {
 		userRepository.save(currentUser);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setView(new RedirectView(USER_PROFILE));
+		modelAndView.setView(new RedirectView(USER_PROFILE_NOTIFICATION_SETTINGS));
 		return modelAndView;
 	}
 

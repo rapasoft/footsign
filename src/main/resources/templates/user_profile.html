@@ -43,31 +43,11 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
-                            <form id="editForm" action="#" th:action="@{/edit_user}" th:object="${user}" method="post">
+                            <form id="editForm" action="#" th:action="@{/edit_rating}" th:object="${user}" method="post">
                                 <label for="stars_rating">Rate your skills:</label>
                                 <input id="stars_rating" type="number" class="rating" data-min="0" data-max="10" data-show-clear="false"
                                        data-step="0.1" th:field="*{rating}"
                                        data-stars="10" data-size="xs"/>
-
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" th:value="*{plannedMatchNofitication}" th:field="*{plannedMatchNofitication}" id="plannedNotification" name="plannedNotification" />
-                                        I want to receive mails about planned matches
-                                    </label>
-                                </div>
-                                <div class="checkbox" >
-                                    <label>
-                                        <input type="checkbox" th:value="*{cancelledMatchNotification}" th:field="*{cancelledMatchNotification}" id="cancelledNotification" name="cancelledNotification"/>
-                                        I want to receive mails about cancelled matches
-                                    </label>
-                                </div>
-                                <div class="checkbox" >
-                                    <label>
-                                        <input type="checkbox" th:value="*{confirmMatchNotification}" th:field="*{confirmMatchNotification}" id="confirmNotification" name="confirmNotification"/>
-                                        I want to receive mails about confirmed matches
-                                    </label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
                             </form>
                         </div>
                         <div class="col-sm-6 col-md-6">
@@ -82,8 +62,8 @@
                 </div>
             </div>
 
-
             <div class="row user-profile-table">
+                <h3>Last 10 played matches</h3>
                 <div class="col-sm-12 col-md-12">
                     <div id="stats-team-table" th:include="fragments/tables :: team_table"></div>
                 </div>

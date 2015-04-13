@@ -8,10 +8,10 @@
 
 <div th:fragment="content">
     <div class="row">
-        
         <h3>Matches, which are waiting for your confirmation</h3>
     </div>
-    
+
+    <p th:text="${notConfirmedMatches.size() == 0} ? 'There are no matches awaiting confirmation.' : ''"></p>
     <div class="row well" th:each="match, stat : ${notConfirmedMatches}">
         <div class="col-md-2">
             <p><strong>Date and time</strong></p>
@@ -54,6 +54,7 @@
         <h3>Matches, which are not confirmed by opponent team</h3>
     </div>
 
+    <p th:text="${confirmedMatches.size() == 0} ? 'There are no matches awaiting confirmation.' : ''"></p>
     <div class="row well" th:each="match, stat : ${confirmedMatches}">
         <div class="col-md-2">
             <p><strong>Date and time</strong></p>
