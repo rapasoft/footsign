@@ -20,13 +20,16 @@ public class UserDetails {
 
 	private final Optional<String> department;
 
-	public UserDetails(Optional<String> firstName, Optional<String> secondName, Optional<String> domainUserName, Optional<String> email, Optional<String> title, Optional<String> department) {
+	private final Optional<String> dn;
+
+	public UserDetails(Optional<String> firstName, Optional<String> secondName, Optional<String> domainUserName, Optional<String> email, Optional<String> title, Optional<String> department, Optional<String> dn) {
 		this.firstName = firstName;
 		this.secondName = secondName;
 		this.domainUserName = domainUserName;
 		this.email = email;
 		this.title = title;
 		this.department = department;
+		this.dn = dn;
 	}
 
 	public String getFirstName() {
@@ -63,7 +66,7 @@ public class UserDetails {
 	}
 
 	public String getDN() {
-		return "CN=" + getSecondName() + " " + getFirstName() + "," + ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN;
+		return dn.map(Function.identity()).orElse("N/A").trim();
 	}
 
 }

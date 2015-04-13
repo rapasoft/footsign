@@ -1,12 +1,12 @@
 package ch.erni.community.footsign.util;
 
 import ch.erni.community.footsign.nodes.User;
+import ch.erni.community.ldap.data.ErniLdapConstants;
 import ch.erni.community.ldap.data.UserDetails;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -29,9 +29,10 @@ public class LdapUserHelperTest {
                 Optional.of("Secondname"), 
                 Optional.of("sefi"), 
                 Optional.of("firstname.secondname@erni.sk"), 
-                null, 
-                Optional.of("Java team")
-        );
+                null,
+				Optional.of("Java team"),
+				Optional.of(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN)
+		);
 
 		User copy = helper.createUserFromLdapUser(detail).get();
 

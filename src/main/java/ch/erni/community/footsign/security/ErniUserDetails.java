@@ -11,8 +11,8 @@ public class ErniUserDetails extends UserDetails {
 
 	private String photoPath;
 
-	public ErniUserDetails(Optional<String> firstName, Optional<String> secondName, Optional<String> domainUserName, Optional<String> email, Optional<String> title, Optional<String> department) {
-		super(firstName, secondName, domainUserName, email, title, department);
+	public ErniUserDetails(Optional<String> firstName, Optional<String> secondName, Optional<String> domainUserName, Optional<String> email, Optional<String> title, Optional<String> department, Optional<String> dn) {
+		super(firstName, secondName, domainUserName, email, title, department, dn);
 	}
 
 	public ErniUserDetails(UserDetails userDetails) {
@@ -22,7 +22,8 @@ public class ErniUserDetails extends UserDetails {
 				Optional.of(userDetails.getDomainUserName()),
 				Optional.of(userDetails.getEmail()),
 				Optional.of(userDetails.getTitle()),
-				Optional.of(userDetails.getDepartment())
+				Optional.of(userDetails.getDepartment()),
+				Optional.of(userDetails.getDN())
 		);
 	}
 

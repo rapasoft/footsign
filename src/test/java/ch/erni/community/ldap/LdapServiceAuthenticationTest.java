@@ -2,6 +2,7 @@ package ch.erni.community.ldap;
 
 import ch.erni.community.ldap.data.AuthenticationResult;
 import ch.erni.community.ldap.data.DefaultCredentials;
+import ch.erni.community.ldap.data.ErniLdapConstants;
 import ch.erni.community.ldap.data.UserDetails;
 import ch.erni.community.ldap.exception.UserNotFoundException;
 import org.junit.Test;
@@ -56,7 +57,7 @@ public class LdapServiceAuthenticationTest {
 	private UserDetails userDetails() {
 		return new UserDetails(
 				Optional.of("firstName"), Optional.of("secondName"), Optional.of("dn"), Optional.of("firstName.secondName@erni.sk"),
-				Optional.of("Test"), Optional.of("Test"));
+				Optional.of("Test"), Optional.of("Test"), Optional.of(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN));
 	}
 
 

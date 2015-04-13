@@ -1,6 +1,7 @@
 package ch.erni.community.footsign.util;
 
 import ch.erni.community.footsign.exception.PropertyFileNotFound;
+import ch.erni.community.ldap.data.ErniLdapConstants;
 import ch.erni.community.ldap.data.UserDetails;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class FileDownloaderTest {
 		photoPathBuilder = new PhotoPathBuilder();
 		userDetailsMock = new UserDetails(
 				Optional.of("firstName"), Optional.of("secondName"), Optional.of("dn"), Optional.of("firstName.secondName@erni.sk"),
-				Optional.of("Test"), Optional.of("Test"));
+				Optional.of("Test"), Optional.of("Test"), Optional.of(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN));
 	}
 
 	@Test

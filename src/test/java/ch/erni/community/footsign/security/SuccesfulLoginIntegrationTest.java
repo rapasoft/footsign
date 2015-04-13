@@ -4,6 +4,7 @@ import ch.erni.community.footsign.event.UserLoggedInEvent;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
+import ch.erni.community.ldap.data.ErniLdapConstants;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -72,7 +73,7 @@ public class SuccesfulLoginIntegrationTest {
 	private ErniUserDetails userDetails() {
 		ErniUserDetails erniUserDetails = spy(new ErniUserDetails(
 				Optional.of("Pavol"), Optional.of("Rajzak"), Optional.of("test"), Optional.of("pavo.rajzak@erni.sk"),
-				Optional.of("Test"), Optional.of("Test")));
+				Optional.of("Test"), Optional.of("Test"), Optional.of(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN)));
 		erniUserDetails.setPhotoPath("/path");
 		return erniUserDetails;
 	}

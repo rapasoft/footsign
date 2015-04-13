@@ -5,6 +5,7 @@ import ch.erni.community.footsign.security.ErniAuthentication;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import ch.erni.community.footsign.test.config.TestDataConfiguration;
 import ch.erni.community.footsign.util.LdapUserHelper;
+import ch.erni.community.ldap.data.ErniLdapConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +57,7 @@ public class UserProfileControllerTest {
 	private ErniUserDetails mockUserDetails() {
 		ErniUserDetails erniUserDetails = new ErniUserDetails(
 				Optional.of("firstName"), Optional.of("secondName"), Optional.of("dn"), Optional.of("firstName.secondName@erni.sk"),
-				Optional.of("Test"), Optional.of("Test"));
+				Optional.of("Test"), Optional.of("Test"), Optional.of(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN));
 		erniUserDetails.setPhotoPath("/path");
 		return erniUserDetails;
 	}

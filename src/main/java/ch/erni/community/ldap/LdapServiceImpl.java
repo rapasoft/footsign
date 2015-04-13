@@ -104,8 +104,9 @@ public class LdapServiceImpl implements LdapService {
 				Optional<String> email = Optional.ofNullable(searchResultEntry.getAttributeValue("mail"));
 				Optional<String> title = Optional.ofNullable(searchResultEntry.getAttributeValue("title"));
 				Optional<String> department = Optional.ofNullable(searchResultEntry.getAttributeValue("department"));
+				Optional<String> dn = Optional.ofNullable(searchResultEntry.getAttributeValue("distinguishedName"));
 
-				UserDetails detail = new UserDetails(firstName, secondName, domainUserName, email, title, department);
+				UserDetails detail = new UserDetails(firstName, secondName, domainUserName, email, title, department, dn);
 
 				userDetailsList.add(detail);
 			}

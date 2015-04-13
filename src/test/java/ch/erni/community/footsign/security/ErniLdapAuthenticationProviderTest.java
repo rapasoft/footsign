@@ -3,6 +3,7 @@ package ch.erni.community.footsign.security;
 import ch.erni.community.footsign.util.FileDownloader;
 import ch.erni.community.ldap.LdapService;
 import ch.erni.community.ldap.data.AuthenticationResult;
+import ch.erni.community.ldap.data.ErniLdapConstants;
 import ch.erni.community.ldap.data.UserDetails;
 import ch.erni.community.ldap.exception.CredentialsFileNotFoundException;
 import ch.erni.community.ldap.exception.CredentialsNotFoundException;
@@ -34,7 +35,7 @@ public class ErniLdapAuthenticationProviderTest {
 
 		userDetailsMock = new UserDetails(
 				Optional.of("firstName"), Optional.of("secondName"), Optional.of("dn"), Optional.of("firstName.secondName@erni.sk"),
-				Optional.of("Test"), Optional.of("Test"));
+				Optional.of("Test"), Optional.of("Test"), Optional.of(ErniLdapConstants.ERNI_EMPLOYEES_USERS_GROUP_DN));
 
 		when(ldapServiceMock.authenticate("username", "password")).thenReturn(new AuthenticationResult(userDetailsMock, true));
 		when(ldapServiceMock.authenticate("malicious", "blablabla")).thenThrow(new UserNotFoundException("UnF"));
