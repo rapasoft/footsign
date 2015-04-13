@@ -24,27 +24,6 @@ public class CalendarHelper {
         return c;
     }
 
-    public Calendar getToday(int hour) {
-        Calendar c = getToday();
-        c.set(Calendar.HOUR_OF_DAY, hour);
-
-        return c;
-    }
-    
-    public Calendar getCalendarWithSpecificHour(Calendar c, int hour) {
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        return c;
-    }
-    
-    public Calendar getSpecificDate(int day, int month, int year) {
-        Calendar c = getToday();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        
-        return c;
-    }
-    
     public Calendar getSpecificDate(String date, String format) throws ParseException {
         if (format == null || format.isEmpty()) {
             format = "dd.MM.yyyy";
