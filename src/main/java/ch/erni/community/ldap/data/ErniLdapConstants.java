@@ -4,7 +4,7 @@ package ch.erni.community.ldap.data;
  * @author rap
  */
 public class ErniLdapConstants {
-	public static final String ERNI_EMPLOYEES_USERS_GROUP_DN = "OU=Employees,OU=User,OU=ERNI Consulting,DC=erni2,DC=ch";
+	public static final String ERNI_EMPLOYEES_USERS_GROUP_DN = "OU=User,OU=ERNI Consulting,DC=erni2,DC=ch";
 
 	public static final String FILTER = "(objectCategory=Person)";
 

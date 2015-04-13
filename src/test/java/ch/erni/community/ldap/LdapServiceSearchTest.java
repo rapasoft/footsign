@@ -58,6 +58,14 @@ public class LdapServiceSearchTest {
 		check(userDetails);
 	}
 
+	@Test
+	public void testSearchForExternalEmployee() throws UserNotFoundException {
+		UserDetails userDetails = ldapService.findByName("Martin", "Vician");
+
+		assertNotNull(userDetails);
+		assertEquals("exvim", userDetails.getDomainUserName());
+	}
+
 	private void check(UserDetails userDetails) {
 		assertNotNull(userDetails);
 		assertEquals("Pavol", userDetails.getFirstName());

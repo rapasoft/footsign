@@ -96,8 +96,8 @@ public class LdapServiceImpl implements LdapService {
 		List<UserDetails> userDetailsList = new ArrayList<>();
 
 		for (SearchResultEntry searchResultEntry : searchResult.getSearchEntries()) {
-			String description = searchResultEntry.getAttributeValue("description");
-			if (description != null && description.equals("ESK")) {
+			String company = searchResultEntry.getAttributeValue("company");
+			if (company != null && (company.contains("Slovakia"))) {
 				Optional<String> firstName = Optional.ofNullable(searchResultEntry.getAttributeValue("givenName"));
 				Optional<String> secondName = Optional.ofNullable(searchResultEntry.getAttributeValue("sn"));
 				Optional<String> domainUserName = Optional.ofNullable(searchResultEntry.getAttributeValue("sAMAccountName"));

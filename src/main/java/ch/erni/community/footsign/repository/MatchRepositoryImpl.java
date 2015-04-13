@@ -77,7 +77,7 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 	@Transactional
 	public boolean isDateOccupied(long time) {
 		Match match = matchRepository.findMatchForThisDate(time);
-		return match != null ? true : false;
+		return match != null;
 	}
 
 }
