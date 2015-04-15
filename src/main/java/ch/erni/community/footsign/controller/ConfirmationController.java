@@ -112,7 +112,9 @@ public class ConfirmationController {
     public ModelAndView cancelMatch(String matchId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new RedirectView("confirmations"));
+        Match match = matchRepository.findOne(Long.valueOf(matchId));
         matchRepository.delete(Long.valueOf(matchId));
+        mailService.sendCancelationMail(match);
         return modelAndView;
     }
 }

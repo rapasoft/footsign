@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cancel mail</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h4>Hi <span th:text="${user_name}">${user_name}</span>, </h4>
+Your match was canceled on <a href="http://svr-dev-14/footsign/">http://svr-dev-14/footsign</a>
+<p>
+    Match information:
+</p>
+<div style="margin-left: 30px; padding: 5px">
+    <div>
+        Date: <span th:text="${day_of_match}"> ${day_of_match}</span>
+    </div>
+
+    <div>
+        Team 1:
+        <div style="margin-left: 30px;" th:remove="all-but-first" th:each="item : ${team1}">
+            <span th:text="${item.fullName}"></span>
+        </div>
+        Team 2:
+        <div style="margin-left: 30px;" th:remove="all-but-first" th:each="item : ${team2}">
+            <span th:text="${item.fullName}"></span>
+        </div>
+    </div>
+    <div>Played games (Team1 vs Team2):
+        <div style="margin-left: 30px;" class="overview-item-name" th:each="item : ${games}">
+            <span  th:text="${item.team1Result}">${item.team1Result}</span> :
+            <span  th:text="${item.team2Result}">${item.team2Result}</span>
+        </div>
+    </div>
+</div>
+
+<p>
+    <em>FootSign Team</em>
+</p>
+</body>
+</html>

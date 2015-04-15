@@ -10,6 +10,7 @@ import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
+import ch.erni.community.footsign.service.MailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class HomeController {
 
 	@Autowired
 	private UserHolder userHolder;
+
+	@Autowired
+	private MailService mailService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -148,6 +152,7 @@ public class HomeController {
 			if(match.getTeam1().contains(u) || match.getTeam2().contains(u)) {
 				match.confirmedByPlayer(u);
 			}
+			mailService.sendConfirmationMail(match);
 			matchRepository.save(match);
 			modelAndView.addObject("success", "The match was sucessfully saved.");
 		}

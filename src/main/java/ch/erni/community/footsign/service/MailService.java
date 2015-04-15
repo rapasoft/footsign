@@ -57,12 +57,28 @@ public class MailService {
         this.javaMailSender = javaMailSender;
     }
 
+    public void sendCancelationMail(Match match) {
+        Set<User> team = new HashSet<>();
+        team.addAll(match.getTeam1());
+        team.addAll(match.getTeam2());
+        team.stream().filter(User::isCancelledMatchNotification).collect(Collectors.toList()).forEach(user -> {
+            final Context ctx = new Context();
+            ctx.setVariable("user_name", user.getFullName());
+            ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
+            ctx.setVariable("team1", match.getTeam1());
+            ctx.setVariable("team2", match.getTeam2());
+            ctx.setVariable("games", match.getGames());
+            sendMail(MailType.CANCELATION_MAIL, user.getEmail(), ctx);
+        });
+
+    }
+
     public void sendConfirmationMail(Match match) {
 
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        team.stream().filter(user -> user.isConfirmMatchNotification()).collect(Collectors.toList()).forEach(user -> {
+        team.stream().filter(User::isConfirmMatchNotification).collect(Collectors.toList()).forEach(user -> {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
@@ -77,7 +93,7 @@ public class MailService {
         Set<User> team = new HashSet<>();
         team.addAll(match.getTeam1());
         team.addAll(match.getTeam2());
-        team.stream().filter(user -> user.isPlannedMatchNofitication()).collect(Collectors.toList()).forEach(user -> {
+        team.stream().filter(User::isPlannedMatchNofitication).collect(Collectors.toList()).forEach(user -> {
             final Context ctx = new Context();
             ctx.setVariable("user_name", user.getFullName());
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
@@ -110,7 +126,9 @@ public class MailService {
             helper.setSubject("Confirmation mail");
         }else if(MailType.PLANED_MAIL.equals(mailType)){
             helper.setSubject("Planning mail");
-        }else {
+        } else if (MailType.CANCELATION_MAIL.equals(mailType)){
+            helper.setSubject("Cancelation mail");
+        } else {
             helper.setSubject("Information mail");
         }
     }
