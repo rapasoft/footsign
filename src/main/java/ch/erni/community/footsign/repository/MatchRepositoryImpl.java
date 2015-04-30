@@ -23,17 +23,6 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 
     @Transactional
     @Override
-	public List<CustomPlayerDTO<Long>> findPlayerBestTenPlayersCustom() {
-		Iterable<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
-		List<CustomPlayerDTO<Long>> bestPlayers = new ArrayList<>();
-		for (CustomPlayer user : best) {
-			bestPlayers.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
-		}
-        return bestPlayers;
-    }
-
-    @Transactional
-    @Override
 	public List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom() {
 		Iterable<CustomPlayer> mostPlayedUsers =  matchRepository.findTenPlayerWithMostMatches();
 		List<CustomPlayerDTO<Long>> mostPlayedUsersCustom = new ArrayList<>();
@@ -63,14 +52,6 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
 				.collect(Collectors.toList());
 
 		return filteredRatio.stream().map(user -> new CustomPlayerDTO<>(user.getUser(), (Double) user.getValue())).collect(Collectors.toList());
-	}
-
-	@Override
-	@Transactional
-	public List<CustomPlayerDTO<Long>> findBestPlayerCustom() {
-		List<CustomPlayer> best =  matchRepository.findPlayerBestTenPlayers();
-		List<CustomPlayer> filteredPlayer = best.stream().filter(p -> !best.isEmpty() && p.getValue().equals(best.get(0).getValue())).collect(Collectors.toList());
-		return filteredPlayer.stream().map(user -> new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue())).collect(Collectors.toList());
 	}
 
 	@Override

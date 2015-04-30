@@ -10,8 +10,6 @@ import java.util.List;
  */
 public interface MatchRepositoryCustom {
 
-	List<CustomPlayerDTO<Long>> findPlayerBestTenPlayersCustom();
-
 	List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom();
 
 	List<CustomPlayerDTO<Double>> findTenPlayersWithHighestRatioCustom();
@@ -30,8 +28,6 @@ public interface MatchRepositoryCustom {
 	 * @return players with most wins mathes
 	 *
 	 */
-	List<CustomPlayerDTO<Long>> findBestPlayerCustom();
-
 	boolean isDateOccupied(long time);
 
 }

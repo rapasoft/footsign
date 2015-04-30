@@ -46,7 +46,7 @@ public class UserStatsController {
 
 	@RequestMapping("/stats_user")
 	public String userStats(Model model) {
-		bestPlayers = matchRepository.findPlayerBestTenPlayersCustom();
+		bestPlayers = userRepository.findPlayerBestTenPlayersCustom();
 		mostPlayed = matchRepository.findTenPlayersWithMostMatchesCustom();
 		worstPlayers = userRepository.findPlayersWithWorstScorePlayersCustom();
 		playersWithHighestRatio = matchRepository.findTenPlayersWithHighestRatioCustom();

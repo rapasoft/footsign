@@ -35,4 +35,7 @@ public interface UserRepositoryCustom {
 
 	List<CustomPlayerDTO<Long>> findTenMostUnderTablePlayersCustom();
 
+	List<CustomPlayerDTO<Long>> findBestPlayerCustom();
+
+	List<CustomPlayerDTO<Long>> findPlayerBestTenPlayersCustom();
 }

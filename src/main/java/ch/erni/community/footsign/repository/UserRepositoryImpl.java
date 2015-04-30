@@ -163,6 +163,25 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return extractCustomPlayers(underTablePlayers);
 	}
 
+	@Override
+	@Transactional
+	public List<CustomPlayerDTO<Long>> findBestPlayerCustom() {
+		List<CustomPlayer> best =  userRepository.findPlayerBestTenPlayers();
+		List<CustomPlayer> filteredPlayer = best.stream().filter(p -> !best.isEmpty() && p.getValue().equals(best.get(0).getValue())).collect(Collectors.toList());
+		return filteredPlayer.stream().map(user -> new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue())).collect(Collectors.toList());
+	}
+
+	@Transactional
+	@Override
+	public List<CustomPlayerDTO<Long>> findPlayerBestTenPlayersCustom() {
+		Iterable<CustomPlayer> best =  userRepository.findPlayerBestTenPlayers();
+		List<CustomPlayerDTO<Long>> bestPlayers = new ArrayList<>();
+		for (CustomPlayer user : best) {
+			bestPlayers.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
+		}
+		return bestPlayers;
+	}
+
 	// Helper methods for extracting list of teams/players (to keep it DRY)
 
 	private List<TeamPlayersDTO<Long>> extractTeamPlayers(Iterable<TeamPlayers> teamPlayers) {

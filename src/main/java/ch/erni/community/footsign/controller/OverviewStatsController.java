@@ -21,7 +21,7 @@ public class OverviewStatsController {
 	@RequestMapping("/stats_overview")
 	public String teamStats(Model model) {
 		addToModel("highest_ratio", "highest_ratio_value", matchRepository.findPlayerWithHighestRatioCustom(), model);
-		addToModel("best_player", "best_player_score", matchRepository.findBestPlayerCustom(), model);
+		addToModel("best_player", "best_player_score", userRepository.findBestPlayerCustom(), model);
 		addToModel("worst_player", "worst_player_score", userRepository.findWorstPlayersCustom(), model);
 		addToModel("best_team", "best_team_score", userRepository.findBestTeamsCustom(), model);
 		addToModel("worst_team", "worst_team_score", userRepository.findWorstTeamsCustom(), model);

@@ -36,14 +36,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"order by value desc limit 10")
 	List<CustomPlayer> findTenPlayersWithHighestRatio();
 
-	@Query("match (user:User)<--(m:Match {state : 'CONFIRMED' })-->(g:Game) \n" +
-			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
-			"with user,m,count(distinct g) as countGames \n" +
-			"where countGames >= 2\n" +
-			"with user,count(distinct m) as value\n" +
-			"return user,  value " +
-			"order by value desc limit 10")
-	List<CustomPlayer> findPlayerBestTenPlayers();
+
 
 	@Query("Match (m:Match {state : 'PLANNED' } ) return m")
 	List<Match> findAllPlanMatches();
@@ -86,7 +79,4 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"order by m.dateOfMatch \n" +
 			"limit 10")
 	List<Match> findTenNotFilledMatches();
-
-
-
 }
