@@ -38,7 +38,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 
 	@Query("match (user:User)<--(m:Match {state : 'CONFIRMED' })-->(g:Game) \n" +
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
-			"with user,m,count(g) as countGames \n" +
+			"with user,m,count(distinct g) as countGames \n" +
 			"where countGames >= 2\n" +
 			"with user,count(distinct m) as value\n" +
 			"return user,  value " +
