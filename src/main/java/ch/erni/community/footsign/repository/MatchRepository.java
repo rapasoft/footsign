@@ -22,13 +22,10 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 	@Query("MATCH (user:User {domainShortName: {0}})--(m:Match  {state : 'CONFIRMED' }) RETURN DISTINCT m ORDER BY m.dateOfMatch DESC LIMIT 10")
 	List<Match> findLastMatchesByDomainName(String domainName);
 
-	@Query("match (user:User)--(m:Match {state : 'CONFIRMED' }) with user,count(distinct m) as value return user , value order by value desc limit 10")
-	List<CustomPlayer> findTenPlayerWithMostMatches();
-
 	@Query("match (user:User)<--(m:Match {state : 'CONFIRMED' })-->(g:Game)\n" +
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with user,m,count(g) as countGames \n" +
-			"where countGames >= 2\n" +            
+			"where countGames >= 2\n" +
 			"with user,count(distinct m) as wonMatches \n" +
 			"match (user)<--(m2:Match) with user,count(m2) as allMatches, wonMatches\n" +
 			"where allMatches > 4\n" +

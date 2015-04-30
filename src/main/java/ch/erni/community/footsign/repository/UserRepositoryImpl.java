@@ -182,6 +182,17 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return bestPlayers;
 	}
 
+	@Transactional
+	@Override
+	public List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom() {
+		Iterable<CustomPlayer> mostPlayedUsers =  userRepository.findTenPlayerWithMostMatches();
+		List<CustomPlayerDTO<Long>> mostPlayedUsersCustom = new ArrayList<>();
+		for (CustomPlayer user : mostPlayedUsers) {
+			mostPlayedUsersCustom.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
+		}
+		return mostPlayedUsersCustom;
+	}
+
 	// Helper methods for extracting list of teams/players (to keep it DRY)
 
 	private List<TeamPlayersDTO<Long>> extractTeamPlayers(Iterable<TeamPlayers> teamPlayers) {

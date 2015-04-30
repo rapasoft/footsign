@@ -38,4 +38,6 @@ public interface UserRepositoryCustom {
 	List<CustomPlayerDTO<Long>> findBestPlayerCustom();
 
 	List<CustomPlayerDTO<Long>> findPlayerBestTenPlayersCustom();
+
+	List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom();
 }

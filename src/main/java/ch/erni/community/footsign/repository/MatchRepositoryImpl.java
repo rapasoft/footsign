@@ -21,17 +21,6 @@ public class MatchRepositoryImpl implements MatchRepositoryCustom {
     @Autowired
     MatchRepository matchRepository;
 
-    @Transactional
-    @Override
-	public List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom() {
-		Iterable<CustomPlayer> mostPlayedUsers =  matchRepository.findTenPlayerWithMostMatches();
-		List<CustomPlayerDTO<Long>> mostPlayedUsersCustom = new ArrayList<>();
-		for (CustomPlayer user : mostPlayedUsers) {
-			mostPlayedUsersCustom.add(new CustomPlayerDTO<>(user.getUser(), (Long) user.getValue()));
-		}
-        return mostPlayedUsersCustom;
-    }
-
 	@Transactional
 	@Override
 	public List<CustomPlayerDTO<Double>> findTenPlayersWithHighestRatioCustom() {

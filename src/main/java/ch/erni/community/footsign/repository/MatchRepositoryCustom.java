@@ -10,8 +10,6 @@ import java.util.List;
  */
 public interface MatchRepositoryCustom {
 
-	List<CustomPlayerDTO<Long>> findTenPlayersWithMostMatchesCustom();
-
 	List<CustomPlayerDTO<Double>> findTenPlayersWithHighestRatioCustom();
 
 	/**

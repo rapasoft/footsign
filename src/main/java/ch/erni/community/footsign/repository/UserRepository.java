@@ -15,6 +15,9 @@ public interface UserRepository extends CrudRepository<User, String>, UserReposi
 
 	User findByDomainShortName(String name);
 
+	@Query("match (user:User)--(m:Match {state : 'CONFIRMED' }) with user,count(distinct m) as value return user , value order by value desc limit 10")
+	List<CustomPlayer> findTenPlayerWithMostMatches();
+
 	@Query("match (user:User)<--(m:Match {state : 'CONFIRMED' })-->(g:Game) \n" +
 			"where (((user)-[:TEAM1]-(m)-->(g) and g.team1Result = 8) OR ((user)-[:TEAM2]-(m)-->(g) and g.team2Result = 8))\n" +
 			"with user,m,count(distinct g) as countGames \n" +
