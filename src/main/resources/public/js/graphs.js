@@ -36,7 +36,9 @@ function getDataForChart(url, title, chart) {
 		success: function (data) {
 			var graphData = google.visualization.arrayToDataTable(data);
 			var options = getGeneralOptions(title);
-			chart.draw(graphData, options);
+			if (graphData.Lf.length > 0) {
+				chart.draw(graphData, options);
+			}
 		}
 	});
 }
