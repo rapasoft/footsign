@@ -5,20 +5,10 @@ import ch.erni.community.footsign.enums.MailType;
 import ch.erni.community.footsign.nodes.Match;
 import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.MatchRepository;
-import ch.erni.community.footsign.security.ErniUserDetails;
-import ch.erni.community.ldap.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -29,7 +19,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -39,12 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class MailService {
 
-    private JavaMailSender javaMailSender;
-
     private static final Logger logger = Logger.getLogger(MailService.class.getName());
-
-    @Autowired
-    private SpringTemplateEngine springTemplateEngine;
 
     @Autowired
     ErniLdapCache erniLdapCache;
@@ -52,8 +36,13 @@ public class MailService {
     @Autowired
     MatchRepository matchRepository;
 
+	private JavaMailSender javaMailSender;
+
     @Autowired
-    MailService(JavaMailSender javaMailSender) {
+	private SpringTemplateEngine springTemplateEngine;
+
+	@Autowired
+	MailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
@@ -99,8 +88,8 @@ public class MailService {
             ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
             ctx.setVariable("team1", match.getTeam1());
             ctx.setVariable("team2", match.getTeam2());
-            sendMail(MailType.PLANED_MAIL, user.getEmail(), ctx);
-        });
+			sendMail(MailType.PLANNED_MAIL, user.getEmail(), ctx);
+		});
     }
 
     public void sendMail(MailType mailType, String recepientMail, IContext ctx) {
@@ -124,8 +113,8 @@ public class MailService {
     private void setSubjectForMail(MailType mailType, MimeMessageHelper helper) throws MessagingException {
         if(MailType.CONFIRMATION_MAIL.equals(mailType)){
             helper.setSubject("Confirmation mail");
-        }else if(MailType.PLANED_MAIL.equals(mailType)){
-            helper.setSubject("Planning mail");
+		} else if (MailType.PLANNED_MAIL.equals(mailType)) {
+			helper.setSubject("Planning mail");
         } else if (MailType.CANCELATION_MAIL.equals(mailType)){
             helper.setSubject("Cancelation mail");
         } else {

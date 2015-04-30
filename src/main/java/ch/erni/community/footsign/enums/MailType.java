@@ -6,13 +6,13 @@ package ch.erni.community.footsign.enums;
 public enum MailType {
 
     CONFIRMATION_MAIL("confirmation_mail"),
-    PLANED_MAIL("planed_mail"),
-    CANCELATION_MAIL("cancelation_mail");
+	PLANNED_MAIL("planned_mail"),
+	CANCELATION_MAIL("cancelation_mail");
 
     private String mailType;
 
-    private MailType(String type){
-        mailType = type;
+	MailType(String type) {
+		mailType = type;
     }
 
     public String getValue() {

@@ -9,7 +9,7 @@
         <div class="row well well-lg">
             <div class="col-sm-6 col-md-6">
                 <div class="row col-sm-9 ">
-                    <h3>Team with most wins </h3>
+                    <h3>Team with most wins</h3>
                     <div class="overview-item-name" th:each="item : ${best_team}">
                         <span  th:text="${item.player1}">${item.player1}</span>,
                         <span  th:text="${item.player2}">${item.player2}</span>
@@ -21,7 +21,7 @@
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="row col-sm-9">
-                    <h3> Team with most losses </h3>
+                    <h3>Team with most losses</h3>
                     <div class="overview-item-name" th:each="item : ${worst_team}">
                         <span  th:text="${item.player1}">${item.player1}</span>,
                         <span  th:text="${item.player2}">${item.player2}</span>
@@ -36,7 +36,7 @@
         <div class="row well well-lg">
             <div class="col-sm-6 col-md-6">
                 <div class="row col-sm-9 ">
-                    <h3> Most wins </h3>
+                    <h3>Most wins</h3>
                     <div class="overview-item-name" th:each="item : ${best_player}">
                         <span  th:text="${item.player}">${item.player}</span>
                     </div>
@@ -62,7 +62,7 @@
         <div class="row well well-lg">
             <div class="col-sm-6 col-md-6">
                 <div class="row col-sm-9 ">
-                    <h3>Best "UNDER TABLE" </h3>
+                    <h3>"UNDER TABLE" experts</h3>
                     <div class="overview-item-name" th:each="item : ${best_underTable}">
                         <span th:text="${item.player}">${item.player}</span>
                     </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="row col-sm-9 ">
-                    <h3>Best ratio </h3>
+                    <h3>Best ratio</h3>
                     <div class="overview-item-name" th:each="item : ${highest_ratio}">
                         <span  th:text="${item.player}">${item.player}</span>
                     </div>
