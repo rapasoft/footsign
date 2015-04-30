@@ -31,7 +31,6 @@ public class UnconfirmedMatchesController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public int getUnconfirmedMatchesCount() {
-
 		User user = userHolder.getLoggedUser();
 		if (user != null) {
 			List<Match> allMatches = matchRepository.findPlayedMatchesForUser(user.getDomainShortName());

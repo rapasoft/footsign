@@ -77,7 +77,7 @@
                         </li>
                         <li id="unconfirmedMatches" sec:authorize="isAuthenticated()">
                             <a th:href="@{/confirmations}">
-                                Confirm <span class="badge" style="background: red;"></span>
+                                Confirm <span class="badge"></span>
                             </a>
                         </li>
                         <li><a th:href="@{/logout}">Logout</a></li>
@@ -108,7 +108,11 @@
 
                         var contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '/';
                         $.get(contextPath + "/unconfirmed_matches", function (data) {
-                            $("#unconfirmedMatches").find("a > span").html(data);
+                            var badge = $("#unconfirmedMatches").find("a > span");
+                            badge.html(data);
+                            if (data != "0") {
+                                badge.css('background', 'red');
+                            }
                         });
 
                         /*]]>*/

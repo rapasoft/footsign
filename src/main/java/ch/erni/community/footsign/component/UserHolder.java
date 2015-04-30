@@ -4,7 +4,6 @@ import ch.erni.community.footsign.nodes.User;
 import ch.erni.community.footsign.repository.UserRepository;
 import ch.erni.community.footsign.security.ErniUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,8 +23,8 @@ public class UserHolder {
     public User getLoggedUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() != null) {
-            ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
+		if (authentication != null && authentication.getPrincipal() != null && authentication.getPrincipal() instanceof ErniUserDetails) {
+			ErniUserDetails principal = (ErniUserDetails) authentication.getPrincipal();
     
             if (currentUser == null || !currentUser.getDomainShortName().equals(principal.getDomainUserName())) {
                 currentUser = userRepository.findByDomainShortName(principal.getDomainUserName());
