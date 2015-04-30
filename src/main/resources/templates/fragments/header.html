@@ -70,8 +70,17 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
-                        <li sec:authorize="isAuthenticated()"><a th:href="@{/user_profile}"><i class="glyphicon glyphicon-user"></i><span sec:authentication="name"/></a></li>
-                        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a th:href="@{/user_profile}">
+                                <i class="glyphicon glyphicon-user"></i> <span sec:authentication="name"/>
+                            </a>
+                        </li>
+                        <li id="unconfirmedMatches" sec:authorize="isAuthenticated()">
+                            <a th:href="@{/confirmations}">
+                                Confirm <span class="badge" style="background: red;"></span>
+                            </a>
+                        </li>
+                        <li><a th:href="@{/logout}">Logout</a></li>
                     </ul>
                     <script th:inline="javascript">
                         /*<![CDATA[*/
@@ -96,6 +105,12 @@
                         if (rootUrl.match("rules")) activeItemId = "rulesMenuItem";
 
                         $('#' + activeItemId).addClass("active");
+
+                        var contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '/';
+                        $.get(contextPath + "/unconfirmed_matches", function (data) {
+                            $("#unconfirmedMatches").find("a > span").html(data);
+                        });
+
                         /*]]>*/
                     </script>
                 </div>
