@@ -80,7 +80,7 @@
                                 Confirm <span class="badge"></span>
                             </a>
                         </li>
-                        <li><a th:href="@{/logout}">Logout</a></li>
+                        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
                     </ul>
                     <script th:inline="javascript">
                         /*<![CDATA[*/
