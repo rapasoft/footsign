@@ -28,97 +28,95 @@ import java.util.stream.Collectors;
 @Service
 public class MailService {
 
-    private static final Logger logger = Logger.getLogger(MailService.class.getName());
+	private static final Logger logger = Logger.getLogger(MailService.class.getName());
 
-    @Autowired
-    ErniLdapCache erniLdapCache;
+	@Autowired
+	ErniLdapCache erniLdapCache;
 
-    @Autowired
-    MatchRepository matchRepository;
+	@Autowired
+	MatchRepository matchRepository;
 
 	private JavaMailSender javaMailSender;
 
-    @Autowired
+	@Autowired
 	private SpringTemplateEngine springTemplateEngine;
 
 	@Autowired
 	MailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
+		this.javaMailSender = javaMailSender;
+	}
 
-    public void sendCancelationMail(Match match) {
-        Set<User> team = new HashSet<>();
-        team.addAll(match.getTeam1());
-        team.addAll(match.getTeam2());
-        team.stream().filter(User::isCancelledMatchNotification).collect(Collectors.toList()).forEach(user -> {
-            final Context ctx = new Context();
-            ctx.setVariable("user_name", user.getFullName());
-            ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
-            ctx.setVariable("team1", match.getTeam1());
-            ctx.setVariable("team2", match.getTeam2());
-            ctx.setVariable("games", match.getGames());
-            sendMail(MailType.CANCELATION_MAIL, user.getEmail(), ctx);
-        });
+	public void sendCancelationMail(Match match) {
+		Set<User> team = new HashSet<>();
+		team.addAll(match.getTeam1());
+		team.addAll(match.getTeam2());
+		team.stream().filter(User::isCancelledMatchNotification)
+				.collect(Collectors.toList())
+				.forEach(user -> sendMail(MailType.CANCELATION_MAIL, user.getEmail(), getInitializedContextWithGames(user, match)));
 
-    }
+	}
 
-    public void sendConfirmationMail(Match match) {
+	public void sendConfirmationMail(Match match) {
 
-        Set<User> team = new HashSet<>();
-        team.addAll(match.getTeam1());
-        team.addAll(match.getTeam2());
-        team.stream().filter(User::isConfirmMatchNotification).collect(Collectors.toList()).forEach(user -> {
-            final Context ctx = new Context();
-            ctx.setVariable("user_name", user.getFullName());
-            ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
-            ctx.setVariable("team1", match.getTeam1());
-            ctx.setVariable("team2", match.getTeam2());
-            ctx.setVariable("games", match.getGames());
-            sendMail(MailType.CONFIRMATION_MAIL, user.getEmail(), ctx);
-        });
-    }
+		Set<User> team = new HashSet<>();
+		team.addAll(match.getTeam1());
+		team.addAll(match.getTeam2());
+		team.stream().filter(User::isConfirmMatchNotification)
+				.collect(Collectors.toList())
+				.forEach(user -> sendMail(MailType.CONFIRMATION_MAIL, user.getEmail(), getInitializedContextWithGames(user, match)));
+	}
 
-    public void sendPlaneMatchMail(Match match) throws MessagingException {
-        Set<User> team = new HashSet<>();
-        team.addAll(match.getTeam1());
-        team.addAll(match.getTeam2());
-        team.stream().filter(User::isPlannedMatchNofitication).collect(Collectors.toList()).forEach(user -> {
-            final Context ctx = new Context();
-            ctx.setVariable("user_name", user.getFullName());
-            ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
-            ctx.setVariable("team1", match.getTeam1());
-            ctx.setVariable("team2", match.getTeam2());
-			sendMail(MailType.PLANNED_MAIL, user.getEmail(), ctx);
-		});
-    }
+	public void sendPlaneMatchMail(Match match) throws MessagingException {
+		Set<User> team = new HashSet<>();
+		team.addAll(match.getTeam1());
+		team.addAll(match.getTeam2());
+		team.stream().filter(User::isPlannedMatchNofitication)
+				.collect(Collectors.toList())
+				.forEach(user -> sendMail(MailType.PLANNED_MAIL, user.getEmail(), getInitializedContext(user, match)));
+	}
 
-    public void sendMail(MailType mailType, String recepientMail, IContext ctx) {
-        final MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
-        try {
-            final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
-            setSubjectForMail(mailType, message);
-            message.setFrom("footsign@erni.sk");
-            message.setTo(recepientMail);
+	public void sendMail(MailType mailType, String recepientMail, IContext ctx) {
+		final MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
+		try {
+			final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+			setSubjectForMail(mailType, message);
+			message.setFrom("footsign@erni.sk");
+			message.setTo(recepientMail);
 
-            final String text = springTemplateEngine.process(mailType.getValue(), ctx);
-            message.setText(text, true); // true = isHtml
+			final String text = springTemplateEngine.process(mailType.getValue(), ctx);
+			message.setText(text, true); // true = isHtml
 
-            this.javaMailSender.send(mimeMessage);
+			this.javaMailSender.send(mimeMessage);
 
-        } catch (MessagingException e) {
-            logger.log(Level.SEVERE, "Send Mail Exception", e);
-        }
-    }
+		} catch (MessagingException e) {
+			logger.log(Level.SEVERE, "Send Mail Exception", e);
+		}
+	}
 
-    private void setSubjectForMail(MailType mailType, MimeMessageHelper helper) throws MessagingException {
-        if(MailType.CONFIRMATION_MAIL.equals(mailType)){
-            helper.setSubject("Confirmation mail");
+	private void setSubjectForMail(MailType mailType, MimeMessageHelper helper) throws MessagingException {
+		if (MailType.CONFIRMATION_MAIL.equals(mailType)) {
+			helper.setSubject("Confirmation mail");
 		} else if (MailType.PLANNED_MAIL.equals(mailType)) {
 			helper.setSubject("Planning mail");
-        } else if (MailType.CANCELATION_MAIL.equals(mailType)){
-            helper.setSubject("Cancelation mail");
-        } else {
-            helper.setSubject("Information mail");
-        }
-    }
+		} else if (MailType.CANCELATION_MAIL.equals(mailType)) {
+			helper.setSubject("Cancelation mail");
+		} else {
+			helper.setSubject("Information mail");
+		}
+	}
+
+	private Context getInitializedContext(User user, Match match) {
+		final Context ctx = new Context();
+		ctx.setVariable("user_name", user.getFullName());
+		ctx.setVariable("day_of_match", match.getFormatedDateOfMatch());
+		ctx.setVariable("team1", match.getTeam1());
+		ctx.setVariable("team2", match.getTeam2());
+		return ctx;
+	}
+
+	private Context getInitializedContextWithGames(User user, Match match) {
+		Context ctx = getInitializedContext(user, match);
+		ctx.setVariable("games", match.getGames());
+		return ctx;
+	}
 }

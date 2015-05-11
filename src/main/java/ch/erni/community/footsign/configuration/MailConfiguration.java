@@ -56,7 +56,7 @@ public class MailConfiguration {
     @Bean
     public ClassLoaderTemplateResolver emailTemplateResolver(){
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
-        emailTemplateResolver.setPrefix("/templates/email/");
+        emailTemplateResolver.setPrefix("templates/email/");
         emailTemplateResolver.setSuffix(".html");
         emailTemplateResolver.setTemplateMode("HTML5");
         emailTemplateResolver.setCharacterEncoding("UTF-8");

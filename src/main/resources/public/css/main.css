@@ -137,8 +137,8 @@ body {
 }
 .custom-label{
 	display: block;
-	padding: .3em .6em .3em;
-	font-size: 75%;
+	padding: .3em .3em;
+	letter-spacing: -1px;
 	font-weight: 700;
 	line-height: 1;
 	color: #fff;

@@ -139,7 +139,7 @@ public class Match {
 
 	public String getFormatedDateOfMatchWithoutYear() {
 		Date date = new Date(dateOfMatch);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm', 'dd.MM");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm' 'dd.MM");
 		return simpleDateFormat.format(date);
 	}
 
