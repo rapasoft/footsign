@@ -13,12 +13,15 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
     private int min;
     private int max;
     private String keyPrefix;
+    private int maxNumberOfWinMatches;
+
 
     @Override
     public void initialize(ResultMap resultList) {
         min = resultList.minResult();
         max = resultList.maxResult();
         keyPrefix = resultList.keyPrefix();
+        maxNumberOfWinMatches = resultList.maxNumberOfWinMatches();
     }
 
     @Override
@@ -41,8 +44,21 @@ public class ResultMapValidator implements ConstraintValidator<ResultMap, Map<St
         long size1 = results1.stream().filter(r -> r != null && !r.isEmpty()).count();
         long size2 = results2.stream().filter(r -> r != null && !r.isEmpty()).count();
 
-        if (size1 != size2) {
+        if ( size1 != size2 ) {
+            if(size1 < 2 || size1 > 4 ) {
+                cvc.buildConstraintViolationWithTemplate("Match should consist of 2 or 3 games").addConstraintViolation();
+                return false;
+            }
             cvc.buildConstraintViolationWithTemplate("Size of results have to be equal").addConstraintViolation();
+            return false;
+
+        }
+
+        long wins1 = results1.stream().filter(r -> r.equals("8")).count();
+        long wins2 = results2.stream().filter(r -> r.equals("8")).count();
+
+        if(wins1 != maxNumberOfWinMatches && wins2 != maxNumberOfWinMatches ) {
+            cvc.buildConstraintViolationWithTemplate("Wrong number of win games").addConstraintViolation();
             return false;
         }
 

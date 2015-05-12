@@ -26,4 +26,6 @@ public @interface ResultMap {
     int maxResult() default 8;
     
     String keyPrefix() default "team";
+
+    int maxNumberOfWinMatches() default 2;
 }
