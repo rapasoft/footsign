@@ -27,7 +27,7 @@ public interface MatchRepository extends CrudRepository<Match, Long>, MatchRepos
 			"with user,m,count(g) as countGames \n" +
 			"where countGames >= 2\n" +
 			"with user,count(distinct m) as wonMatches \n" +
-			"match (user)<--(m2:Match) with user,count(m2) as allMatches, wonMatches\n" +
+			"match (user)<--(m2:Match {state : 'CONFIRMED' }) with user,count(distinct m2) as allMatches, wonMatches\n" +
 			"where allMatches > 4\n" +
 			"return user, wonMatches*(1.0) / allMatches*(1.0) as value\n" +
 			"order by value desc limit 10")
