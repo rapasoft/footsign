@@ -287,7 +287,11 @@ $(document).ready(function () {
 });
 
 function initStarsRating(){
-    $('#stars_rating').rating('refresh', {
+	var $starsRating = $('#stars_rating');
+	$starsRating.on('rating.change', function () {
+		document.getElementById('editForm').submit();
+	});
+	$starsRating.rating('refresh', {
         starCaptions: function(val) {
             if (val == 0) {
                 return 'Not rated yet';
